@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/turnos")
-public class TurnoController {
+public class TurnoController implements CRUDController<Turno>{
 
     @Autowired
     public TurnoService turnoService;

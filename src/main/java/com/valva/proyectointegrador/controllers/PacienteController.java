@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pacientes")
-public class PacienteController {
+public class PacienteController implements CRUDController<Paciente> {
 
     @Autowired
     public PacienteService pacienteService;

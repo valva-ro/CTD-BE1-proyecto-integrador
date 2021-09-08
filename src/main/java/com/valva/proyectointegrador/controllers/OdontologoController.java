@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/odontologos")
-public class OdontologoController {
+public class OdontologoController implements CRUDController<Odontologo> {
 
     @Autowired
     public OdontologoService odontologoService;

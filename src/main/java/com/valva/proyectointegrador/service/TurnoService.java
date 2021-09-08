@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class TurnoService {
+public class TurnoService implements CRUDService<Turno> {
 
     @Autowired
     public OdontologoService odontologoService;
@@ -42,7 +42,7 @@ public class TurnoService {
         Integer idOdontologo = turno.getOdontologo().getId();
         Turno turnoInsertado = null;
         try {
-            Boolean existenEntidades = existePaciente(idPaciente) && existeOdontologo(idOdontologo);
+            boolean existenEntidades = existePaciente(idPaciente) && existeOdontologo(idOdontologo);
             if (existenEntidades) {
                 turno.setPaciente(pacienteService.buscar(idPaciente));
                 turno.setOdontologo(odontologoService.buscar(idOdontologo));
@@ -59,14 +59,13 @@ public class TurnoService {
 
     public Turno actualizar(Turno turno) {
         logger.debug("Iniciando método 'actualizar()'");
-        Turno turnoActualizado = turno;
         try {
             turnos.set(turno.getId() - 1, turno);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'actualizar()'");
-        return turnoActualizado;
+        return turno;
     }
 
     public void eliminar(Integer id) {

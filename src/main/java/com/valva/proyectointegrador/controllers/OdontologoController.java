@@ -19,7 +19,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
     @PostMapping()
     public ResponseEntity<Odontologo> registrar(@RequestBody Odontologo odontologo) {
         ResponseEntity<Odontologo> response;
-        Odontologo odontologoInsertado = odontologoService.darDeAlta(odontologo);
+        Odontologo odontologoInsertado = odontologoService.crear(odontologo);
         if (odontologoInsertado != null) {
             response = ResponseEntity.ok(odontologoInsertado);
         } else {

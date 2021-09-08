@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class OdontologoService {
+public class OdontologoService implements CRUDService<Odontologo> {
 
     private IRepository<Odontologo> odontologoIRepository;
     private Logger logger = Logger.getLogger(OdontologoService.class);
@@ -37,7 +37,7 @@ public class OdontologoService {
         return odontologo;
     }
 
-    public Odontologo darDeAlta(Odontologo odontologo) {
+    public Odontologo crear(Odontologo odontologo) {
         logger.debug("Iniciando método 'crear()'");
         Odontologo odontologoInsertado = null;
         try {

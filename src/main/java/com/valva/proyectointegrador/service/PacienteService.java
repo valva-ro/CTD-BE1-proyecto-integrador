@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class PacienteService {
+public class PacienteService implements CRUDService<Paciente> {
 
     private IRepository<Paciente> pacienteIRepository;
     private Logger logger = Logger.getLogger(PacienteService.class);

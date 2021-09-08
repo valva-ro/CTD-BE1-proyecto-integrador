@@ -25,7 +25,7 @@ public class PacienteController {
         if (pacienteInsertado != null) {
             response = ResponseEntity.ok(pacienteInsertado);
         } else {
-            response = ResponseEntity.notFound().build();
+            response = ResponseEntity.badRequest().body(paciente);
         }
         return response;
     }
@@ -66,7 +66,7 @@ public class PacienteController {
             pacienteService.eliminar(id);
             response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Eliminado");
         } else {
-            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            response = ResponseEntity.notFound().build();
         }
         return response;
     }

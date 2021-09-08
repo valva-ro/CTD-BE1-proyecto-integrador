@@ -24,7 +24,7 @@ public class TurnoController {
         if (turnoInsertado != null) {
             response = ResponseEntity.ok(turnoInsertado);
         } else {
-            response = ResponseEntity.badRequest().build();
+            response = ResponseEntity.badRequest().body(turno);
         }
         return response;
     }
@@ -59,7 +59,7 @@ public class TurnoController {
             turnoService.eliminar(id);
             response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Eliminado");
         } else {
-            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            response = ResponseEntity.notFound().build();
         }
         return response;
     }

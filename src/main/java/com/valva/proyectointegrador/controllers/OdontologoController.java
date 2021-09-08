@@ -23,7 +23,7 @@ public class OdontologoController {
         if (odontologoInsertado != null) {
             response = ResponseEntity.ok(odontologoInsertado);
         } else {
-            response = ResponseEntity.notFound().build();
+            response = ResponseEntity.badRequest().body(odontologo);
         }
         return response;
     }

@@ -1,0 +1,106 @@
+@startuml
+allowmixing
+
+skinparam database {
+    BorderColor pink
+    BackgroundColor purple
+    ArrowColor purple
+    FontColor pink
+}
+
+skinparam rectangle {
+    BorderColor purple
+    BackgroundColor lightpink
+    ArrowColor purple
+}
+
+skinparam class {
+    BorderColor purple
+    BackgroundColor pink
+    ArrowColor purple
+    AttributeIconSize 0
+}
+
+skinparam note {
+    BorderColor darkslateblue
+    BackgroundColor #90c0f0
+    FontColor darkslateblue
+}
+
+component Application {
+    package com.dh #d9a4ff {
+
+        package dao {
+            interface "IDao<T>"{
+                + insertarNuevo(T t) : T ;
+                + consultarTodos() : List<T> ;
+                + consultarPorId(Integer id) : T;
+                + actualizar(T t) : Boolean;
+            }
+
+            package impl {
+                class "OdontologoDaoH2<Odontologo>" {
+                    + insertarNuevo(Odontologo o) : Odontologo ;
+                    + consultarTodos() : List<Odontologo> ;
+                    + consultarPorId(Integer id) : Odontologo;
+                    + actualizar(Odontologo o) : Boolean;
+                }
+
+                class "PacienteDaoH2<Paciente>" {
+                    + insertarNuevo(Paciente p) : Paciente ;
+                    + consultarTodos() : List<Paciente> ;
+                    + consultarPorId(Integer id) : Paciente;
+                    + actualizar(Paciente p) : Boolean;
+                }
+
+                class "DomicilioDaoH2<Domicilio>" {
+                    + insertarNuevo(Domicilio d) : Domicilio ;
+                    + consultarTodos() : List<Domicilio> ;
+                    + consultarPorId(Integer id) : Domicilio;
+                    + actualizar(Domicilio d) : Boolean;
+                }
+            }
+
+            class ConfiguracionJDBC {
+                + obtenerConexionConBD() : Connection
+            }
+
+            component JDBC #ffa6df
+        }
+
+        package service {
+            class ServicePacientes {
+                + darDeAlta(String nombre, String apellido, Integer dni, Date fecha, Integer domicilioID) : String
+                + darDeAlta(String nombre, String apellido, Integer dni, Date fecha, String calle, Integer numero, String localidad, String provincia) : String
+                + actualizar(Integer id, String nombre, String apellido, Integer dni, Date fecha, Integer domicilioID) : String
+                + buscarPorId(Integer id) : String
+                + consultarTodos() : String
+            }
+            class ServiceOdontologos {
+                + darDeAlta(String nombre, String apellido, String numeroMatricula) : String
+                + actualizar(Integer odontologoID, String nombre, String apellido, String numeroMatricula) : String
+                + buscarPorId(Integer id) : String
+                + consultarTodos() : String
+            }
+        }
+
+        package model {
+            rectangle Odontologo
+            rectangle Paciente
+            rectangle Domicilio
+        }
+        impl ..> model : crea/usa
+        service o--- impl
+        "IDao<T>" <|.. "OdontologoDaoH2<Odontologo>"
+        "IDao<T>" <|.. "PacienteDaoH2<Paciente>"
+        "IDao<T>" <|.. "DomicilioDaoH2<Domicilio>"
+        "IDao<T>" .> JDBC : usa
+        "OdontologoDaoH2<Odontologo>" *-- ConfiguracionJDBC
+        "PacienteDaoH2<Paciente>" *-- ConfiguracionJDBC
+        "DomicilioDaoH2<Domicilio>" *-- ConfiguracionJDBC
+        rectangle ClinicaOdontologica
+        ClinicaOdontologica *- service
+    }
+
+}
+@enduml

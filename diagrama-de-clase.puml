@@ -56,7 +56,7 @@ component Application {
 
             interface CRUDService {
                 + buscar(Integer id) : T
-                + darDeAlta(T t) : T
+                + crear(T t) : T
                 + actualizar(T t) : T
                 + consultarTodos() : List<T>
                 + eliminar(Integer id) : void
@@ -72,7 +72,7 @@ component Application {
         package controller {
                     interface CRUDController {
                         + buscar(Integer id) : ResponseEntity<T>
-                        + darDeAlta(T t) : ResponseEntity<T>
+                        + crear(T t) : ResponseEntity<T>
                         + actualizar(T t) : ResponseEntity<T>
                         + consultarTodos() : ResponseEntity<List<T>>
                         + eliminar(Integer id) : void

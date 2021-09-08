@@ -2,6 +2,8 @@
 
 El proyecto es una API REST en proceso.
 
+![Diagrama de clase](diagrama-de-clase.png)
+
 ## Odontólogos
   - Buscar por id: `GET` a `PATH/odontologos/{id}`
       - `200 OK` → devuelve el odontólogo

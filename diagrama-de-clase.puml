@@ -28,37 +28,21 @@ skinparam note {
 }
 
 component Application {
-    package com.dh #d9a4ff {
+    package com.valva.proyectointegrador #d9a4ff {
 
-        package dao {
-            interface "IDao<T>"{
-                + insertarNuevo(T t) : T ;
-                + consultarTodos() : List<T> ;
-                + consultarPorId(Integer id) : T;
-                + actualizar(T t) : Boolean;
+        package repository {
+            interface "IRepository<T>"{
+                + insertarNuevo(T t) : T
+                + consultarTodos() : List<T>
+                + consultarPorId(Integer id) : T
+                + actualizar(T t) : T
+                + eliminar(Integer id) : void
             }
 
             package impl {
-                class "OdontologoDaoH2<Odontologo>" {
-                    + insertarNuevo(Odontologo o) : Odontologo ;
-                    + consultarTodos() : List<Odontologo> ;
-                    + consultarPorId(Integer id) : Odontologo;
-                    + actualizar(Odontologo o) : Boolean;
-                }
-
-                class "PacienteDaoH2<Paciente>" {
-                    + insertarNuevo(Paciente p) : Paciente ;
-                    + consultarTodos() : List<Paciente> ;
-                    + consultarPorId(Integer id) : Paciente;
-                    + actualizar(Paciente p) : Boolean;
-                }
-
-                class "DomicilioDaoH2<Domicilio>" {
-                    + insertarNuevo(Domicilio d) : Domicilio ;
-                    + consultarTodos() : List<Domicilio> ;
-                    + consultarPorId(Integer id) : Domicilio;
-                    + actualizar(Domicilio d) : Boolean;
-                }
+                class "OdontologoRepositoryH2<Odontologo>"
+                class "PacienteRepositoryH2<Paciente>"
+                class "DomicilioRepositoryH2<Domicilio>"
             }
 
             class ConfiguracionJDBC {
@@ -69,37 +53,52 @@ component Application {
         }
 
         package service {
-            class ServicePacientes {
-                + darDeAlta(String nombre, String apellido, Integer dni, Date fecha, Integer domicilioID) : String
-                + darDeAlta(String nombre, String apellido, Integer dni, Date fecha, String calle, Integer numero, String localidad, String provincia) : String
-                + actualizar(Integer id, String nombre, String apellido, Integer dni, Date fecha, Integer domicilioID) : String
-                + buscarPorId(Integer id) : String
-                + consultarTodos() : String
+
+            interface CRUDService {
+                + buscar(Integer id) : T
+                + darDeAlta(T t) : T
+                + actualizar(T t) : T
+                + consultarTodos() : List<T>
+                + eliminar(Integer id) : void
             }
-            class ServiceOdontologos {
-                + darDeAlta(String nombre, String apellido, String numeroMatricula) : String
-                + actualizar(Integer odontologoID, String nombre, String apellido, String numeroMatricula) : String
-                + buscarPorId(Integer id) : String
-                + consultarTodos() : String
-            }
+
+            class PacienteService implements CRUDService
+            class TurnoService implements CRUDService
+            class OdontologoService implements CRUDService
+            TurnoService -l> OdontologoService
+            TurnoService -r> PacienteService
         }
+
+        package controller {
+                    interface CRUDController {
+                        + buscar(Integer id) : ResponseEntity<T>
+                        + darDeAlta(T t) : ResponseEntity<T>
+                        + actualizar(T t) : ResponseEntity<T>
+                        + consultarTodos() : ResponseEntity<List<T>>
+                        + eliminar(Integer id) : void
+                    }
+                    class PacienteController implements CRUDController
+                    class OdontologoController  implements CRUDController
+                    class TurnoController implements CRUDController
+                }
 
         package model {
             rectangle Odontologo
             rectangle Paciente
             rectangle Domicilio
+            rectangle Turno
         }
-        impl ..> model : crea/usa
+
+        controller *-- service
+        impl .> model : crea/usa
         service o--- impl
-        "IDao<T>" <|.. "OdontologoDaoH2<Odontologo>"
-        "IDao<T>" <|.. "PacienteDaoH2<Paciente>"
-        "IDao<T>" <|.. "DomicilioDaoH2<Domicilio>"
-        "IDao<T>" .> JDBC : usa
-        "OdontologoDaoH2<Odontologo>" *-- ConfiguracionJDBC
-        "PacienteDaoH2<Paciente>" *-- ConfiguracionJDBC
-        "DomicilioDaoH2<Domicilio>" *-- ConfiguracionJDBC
-        rectangle ClinicaOdontologica
-        ClinicaOdontologica *- service
+        "IRepository<T>" <|.. "OdontologoRepositoryH2<Odontologo>"
+        "IRepository<T>" <|.. "PacienteRepositoryH2<Paciente>"
+        "IRepository<T>" <|.. "DomicilioRepositoryH2<Domicilio>"
+        "IRepository<T>" .> JDBC : usa
+        "OdontologoRepositoryH2<Odontologo>" o-- ConfiguracionJDBC
+        "PacienteRepositoryH2<Paciente>" o-- ConfiguracionJDBC
+        "DomicilioRepositoryH2<Domicilio>" o-- ConfiguracionJDBC
     }
 
 }

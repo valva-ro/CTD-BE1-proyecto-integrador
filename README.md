@@ -107,8 +107,8 @@ El proyecto es una API REST en proceso.
   - `400 BAD REQUEST` → hubo un error en los datos recibidos
     ```json
     {
-          "paciente": {"id": "1"},
-          "odontologo": {"id": "1"},
+          "pacienteID": "1",
+          "odontologoID": "1",
           "fecha": "2021-10-25"
     }
     ```
@@ -120,8 +120,8 @@ El proyecto es una API REST en proceso.
       ```json
       {
             "id": "1",
-            "paciente": {"id": "1"},
-            "odontologo": {"id": "1"},
+            "pacienteID": "1",
+            "odontologoID": "1",
             "fecha": "2021-10-21"
       }
       ```

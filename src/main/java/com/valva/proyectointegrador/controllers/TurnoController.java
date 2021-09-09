@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/turnos")
 public class TurnoController implements CRUDController<Turno>{
@@ -17,6 +16,7 @@ public class TurnoController implements CRUDController<Turno>{
     @Autowired
     public TurnoService turnoService;
 
+    @Override
     @PostMapping()
     public ResponseEntity<Turno> registrar(@RequestBody Turno turno) {
         ResponseEntity<Turno> response;
@@ -29,6 +29,7 @@ public class TurnoController implements CRUDController<Turno>{
         return response;
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<Turno> buscar(@PathVariable Integer id) {
         ResponseEntity<Turno> response;
@@ -41,6 +42,7 @@ public class TurnoController implements CRUDController<Turno>{
         return response;
     }
 
+    @Override
     @PutMapping()
     public ResponseEntity<Turno> actualizar(@RequestBody Turno turno) {
         ResponseEntity<Turno> response;
@@ -52,6 +54,7 @@ public class TurnoController implements CRUDController<Turno>{
         return response;
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response;
@@ -64,6 +67,7 @@ public class TurnoController implements CRUDController<Turno>{
         return response;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<Turno>> buscarTodos() {
         return ResponseEntity.ok(turnoService.consultarTodos());

@@ -108,7 +108,7 @@ public class Paciente {
     @Override
     public String toString() {
         String informacion = "Paciente{" +
-                "pacienteID=" + id +
+                "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", dni=" + dni +

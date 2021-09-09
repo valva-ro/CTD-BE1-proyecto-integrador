@@ -1,22 +1,22 @@
 CREATE TABLE IF NOT EXISTS odontologos (
                                            id INT AUTO_INCREMENT PRIMARY KEY,
-                                           nombre VARCHAR(50) NOT NULL,
-                                           apellido VARCHAR(50) NOT NULL,
-                                           numeroMatricula VARCHAR(50) NOT NULL
+                                           nombre VARCHAR(255) NOT NULL,
+                                           apellido VARCHAR(255) NOT NULL,
+                                           numeroMatricula VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS domicilios (
                                           id INT AUTO_INCREMENT PRIMARY KEY,
-                                          calle VARCHAR(50) NOT NULL,
+                                          calle VARCHAR(255) NOT NULL,
                                           numero INT NOT NULL,
-                                          localidad VARCHAR(50) NOT NULL,
-                                          provincia VARCHAR(50) NOT NULL
+                                          localidad VARCHAR(255) NOT NULL,
+                                          provincia VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pacientes (
                                          id INT AUTO_INCREMENT PRIMARY KEY,
-                                         nombre VARCHAR(50) NOT NULL,
-                                         apellido VARCHAR(50) NOT NULL,
+                                         nombre VARCHAR(255) NOT NULL,
+                                         apellido VARCHAR(255) NOT NULL,
                                          dni INT NOT NULL,
                                          fechaIngreso DATE,
                                          domicilioID INT,
@@ -25,8 +25,15 @@ CREATE TABLE IF NOT EXISTS pacientes (
                                              ON UPDATE CASCADE
 );
 
-INSERT INTO domicilios (calle, numero, localidad, provincia) VALUES ('Calle Falsa', 123, 'Springfield', 'Springfield');
-
-INSERT INTO odontologos (nombre, apellido, numeroMatricula) VALUES ('Pepe', 'Pepardo', '123456');
-INSERT INTO odontologos (nombre, apellido, numeroMatricula) VALUES ('Pipo', 'Pipardo', '112233');
-INSERT INTO odontologos (nombre, apellido, numeroMatricula) VALUES ('Pepa', 'Peparda', '111222');
+CREATE TABLE IF NOT EXISTS turnos(
+                                     id INT AUTO_INCREMENT PRIMARY KEY,
+                                     idPaciente INT NOT NULL,
+                                     idOdontologo INT NOT NULL,
+                                     fecha DATE NOT NULL,
+                                     FOREIGN KEY (idPaciente) REFERENCES pacientes(id)
+                                         ON DELETE CASCADE
+                                         ON UPDATE CASCADE,
+                                     FOREIGN KEY (idOdontologo) REFERENCES odontologos(id)
+                                         ON DELETE CASCADE
+                                         ON UPDATE CASCADE
+);

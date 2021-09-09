@@ -5,16 +5,16 @@ import java.time.LocalDate;
 public class Turno {
 
     private Integer id;
-    private Paciente paciente;
-    private Odontologo odontologo;
+    private Integer idPaciente;
+    private Integer idOdontologo;
     private LocalDate fecha;
 
     public Turno() {}
 
-    public Turno(Integer id, Paciente paciente, Odontologo odontologo, LocalDate fecha) {
+    public Turno(Integer id, Integer idPaciente, Integer idOdontologo, LocalDate fecha) {
         this.id = id;
-        this.paciente = paciente;
-        this.odontologo = odontologo;
+        this.idPaciente = idPaciente;
+        this.idOdontologo = idOdontologo;
         this.fecha = fecha;
     }
 
@@ -26,20 +26,20 @@ public class Turno {
         this.id = id;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public Integer getIdPaciente() {
+        return idPaciente;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setIdPaciente(Integer idPaciente) {
+        this.idPaciente = idPaciente;
     }
 
-    public Odontologo getOdontologo() {
-        return odontologo;
+    public Integer getIdOdontologo() {
+        return idOdontologo;
     }
 
-    public void setOdontologo(Odontologo odontologo) {
-        this.odontologo = odontologo;
+    public void setIdOdontologo(Integer idOdontologo) {
+        this.idOdontologo = idOdontologo;
     }
 
     public LocalDate getFecha() {
@@ -54,8 +54,8 @@ public class Turno {
     public String toString() {
         return "Turno{" +
                 "id=" + id +
-                ", paciente=" + paciente +
-                ", odontologo=" + odontologo +
+                ", idPaciente=" + idPaciente +
+                ", idOdontologo=" + idOdontologo +
                 ", fecha=" + fecha +
                 '}';
     }

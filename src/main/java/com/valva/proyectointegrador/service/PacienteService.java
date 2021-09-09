@@ -30,6 +30,7 @@ public class PacienteService implements CRUDService<Paciente> {
         }
     }
 
+    @Override
     public Paciente buscar(Integer id) {
         logger.debug("Iniciando método 'buscar()'");
         Paciente paciente = null;
@@ -42,6 +43,7 @@ public class PacienteService implements CRUDService<Paciente> {
         return paciente;
     }
 
+    @Override
     public Paciente crear(Paciente paciente) {
         logger.debug("Iniciando método 'crear()'");
         Paciente pacienteInsertado = null;
@@ -55,6 +57,7 @@ public class PacienteService implements CRUDService<Paciente> {
         return pacienteInsertado;
     }
 
+    @Override
     public Paciente actualizar(Paciente paciente) {
         logger.debug("Iniciando método 'actualizar()'");
         Paciente pacienteActualizado = null;
@@ -67,6 +70,7 @@ public class PacienteService implements CRUDService<Paciente> {
         return pacienteActualizado;
     }
 
+    @Override
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
@@ -77,6 +81,7 @@ public class PacienteService implements CRUDService<Paciente> {
         logger.debug("Terminó la ejecución del método 'eliminar()'");
     }
 
+    @Override
     public List<Paciente> consultarTodos() {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Paciente> pacientes = new ArrayList<>();

@@ -32,6 +32,7 @@ public class TurnoService implements CRUDService<Turno> {
         }
     }
 
+    @Override
     public Turno buscar(Integer id) {
         logger.debug("Iniciando método 'buscar()'");
         Turno turno = null;
@@ -44,6 +45,7 @@ public class TurnoService implements CRUDService<Turno> {
         return turno;
     }
 
+    @Override
     public Turno crear(Turno turno) {
         logger.debug("Iniciando método 'crear()'");
         Turno turnoInsertado = null;
@@ -60,6 +62,7 @@ public class TurnoService implements CRUDService<Turno> {
         return turnoInsertado;
     }
 
+    @Override
     public Turno actualizar(Turno turno) {
         logger.debug("Iniciando método 'actualizar()'");
         Turno turnoActualizado = null;
@@ -72,6 +75,7 @@ public class TurnoService implements CRUDService<Turno> {
         return turnoActualizado;
     }
 
+    @Override
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
@@ -82,6 +86,7 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Terminó la ejecución del método 'eliminar()'");
     }
 
+    @Override
     public List<Turno> consultarTodos() {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Turno> turnos = new ArrayList<>();

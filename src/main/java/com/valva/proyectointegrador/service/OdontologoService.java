@@ -25,6 +25,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         this.odontologoIRepository = new OdontologoRepositoryH2(configuracionJDBC);
     }
 
+    @Override
     public Odontologo buscar(Integer id) {
         logger.debug("Iniciando método 'buscar()'");
         Odontologo odontologo = null;
@@ -37,6 +38,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         return odontologo;
     }
 
+    @Override
     public Odontologo crear(Odontologo odontologo) {
         logger.debug("Iniciando método 'crear()'");
         Odontologo odontologoInsertado = null;
@@ -49,6 +51,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         return odontologoInsertado;
     }
 
+    @Override
     public Odontologo actualizar(Odontologo odontologo) {
         logger.debug("Iniciando método 'actualizar()'");
         Odontologo odontologoActualizado = null;
@@ -61,6 +64,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         return odontologoActualizado;
     }
 
+    @Override
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
@@ -71,6 +75,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         logger.debug("Terminó la ejecución del método 'eliminar()'");
     }
 
+    @Override
     public List<Odontologo> consultarTodos() {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Odontologo> odontologos = new ArrayList<>();

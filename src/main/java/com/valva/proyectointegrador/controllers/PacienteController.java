@@ -17,6 +17,7 @@ public class PacienteController implements CRUDController<Paciente> {
     @Autowired
     public PacienteService pacienteService;
 
+    @Override
     @PostMapping()
     public ResponseEntity<Paciente> registrar(@RequestBody Paciente paciente) {
         ResponseEntity<Paciente> response;
@@ -30,6 +31,7 @@ public class PacienteController implements CRUDController<Paciente> {
         return response;
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> buscar(@PathVariable Integer id) {
         ResponseEntity<Paciente> response;
@@ -42,6 +44,7 @@ public class PacienteController implements CRUDController<Paciente> {
         return response;
     }
 
+    @Override
     @PutMapping()
     public ResponseEntity<Paciente> actualizar(@RequestBody Paciente paciente) {
         ResponseEntity<Paciente> response;
@@ -59,6 +62,7 @@ public class PacienteController implements CRUDController<Paciente> {
         return response;
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response;
@@ -71,6 +75,7 @@ public class PacienteController implements CRUDController<Paciente> {
         return response;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<Paciente>> buscarTodos() {
         return ResponseEntity.ok(pacienteService.consultarTodos());

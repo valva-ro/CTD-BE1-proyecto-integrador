@@ -16,6 +16,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
     @Autowired
     public OdontologoService odontologoService;
 
+    @Override
     @PostMapping()
     public ResponseEntity<Odontologo> registrar(@RequestBody Odontologo odontologo) {
         ResponseEntity<Odontologo> response;
@@ -28,6 +29,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
         return response;
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<Odontologo> buscar(@PathVariable Integer id) {
         ResponseEntity<Odontologo> response;
@@ -40,6 +42,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
         return response;
     }
 
+    @Override
     @PutMapping()
     public ResponseEntity<Odontologo> actualizar(@RequestBody Odontologo odontologo) {
         ResponseEntity<Odontologo> response;
@@ -57,6 +60,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
         return response;
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response;
@@ -69,6 +73,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
         return response;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<Odontologo>> buscarTodos(){
         return ResponseEntity.ok(odontologoService.consultarTodos());

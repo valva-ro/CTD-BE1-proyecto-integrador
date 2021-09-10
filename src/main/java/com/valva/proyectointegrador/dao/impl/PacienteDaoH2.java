@@ -1,32 +1,34 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.repository.GeneradorDeSentencias;
-import com.valva.proyectointegrador.repository.IRepository;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.GeneradorDeSentencias;
+import com.valva.proyectointegrador.dao.IDao;
 import com.valva.proyectointegrador.model.Domicilio;
 import com.valva.proyectointegrador.model.Paciente;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacienteRepositoryH2 implements IRepository<Paciente> {
+@Repository("pacienteDao")
+public class PacienteDaoH2 implements IDao<Paciente> {
 
-    private ConfiguracionJDBC configuracionJDBC;
-    private DomicilioRepositoryH2 domicilioRepositoryH2;
-    private List<String> campos = List.of("nombre", "apellido", "dni", "fechaIngreso", "id");
+    private final ConfiguracionJDBC configuracionJDBC;
+    private final DomicilioDaoH2 domicilioRepositoryH2;
+    private final List<String> campos = List.of("nombre", "apellido", "dni", "fechaIngreso", "id");
 
-    public PacienteRepositoryH2() throws Exception {
+    public PacienteDaoH2() throws Exception {
         this.configuracionJDBC = new ConfiguracionJDBC();
-        this.domicilioRepositoryH2 = new DomicilioRepositoryH2(configuracionJDBC);
+        this.domicilioRepositoryH2 = new DomicilioDaoH2(configuracionJDBC);
     }
 
-    public PacienteRepositoryH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
+    public PacienteDaoH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
         if (configuracionJDBC == null) {
             throw new Exception("¡Sin configuración de JDBC no hay DAO!");
         }
         this.configuracionJDBC = configuracionJDBC;
-        this.domicilioRepositoryH2 = new DomicilioRepositoryH2(configuracionJDBC);
+        this.domicilioRepositoryH2 = new DomicilioDaoH2(configuracionJDBC);
     }
 
     @Override

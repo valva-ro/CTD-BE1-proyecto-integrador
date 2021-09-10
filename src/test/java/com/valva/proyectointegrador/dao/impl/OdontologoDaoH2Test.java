@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
 import com.valva.proyectointegrador.model.Odontologo;
 import org.apache.log4j.PropertyConfigurator;
@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OdontologoDaoH2Test {
 
-    private OdontologoRepositoryH2 odontologoDaoH2;
+    private OdontologoDaoH2 odontologoDaoH2;
 
     @BeforeEach
     public void reset() {
-        odontologoDaoH2 = new OdontologoRepositoryH2();
+        odontologoDaoH2 = new OdontologoDaoH2();
     }
 
     @BeforeAll
@@ -33,12 +33,12 @@ public class OdontologoDaoH2Test {
     }
 
     @Test
-    public void test02NoSePuedeInstanciarSinConfiguracion() throws Exception {
-        assertThrows(Exception.class, () -> new OdontologoRepositoryH2(null));
+    public void test02NoSePuedeInstanciarSinConfiguracion() {
+        assertThrows(Exception.class, () -> new OdontologoDaoH2(null));
     }
 
     @Test
-    public void test03NoSePuedeInsertarNull() throws Exception {
+    public void test03NoSePuedeInsertarNull() {
         assertThrows(Exception.class, () -> odontologoDaoH2.insertarNuevo(null));
     }
 
@@ -62,7 +62,7 @@ public class OdontologoDaoH2Test {
     }
 
     @Test
-    public void test07ActualizarSinIdLanzaError() throws Exception {
+    public void test07ActualizarSinIdLanzaError() {
         assertThrows(Exception.class, () -> odontologoDaoH2.actualizar(new Odontologo("Pepito", "Peposo", "123456")));
     }
     

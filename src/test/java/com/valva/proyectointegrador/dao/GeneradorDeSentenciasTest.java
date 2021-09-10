@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.repository;
+package com.valva.proyectointegrador.dao;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.jupiter.api.BeforeAll;

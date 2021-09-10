@@ -1,26 +1,28 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
 import com.valva.proyectointegrador.model.Turno;
-import com.valva.proyectointegrador.repository.GeneradorDeSentencias;
-import com.valva.proyectointegrador.repository.IRepository;
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.GeneradorDeSentencias;
+import com.valva.proyectointegrador.dao.IDao;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
 import com.valva.proyectointegrador.util.Util;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurnoRepositoryH2 implements IRepository<Turno> {
+@Repository("turnoDao")
+public class TurnoDaoH2 implements IDao<Turno> {
 
-    private ConfiguracionJDBC configuracionJDBC;
-    private List<String> campos = List.of("idPaciente", "idOdontologo", "fecha");
+    private final ConfiguracionJDBC configuracionJDBC;
+    private final List<String> campos = List.of("idPaciente", "idOdontologo", "fecha");
 
-    public TurnoRepositoryH2() {
+    public TurnoDaoH2() {
         this.configuracionJDBC = new ConfiguracionJDBC();
     }
 
-    public TurnoRepositoryH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
+    public TurnoDaoH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
         if (configuracionJDBC == null) {
             throw new Exception("¡Sin configuración de JDBC no hay DAO!");
         }

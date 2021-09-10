@@ -1,6 +1,6 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
 import com.valva.proyectointegrador.model.Domicilio;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DomicilioDaoH2Test {
 
-    private DomicilioRepositoryH2 domicilioDaoH2 = new DomicilioRepositoryH2(new ConfiguracionJDBC());
+    private DomicilioDaoH2 domicilioDaoH2 = new DomicilioDaoH2(new ConfiguracionJDBC());
 
     public DomicilioDaoH2Test() throws Exception {}
 
@@ -27,19 +27,13 @@ public class DomicilioDaoH2Test {
     }
 
     @Test
-    public void test02NoSePuedeInstanciarSinConfiguracion() throws Exception {
+    public void test02NoSePuedeInstanciarSinConfiguracion() {
         assertThrows(Exception.class,
-                () -> new DomicilioRepositoryH2(null));
+                () -> new DomicilioDaoH2(null));
     }
 
     @Test
-    public void test03NoSePuedeInsertarDomicilioNull() throws Exception {
-        assertThrows(Exception.class,
-                () -> domicilioDaoH2.insertarNuevo(null));
-    }
-
-    @Test
-    public void test04ConsultarPorID() throws Exception {
+    public void test03ConsultarPorID() throws Exception {
         Domicilio domicilioExistente = new Domicilio(1, "Calle Falsa", 123, "Springfield", "Springfield");
         Domicilio domicilioConsultado = domicilioDaoH2.consultarPorId(1);
         assertEquals(domicilioExistente, domicilioConsultado);

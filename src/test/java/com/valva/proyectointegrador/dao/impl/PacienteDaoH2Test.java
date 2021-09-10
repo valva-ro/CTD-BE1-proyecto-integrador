@@ -1,6 +1,6 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
 import com.valva.proyectointegrador.model.Domicilio;
 import com.valva.proyectointegrador.model.Paciente;
 import org.apache.log4j.PropertyConfigurator;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PacienteDaoH2Test {
 
-    private PacienteRepositoryH2 pacienteDaoH2 = new PacienteRepositoryH2(new ConfiguracionJDBC());
+    private PacienteDaoH2 pacienteDaoH2 = new PacienteDaoH2(new ConfiguracionJDBC());
 
     public PacienteDaoH2Test() throws Exception {}
 
@@ -23,9 +23,9 @@ public class PacienteDaoH2Test {
     }
 
     @Test
-    public void test01NoSePuedeInstanciarSinConfiguracion() throws Exception {
+    public void test01NoSePuedeInstanciarSinConfiguracion() {
         assertThrows(Exception.class,
-                () -> new PacienteRepositoryH2(null));
+                () -> new PacienteDaoH2(null));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class PacienteDaoH2Test {
     }
 
     @Test
-    public void test03NoSePuedeInsertarPacienteNull() throws Exception {
+    public void test03NoSePuedeInsertarPacienteNull() {
         assertThrows(Exception.class,
                 () -> pacienteDaoH2.insertarNuevo(null));
     }

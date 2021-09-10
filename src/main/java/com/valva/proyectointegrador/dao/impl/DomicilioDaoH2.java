@@ -1,26 +1,26 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.repository.GeneradorDeSentencias;
-import com.valva.proyectointegrador.repository.IRepository;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.GeneradorDeSentencias;
+import com.valva.proyectointegrador.dao.IDao;
 import com.valva.proyectointegrador.model.Domicilio;
-import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
+@Repository("domicilioDao")
+public class DomicilioDaoH2 implements IDao<Domicilio> {
 
-    private ConfiguracionJDBC configuracionJDBC;
-    private Logger logger = Logger.getLogger(DomicilioRepositoryH2.class);
-    private List<String> campos = List.of("calle", "numero", "localidad", "provincia");
+    private final ConfiguracionJDBC configuracionJDBC;
+    private final List<String> campos = List.of("calle", "numero", "localidad", "provincia");
 
-    public DomicilioRepositoryH2() throws Exception {
+    public DomicilioDaoH2() {
         this.configuracionJDBC = new ConfiguracionJDBC();
     }
 
-    public DomicilioRepositoryH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
+    public DomicilioDaoH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
         if (configuracionJDBC == null) {
             throw new Exception("¡Sin configuración de JDBC no hay DAO!");
         }
@@ -28,7 +28,7 @@ public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
     }
 
     @Override
-    public Domicilio consultarPorId(Integer id) throws SQLException {logger.debug("Iniciando método 'consultarPorId()'");
+    public Domicilio consultarPorId(Integer id) throws SQLException {
         Connection connection = configuracionJDBC.obtenerConexionConBD();
         PreparedStatement preparedStatement = connection.prepareStatement(GeneradorDeSentencias.generarSelectPorId("domicilios"));
         preparedStatement.setInt(1, id);
@@ -44,13 +44,11 @@ public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
         }
 
         connection.close();
-        logger.debug("Terminó la ejecución del método 'consultarPorId()' con éxito");
         return domicilio;
     }
 
     @Override
     public List<Domicilio> consultarTodos() throws SQLException {
-        logger.debug("Iniciando método 'consultarTodos()'");
         Connection connection = configuracionJDBC.obtenerConexionConBD();
         PreparedStatement preparedStatement = connection.prepareStatement(GeneradorDeSentencias.generarSelectAll("domicilios"));
         ResultSet results = preparedStatement.executeQuery();
@@ -66,7 +64,6 @@ public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
             );
             domicilios.add(domicilio);
         }
-        logger.debug("Terminó la ejecución del método 'consultarTodos()' con éxito");
         return domicilios;
     }
 
@@ -86,13 +83,11 @@ public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
             domicilio.setId(keys.getInt("id"));
         }
         connection.close();
-        logger.debug("Terminó la ejecución del método 'insertarNuevo()' con éxito");
         return domicilio;
     }
 
     @Override
     public Domicilio actualizar(Domicilio domicilio) throws Exception {
-        logger.debug("Iniciando método 'actualizar()'");
         if (domicilio == null) throw new Exception("El domicilio no puede ser null");
         Connection connection = configuracionJDBC.obtenerConexionConBD();
         PreparedStatement preparedStatement = connection.prepareStatement(GeneradorDeSentencias.generarUpdate("domicilios", campos));
@@ -103,18 +98,15 @@ public class DomicilioRepositoryH2 implements IRepository<Domicilio> {
         preparedStatement.setInt(5, domicilio.getId());
         preparedStatement.execute();
         connection.close();
-        logger.debug("Terminó la ejecución del método 'actualizar()' con éxito");
         return domicilio;
     }
 
     @Override
     public void eliminar(Integer id) throws SQLException {
-        logger.debug("Iniciando método 'eliminar()'");
         Connection connection = configuracionJDBC.obtenerConexionConBD();
         PreparedStatement preparedStatement = connection.prepareStatement(GeneradorDeSentencias.generarDeletePorId("domicilios"));
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
         connection.close();
-        logger.debug("Terminó la ejecución del método 'eliminar()' con éxito");
     }
 }

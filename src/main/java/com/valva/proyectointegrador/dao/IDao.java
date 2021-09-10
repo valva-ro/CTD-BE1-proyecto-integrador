@@ -1,9 +1,9 @@
-package com.valva.proyectointegrador.repository;
+package com.valva.proyectointegrador.dao;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IRepository<T> {
+public interface IDao<T> {
     T insertarNuevo(T t) throws Exception;
     List<T> consultarTodos() throws SQLException;
     T consultarPorId(Integer id) throws Exception;

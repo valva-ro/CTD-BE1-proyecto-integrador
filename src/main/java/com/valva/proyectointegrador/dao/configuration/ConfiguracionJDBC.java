@@ -1,7 +1,4 @@
-package com.valva.proyectointegrador.repository.configuration;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+package com.valva.proyectointegrador.dao.configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

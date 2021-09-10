@@ -1,8 +1,9 @@
 package com.valva.proyectointegrador.controllers;
 
 import com.valva.proyectointegrador.model.Turno;
-import com.valva.proyectointegrador.service.TurnoService;
+import com.valva.proyectointegrador.service.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,8 @@ import java.util.List;
 public class TurnoController implements CRUDController<Turno>{
 
     @Autowired
-    public TurnoService turnoService;
+    @Qualifier("turnoService")
+    private CRUDService<Turno> turnoService;
 
     @Override
     @PostMapping()

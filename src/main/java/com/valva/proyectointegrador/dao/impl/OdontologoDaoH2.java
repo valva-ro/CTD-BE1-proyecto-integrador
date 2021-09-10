@@ -1,31 +1,34 @@
-package com.valva.proyectointegrador.repository.impl;
+package com.valva.proyectointegrador.dao.impl;
 
-import com.valva.proyectointegrador.repository.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.repository.GeneradorDeSentencias;
-import com.valva.proyectointegrador.repository.IRepository;
+import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
+import com.valva.proyectointegrador.dao.GeneradorDeSentencias;
+import com.valva.proyectointegrador.dao.IDao;
 import com.valva.proyectointegrador.model.Odontologo;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OdontologoRepositoryH2 implements IRepository<Odontologo> {
+@Repository("odontologoDao")
+public class OdontologoDaoH2 implements IDao<Odontologo> {
 
-    private ConfiguracionJDBC configuracionJDBC;
-    private List<String> campos = List.of("nombre", "apellido", "numeroMatricula");
+    private final ConfiguracionJDBC configuracionJDBC;
+    private final List<String> campos = List.of("nombre", "apellido", "numeroMatricula");
 
-    public OdontologoRepositoryH2() {
+    public OdontologoDaoH2() {
         configuracionJDBC = new ConfiguracionJDBC();
     }
 
-    public OdontologoRepositoryH2(ConfiguracionJDBC configuracionJDBC) {
-        if (configuracionJDBC != null) {
-            this.configuracionJDBC = configuracionJDBC;
+    public OdontologoDaoH2(ConfiguracionJDBC configuracionJDBC) throws Exception {
+        if (configuracionJDBC == null) {
+            throw new Exception("¡Sin configuración de JDBC no hay DAO!");
         }
+        this.configuracionJDBC = configuracionJDBC;
     }
 
     @Override
-    public Odontologo consultarPorId(Integer id) throws SQLException, Exception {
+    public Odontologo consultarPorId(Integer id) throws Exception {
         if (id == null) throw new Exception("El id no puede ser null");
 
         Connection connection = configuracionJDBC.obtenerConexionConBD();

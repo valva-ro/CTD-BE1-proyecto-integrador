@@ -1,8 +1,9 @@
 package com.valva.proyectointegrador.controllers;
 
 import com.valva.proyectointegrador.model.Odontologo;
-import com.valva.proyectointegrador.service.OdontologoService;
+import com.valva.proyectointegrador.service.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,8 @@ import java.util.List;
 public class OdontologoController implements CRUDController<Odontologo> {
 
     @Autowired
-    public OdontologoService odontologoService;
+    @Qualifier("odontologoService")
+    private CRUDService<Odontologo> odontologoService;
 
     @Override
     @PostMapping()

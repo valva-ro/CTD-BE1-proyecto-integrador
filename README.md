@@ -132,3 +132,44 @@ El proyecto es una API REST en proceso.
 
 
 - Obtener todos: `GET` a `PATH/turnos`
+
+
+## Domicilios
+
+- Buscar por id: `GET` a `PATH/domicilios/{id}`
+    - `200 OK` → devuelve el domicilio
+    - `404 NOT FOUND` → no se encontró un domicilio con ese ID
+
+
+- Registrar nuevo: `POST` a `PATH/domicilios`
+    - `200 OK` → se registró correctamente
+    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+        ```json
+      {
+            "calle": "Calle Falsa",
+            "numero": "123",
+            "localidad": "Springfield",
+            "provincia": "Springfield"
+      }
+        ```
+
+- Actualizar existente: `PUT` a `PATH/domicilios`
+    - `200 OK` → se actualizó correctamente
+    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+    - `404 NOT FOUND` → no se encontró el domicilio con id recibido
+      ```json
+      {
+            "id": "1",
+            "calle": "Calle Falsa",
+            "numero": "321",
+            "localidad": "Springfield",
+            "provincia": "Springfield"
+      }
+      ```
+
+- Eliminar por id: `DELETE` a `PATH/domicilios/{id}`
+    - `204 NO CONTENT` → se borró correctamente
+    - `404 NOT FOUND` → no se encontró el domicilio con id recibido
+
+
+- Obtener todos: `GET` a `PATH/domicilios`

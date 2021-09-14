@@ -10,6 +10,7 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Entity
+@Table(name = "turnos")
 public class Turno {
 
     @Id
@@ -18,11 +19,9 @@ public class Turno {
     @Column(name = "turno_id")
     private Integer id;
 
-    @Setter
     @Column
     private Integer idPaciente;
 
-    @Setter
     @Column
     private Integer idOdontologo;
 

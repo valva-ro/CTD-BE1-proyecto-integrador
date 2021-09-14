@@ -11,6 +11,7 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Entity
+@Table(name = "pacientes")
 public class Paciente {
 
     @Id

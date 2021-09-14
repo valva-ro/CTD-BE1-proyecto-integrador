@@ -10,6 +10,7 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Entity
+@Table(name = "odontologos")
 public class Odontologo {
 
     @Id

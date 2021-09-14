@@ -1,62 +1,32 @@
 package com.valva.proyectointegrador.model;
 
 import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.*;
+
+@ToString
+@Getter
+@Entity
 public class Turno {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="turno_seq")
+    @SequenceGenerator(name = "turno_seq", sequenceName = "turno_seq", allocationSize=1)
+    @Column(name = "turno_id")
     private Integer id;
+
+    @Setter
+    @Column
     private Integer idPaciente;
+
+    @Setter
+    @Column
     private Integer idOdontologo;
+
+    @Setter
+    @Column
     private LocalDate fecha;
-
-    public Turno() {}
-
-    public Turno(Integer id, Integer idPaciente, Integer idOdontologo, LocalDate fecha) {
-        this.id = id;
-        this.idPaciente = idPaciente;
-        this.idOdontologo = idOdontologo;
-        this.fecha = fecha;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getIdPaciente() {
-        return idPaciente;
-    }
-
-    public void setIdPaciente(Integer idPaciente) {
-        this.idPaciente = idPaciente;
-    }
-
-    public Integer getIdOdontologo() {
-        return idOdontologo;
-    }
-
-    public void setIdOdontologo(Integer idOdontologo) {
-        this.idOdontologo = idOdontologo;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    @Override
-    public String toString() {
-        return "Turno{" +
-                "id=" + id +
-                ", idPaciente=" + idPaciente +
-                ", idOdontologo=" + idOdontologo +
-                ", fecha=" + fecha +
-                '}';
-    }
 }

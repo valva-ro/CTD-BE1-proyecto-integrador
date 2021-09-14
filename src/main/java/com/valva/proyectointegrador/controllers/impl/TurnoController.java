@@ -1,5 +1,6 @@
-package com.valva.proyectointegrador.controllers;
+package com.valva.proyectointegrador.controllers.impl;
 
+import com.valva.proyectointegrador.controllers.CRUDController;
 import com.valva.proyectointegrador.model.Turno;
 import com.valva.proyectointegrador.service.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/turnos")
-public class TurnoController implements CRUDController<Turno>{
+public class TurnoController implements CRUDController<Turno> {
 
     @Autowired
     @Qualifier("turnoService")

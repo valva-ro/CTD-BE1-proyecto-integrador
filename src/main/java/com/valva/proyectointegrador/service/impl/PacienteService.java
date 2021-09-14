@@ -1,15 +1,12 @@
-package com.valva.proyectointegrador.service;
+package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.dao.IDao;
-import com.valva.proyectointegrador.dao.impl.PacienteDaoH2;
 import com.valva.proyectointegrador.model.Paciente;
+import com.valva.proyectointegrador.repository.IPacienteRepository;
+import com.valva.proyectointegrador.service.CRUDService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +15,7 @@ import java.util.List;
 public class PacienteService implements CRUDService<Paciente> {
 
     @Autowired
-    @Qualifier("pacienteDao")
-    private IDao<Paciente> pacienteIDao;
+    private IPacienteRepository pacienteRepository;
 
     private final Logger logger = Logger.getLogger(PacienteService.class);
 
@@ -28,7 +24,10 @@ public class PacienteService implements CRUDService<Paciente> {
         logger.debug("Iniciando método 'buscar()'");
         Paciente paciente = null;
         try {
-            paciente = pacienteIDao.consultarPorId(id);
+            if (pacienteRepository.findById(id).isPresent())
+                paciente = pacienteRepository.findById(id).get();
+            else
+                throw new Exception("No se encontró el paciente con id " + id);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -42,7 +41,7 @@ public class PacienteService implements CRUDService<Paciente> {
         Paciente pacienteInsertado = null;
         try {
             paciente.setFechaIngreso(LocalDate.now());
-            pacienteInsertado = pacienteIDao.insertarNuevo(paciente);
+            pacienteInsertado = pacienteRepository.save(paciente);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -55,7 +54,8 @@ public class PacienteService implements CRUDService<Paciente> {
         logger.debug("Iniciando método 'actualizar()'");
         Paciente pacienteActualizado = null;
         try {
-            pacienteActualizado = pacienteIDao.actualizar(paciente);
+            if (pacienteRepository.existsById(paciente.getId()))
+                pacienteActualizado = pacienteRepository.save(paciente);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -67,7 +67,7 @@ public class PacienteService implements CRUDService<Paciente> {
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
-            pacienteIDao.eliminar(id);
+            pacienteRepository.deleteById(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -79,8 +79,8 @@ public class PacienteService implements CRUDService<Paciente> {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Paciente> pacientes = new ArrayList<>();
         try {
-            pacientes = pacienteIDao.consultarTodos();
-        } catch (SQLException e) {
+            pacientes = pacienteRepository.findAll();
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");

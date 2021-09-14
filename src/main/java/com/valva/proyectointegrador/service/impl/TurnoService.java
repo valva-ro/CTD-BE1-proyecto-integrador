@@ -1,17 +1,14 @@
-package com.valva.proyectointegrador.service;
+package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.dao.IDao;
 import com.valva.proyectointegrador.model.Odontologo;
 import com.valva.proyectointegrador.model.Paciente;
 import com.valva.proyectointegrador.model.Turno;
-import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.dao.impl.TurnoDaoH2;
+import com.valva.proyectointegrador.repository.ITurnoRepository;
+import com.valva.proyectointegrador.service.CRUDService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +16,13 @@ import java.util.List;
 public class TurnoService implements CRUDService<Turno> {
 
     @Autowired
-    @Qualifier("odontologoService")
     private CRUDService<Odontologo> odontologoService;
 
     @Autowired
-    @Qualifier("pacienteService")
     private CRUDService<Paciente> pacienteService;
 
     @Autowired
-    @Qualifier("turnoDao")
-    private IDao<Turno> turnoIDao;
+    private ITurnoRepository turnoRepository;
 
     private final Logger logger = Logger.getLogger(TurnoService.class);
 
@@ -37,7 +31,11 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Iniciando método 'buscar()'");
         Turno turno = null;
         try {
-            turno = turnoIDao.consultarPorId(id);
+            if (turnoRepository.findById(id).isPresent())
+                turno = turnoRepository.findById(id).get();
+            else
+                throw new Exception("No se encontró el turno con id " + id);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -53,7 +51,7 @@ public class TurnoService implements CRUDService<Turno> {
             boolean existeElPaciente = pacienteService.buscar(turno.getIdPaciente()) != null;
             boolean existeElOdontologo = odontologoService.buscar(turno.getIdOdontologo()) != null;
             if (existeElPaciente && existeElOdontologo) {
-                turnoInsertado = turnoIDao.insertarNuevo(turno);
+                turnoInsertado = turnoRepository.save(turno);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -67,7 +65,8 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Iniciando método 'actualizar()'");
         Turno turnoActualizado = null;
         try {
-            turnoActualizado = turnoIDao.actualizar(turno);
+            if (turnoRepository.existsById(turno.getId()))
+                turnoActualizado = turnoRepository.save(turno);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -79,7 +78,7 @@ public class TurnoService implements CRUDService<Turno> {
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
-            turnoIDao.eliminar(id);
+            turnoRepository.deleteById(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -91,8 +90,8 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Turno> turnos = new ArrayList<>();
         try {
-            turnos = turnoIDao.consultarTodos();
-        } catch (SQLException e) {
+            turnos = turnoRepository.findAll();
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");

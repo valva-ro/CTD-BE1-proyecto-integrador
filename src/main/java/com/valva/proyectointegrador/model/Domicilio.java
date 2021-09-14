@@ -1,76 +1,37 @@
 package com.valva.proyectointegrador.model;
 
+import javax.persistence.*;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@ToString
+@Getter
+@Entity
 public class Domicilio {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="domicilio_seq")
+    @SequenceGenerator(name = "domicilio_seq", sequenceName = "domicilio_seq", allocationSize=1)
+    @Column(name = "domicilio_id")
     private Integer id;
+
+    @Setter
+    @Column
     private String calle;
+
+    @Setter
+    @Column
     private Integer numero;
+
+    @Setter
+    @Column
     private String localidad;
+
+    @Setter
+    @Column
     private String provincia;
-
-    public Domicilio() {}
-
-    public Domicilio(Integer id) {
-        this.id = id;
-    }
-
-    public Domicilio(String calle, Integer numero, String localidad, String provincia) {
-        this.id = null;
-        this.calle = calle;
-        this.numero = numero;
-        this.localidad = localidad;
-        this.provincia = provincia;
-    }
-
-    public Domicilio(Integer id, String calle, Integer numero, String localidad, String provincia) {
-        this.id = id;
-        this.calle = calle;
-        this.numero = numero;
-        this.localidad = localidad;
-        this.provincia = provincia;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(String localidad) {
-        this.localidad = localidad;
-    }
-
-    public String getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -87,16 +48,5 @@ public class Domicilio {
     @Override
     public int hashCode() {
         return Objects.hash(id, calle, numero, localidad, provincia);
-    }
-
-    @Override
-    public String toString() {
-        return "Domicilio{" +
-                "id=" + id +
-                ", calle='" + calle + '\'' +
-                ", numero=" + numero +
-                ", localidad='" + localidad + '\'' +
-                ", provincia='" + provincia + '\'' +
-                '}';
     }
 }

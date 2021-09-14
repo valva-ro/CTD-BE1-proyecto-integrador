@@ -1,60 +1,34 @@
 package com.valva.proyectointegrador.model;
 
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.*;
+
+@ToString
+@Getter
+@Entity
 public class Odontologo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="odontologo_seq")
+    @SequenceGenerator(name = "odontologo_seq", sequenceName = "odontologo_seq", allocationSize=1)
+    @Column(name = "odontologo_id")
     private Integer id;
+
+    @Setter
+    @Column
     private String nombre;
+
+    @Setter
+    @Column
     private String apellido;
+
+    @Setter
+    @Column
     private String matricula;
-
-    public Odontologo() {}
-
-    public Odontologo(String nombre, String apellido, String matricula) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.matricula = matricula;
-    }
-
-    public Odontologo(Integer id, String nombre, String apellido, String matricula) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.matricula = matricula;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,13 +41,5 @@ public class Odontologo {
     @Override
     public int hashCode() {
         return Objects.hash(id, nombre, apellido, matricula);
-    }
-
-    @Override
-    public String toString() {
-        return "Odontologo" +
-                "\n\tNombre: '" + nombre + '\'' +
-                "\n\tApellido: '" + apellido + '\'' +
-                "\n\tMatricula: " + matricula;
     }
 }

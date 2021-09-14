@@ -1,15 +1,12 @@
-package com.valva.proyectointegrador.service;
+package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.dao.configuration.ConfiguracionJDBC;
-import com.valva.proyectointegrador.dao.IDao;
-import com.valva.proyectointegrador.dao.impl.OdontologoDaoH2;
 import com.valva.proyectointegrador.model.Odontologo;
+import com.valva.proyectointegrador.repository.IOdontologoRepository;
+import com.valva.proyectointegrador.service.CRUDService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +14,7 @@ import java.util.List;
 public class OdontologoService implements CRUDService<Odontologo> {
 
     @Autowired
-    @Qualifier("odontologoDao")
-    private IDao<Odontologo> odontologoIDao;
+    private IOdontologoRepository odontologoRepository;
 
     private final Logger logger = Logger.getLogger(OdontologoService.class);
 
@@ -27,7 +23,10 @@ public class OdontologoService implements CRUDService<Odontologo> {
         logger.debug("Iniciando método 'buscar()'");
         Odontologo odontologo = null;
         try {
-            odontologo = odontologoIDao.consultarPorId(id);
+            if (odontologoRepository.findById(id).isPresent())
+                odontologo = odontologoRepository.findById(id).get();
+            else
+                throw new Exception("No se encontró el odontólogo con id " + id);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -40,7 +39,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
         logger.debug("Iniciando método 'crear()'");
         Odontologo odontologoInsertado = null;
         try {
-            odontologoInsertado = odontologoIDao.insertarNuevo(odontologo);
+            odontologoInsertado = odontologoRepository.save(odontologo);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -53,7 +52,8 @@ public class OdontologoService implements CRUDService<Odontologo> {
         logger.debug("Iniciando método 'actualizar()'");
         Odontologo odontologoActualizado = null;
         try {
-            odontologoActualizado = odontologoIDao.actualizar(odontologo);
+            if (odontologoRepository.existsById(odontologo.getId()))
+                odontologoActualizado = odontologoRepository.save(odontologo);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -65,7 +65,7 @@ public class OdontologoService implements CRUDService<Odontologo> {
     public void eliminar(Integer id) {
         logger.debug("Iniciando método 'eliminar()'");
         try {
-            odontologoIDao.eliminar(id);
+            odontologoRepository.deleteById(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -77,8 +77,8 @@ public class OdontologoService implements CRUDService<Odontologo> {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<Odontologo> odontologos = new ArrayList<>();
         try {
-            odontologos = odontologoIDao.consultarTodos();
-        } catch (SQLException e) {
+            odontologos = odontologoRepository.findAll();
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");

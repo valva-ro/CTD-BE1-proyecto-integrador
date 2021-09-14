@@ -15,7 +15,7 @@ public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="paciente_seq")
     @SequenceGenerator(name = "paciente_seq", sequenceName = "paciente_seq", allocationSize = 1)
-    @Column(name = "paciente_id")
+    @Column
     private Integer id;
 
     @Setter
@@ -34,7 +34,7 @@ public class Paciente {
     @Column
     private LocalDate fechaIngreso;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
 

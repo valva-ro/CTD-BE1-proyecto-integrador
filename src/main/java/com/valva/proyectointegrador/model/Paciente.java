@@ -1,14 +1,12 @@
 package com.valva.proyectointegrador.model;
 
-import java.time.LocalDate;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Objects;
 
-@ToString
 @Getter
 @Entity
 @Table(name = "pacientes")
@@ -16,7 +14,7 @@ public class Paciente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="paciente_seq")
-    @SequenceGenerator(name = "paciente_seq", sequenceName = "paciente_seq", allocationSize=1)
+    @SequenceGenerator(name = "paciente_seq", sequenceName = "paciente_seq", allocationSize = 1)
     @Column(name = "paciente_id")
     private Integer id;
 

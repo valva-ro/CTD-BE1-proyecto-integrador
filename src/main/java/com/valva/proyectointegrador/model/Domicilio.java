@@ -1,12 +1,11 @@
 package com.valva.proyectointegrador.model;
 
-import javax.persistence.*;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
+import javax.persistence.*;
+import java.util.Objects;
+
 @Getter
 @Entity
 @Table(name = "domicilios")
@@ -14,7 +13,7 @@ public class Domicilio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="domicilio_seq")
-    @SequenceGenerator(name = "domicilio_seq", sequenceName = "domicilio_seq", allocationSize=1)
+    @SequenceGenerator(name = "domicilio_seq", sequenceName = "domicilio_seq", allocationSize = 1)
     @Column(name = "domicilio_id")
     private Integer id;
 

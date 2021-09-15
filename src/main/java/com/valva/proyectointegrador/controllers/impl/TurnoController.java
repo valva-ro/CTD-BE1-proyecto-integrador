@@ -2,10 +2,9 @@ package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
 import com.valva.proyectointegrador.model.Turno;
-import com.valva.proyectointegrador.service.CRUDService;
+import com.valva.proyectointegrador.service.ITurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ public class TurnoController implements CRUDController<Turno> {
 
     @Autowired
     @Qualifier("turnoService")
-    private CRUDService<Turno> turnoService;
+    private ITurnoService turnoService;
 
     @Override
     @PostMapping()
@@ -34,9 +33,9 @@ public class TurnoController implements CRUDController<Turno> {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Turno> buscar(@PathVariable Integer id) {
+    public ResponseEntity<Turno> buscarPorId(@PathVariable Integer id) {
         ResponseEntity<Turno> response;
-        Turno turno = turnoService.buscar(id);
+        Turno turno = turnoService.buscarPorId(id);
         if (turno != null) {
             response = ResponseEntity.ok(turno);
         } else {
@@ -45,11 +44,29 @@ public class TurnoController implements CRUDController<Turno> {
         return response;
     }
 
+    @GetMapping(params = {"nombrePaciente", "apellidoPaciente", "nombreOdontologo", "apellidoOdontologo"})
+    public ResponseEntity<List<Turno>> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo) {
+        List<Turno> turnos = turnoService.buscar(nombrePaciente, apellidoPaciente, nombreOdontologo, apellidoOdontologo);
+        return ResponseEntity.ok(turnos);
+    }
+
+    @GetMapping(params = {"nombreOdontologo", "apellidoOdontologo"})
+    public ResponseEntity<List<Turno>> buscar(String nombreOdontologo, String apellidoOdontologo) {
+        List<Turno> turnos = turnoService.buscar(nombreOdontologo, apellidoOdontologo);
+        return ResponseEntity.ok(turnos);
+    }
+
+    @GetMapping(params = {"matricula", "dni"})
+    public ResponseEntity<List<Turno>> buscar(Integer matricula, Integer dni) {
+        List<Turno> turnos = turnoService.buscar(matricula, dni);
+        return ResponseEntity.ok(turnos);
+    }
+
     @Override
     @PutMapping()
     public ResponseEntity<Turno> actualizar(@RequestBody Turno turno) {
         ResponseEntity<Turno> response;
-        if (turno.getId() != null && turnoService.buscar(turno.getId()) != null) {
+        if (turno.getId() != null && turnoService.buscarPorId(turno.getId()) != null) {
             response = ResponseEntity.ok(turnoService.actualizar(turno));
         } else {
             response = ResponseEntity.notFound().build();
@@ -61,9 +78,9 @@ public class TurnoController implements CRUDController<Turno> {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response;
-        if (turnoService.buscar(id) != null) {
+        if (turnoService.buscarPorId(id) != null) {
             turnoService.eliminar(id);
-            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Eliminado");
+            response = ResponseEntity.ok("Se elimino el turno con id " + id);
         } else {
             response = ResponseEntity.notFound().build();
         }

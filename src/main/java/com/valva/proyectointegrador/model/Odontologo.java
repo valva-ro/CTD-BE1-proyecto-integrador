@@ -30,7 +30,7 @@ public class Odontologo {
 
     @Setter
     @Column
-    private String matricula;
+    private Integer matricula;
 
     @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY)
     @JsonIgnore

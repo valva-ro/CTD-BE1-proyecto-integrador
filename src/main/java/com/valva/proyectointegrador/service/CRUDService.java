@@ -6,7 +6,7 @@ import java.util.List;
 
 @Component
 public interface CRUDService<T> {
-    T buscar(Integer id);
+    T buscarPorId(Integer id);
     T crear(T t);
     T actualizar(T t);
     void eliminar(Integer id);

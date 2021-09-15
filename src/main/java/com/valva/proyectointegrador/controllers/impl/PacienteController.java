@@ -2,10 +2,9 @@ package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
 import com.valva.proyectointegrador.model.Paciente;
-import com.valva.proyectointegrador.service.CRUDService;
+import com.valva.proyectointegrador.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,7 @@ public class PacienteController implements CRUDController<Paciente> {
 
     @Autowired
     @Qualifier("pacienteService")
-    private CRUDService<Paciente> pacienteService;
+    private IPacienteService pacienteService;
 
     @Override
     @PostMapping()
@@ -36,9 +35,9 @@ public class PacienteController implements CRUDController<Paciente> {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscar(@PathVariable Integer id) {
+    public ResponseEntity<Paciente> buscarPorId(@PathVariable Integer id) {
         ResponseEntity<Paciente> response;
-        Paciente paciente = pacienteService.buscar(id);
+        Paciente paciente = pacienteService.buscarPorId(id);
         if (paciente != null) {
             response = ResponseEntity.ok(paciente);
         } else {
@@ -47,12 +46,36 @@ public class PacienteController implements CRUDController<Paciente> {
         return response;
     }
 
+    @GetMapping(params = "dni")
+    public ResponseEntity<Paciente> buscar(@RequestParam Integer dni) {
+        ResponseEntity<Paciente> response;
+        Paciente paciente = pacienteService.buscar(dni);
+        if (paciente != null) {
+            response = ResponseEntity.ok(paciente);
+        } else {
+            response = ResponseEntity.notFound().build();
+        }
+        return response;
+    }
+
+    @GetMapping(params = "nombre")
+    public ResponseEntity<List<Paciente>> buscar(@RequestParam String nombre) {
+        List<Paciente> pacientes = pacienteService.buscar(nombre);
+        return ResponseEntity.ok(pacientes);
+    }
+
+    @GetMapping(params = {"nombre", "apellido"})
+    public ResponseEntity<List<Paciente>> buscar(@RequestParam String nombre, @RequestParam String apellido) {
+        List<Paciente> pacientes = pacienteService.buscar(nombre, apellido);
+        return ResponseEntity.ok(pacientes);
+    }
+
     @Override
     @PutMapping()
     public ResponseEntity<Paciente> actualizar(@RequestBody Paciente paciente) {
         ResponseEntity<Paciente> response;
         Paciente actualizado;
-        if (paciente.getId() != null && pacienteService.buscar(paciente.getId()) != null) {
+        if (paciente.getId() != null && pacienteService.buscarPorId(paciente.getId()) != null) {
             actualizado = pacienteService.actualizar(paciente);
             if (actualizado != null) {
                 response = ResponseEntity.ok(actualizado);
@@ -69,9 +92,9 @@ public class PacienteController implements CRUDController<Paciente> {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response;
-        if (pacienteService.buscar(id) != null) {
+        if (pacienteService.buscarPorId(id) != null) {
             pacienteService.eliminar(id);
-            response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Eliminado");
+            response = ResponseEntity.ok("Se elimino el paciente con id " + id);
         } else {
             response = ResponseEntity.notFound().build();
         }

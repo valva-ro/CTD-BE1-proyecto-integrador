@@ -5,6 +5,7 @@ import com.valva.proyectointegrador.model.Paciente;
 import com.valva.proyectointegrador.model.Turno;
 import com.valva.proyectointegrador.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
+import com.valva.proyectointegrador.service.ITurnoService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TurnoService implements CRUDService<Turno> {
+public class TurnoService implements ITurnoService {
 
     @Autowired
     private CRUDService<Odontologo> odontologoService;
@@ -27,8 +28,47 @@ public class TurnoService implements CRUDService<Turno> {
     private final Logger logger = Logger.getLogger(TurnoService.class);
 
     @Override
-    public Turno buscar(Integer id) {
-        logger.debug("Iniciando método 'buscar()'");
+    public List<Turno> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo) {
+        logger.debug("Iniciando método 'buscar()' por nombres y apellidos");
+        List<Turno> turnos = null;
+        try {
+            turnos = turnoRepository.buscar(nombrePaciente, apellidoPaciente, nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        logger.debug("Terminó la ejecución del método 'buscar()' por nombres y apellidos");
+        return turnos;
+    }
+
+    @Override
+    public List<Turno> buscar(String nombreOdontologo, String apellidoOdontologo) {
+        logger.debug("Iniciando método 'buscar()' por nombre y apellido del odontologo");
+        List<Turno> turnos = null;
+        try {
+            turnos = turnoRepository.buscar(nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        logger.debug("Terminó la ejecución del método 'buscar()' por nombre y apellido del odontologo");
+        return turnos;
+    }
+
+    @Override
+    public List<Turno> buscar(Integer matricula, Integer dni) {
+        logger.debug("Iniciando método 'buscar()' por matricula de odontologo y dni de paciente");
+        List<Turno> turnos = null;
+        try {
+            turnos = turnoRepository.buscar(matricula, dni).orElse(new ArrayList<>());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        logger.debug("Terminó la ejecución del método 'buscar()' por matricula de odontologo y dni de paciente");
+        return turnos;
+    }
+
+    @Override
+    public Turno buscarPorId(Integer id) {
+        logger.debug("Iniciando método 'buscarPorId()'");
         Turno turno = null;
         try {
             if (turnoRepository.findById(id).isPresent())
@@ -39,7 +79,7 @@ public class TurnoService implements CRUDService<Turno> {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        logger.debug("Terminó la ejecución del método 'buscar()'");
+        logger.debug("Terminó la ejecución del método 'buscarPorId()'");
         return turno;
     }
 
@@ -48,8 +88,8 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Iniciando método 'crear()'");
         Turno turnoInsertado = null;
         try {
-            Paciente p = pacienteService.buscar(turno.getPaciente().getId());
-            Odontologo o = odontologoService.buscar(turno.getOdontologo().getId());
+            Paciente p = pacienteService.buscarPorId(turno.getPaciente().getId());
+            Odontologo o = odontologoService.buscarPorId(turno.getOdontologo().getId());
             boolean existeElPaciente = (p != null);
             boolean existeElOdontologo = (o != null);
             if (existeElPaciente && existeElOdontologo) {

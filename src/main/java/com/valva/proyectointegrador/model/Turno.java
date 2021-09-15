@@ -17,13 +17,17 @@ public class Turno {
     @Column(name = "turno_id")
     private Integer id;
 
-    @Column
-    private Integer idPaciente;
-
-    @Column
-    private Integer idOdontologo;
-
     @Setter
     @Column
     private LocalDate fecha;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "paciente_id", nullable = false)
+    private Paciente paciente;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "odontologo_id", nullable = false)
+    private Odontologo odontologo;
 }

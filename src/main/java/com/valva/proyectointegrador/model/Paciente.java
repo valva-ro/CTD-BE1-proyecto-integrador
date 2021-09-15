@@ -1,11 +1,14 @@
 package com.valva.proyectointegrador.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -35,8 +38,12 @@ public class Paciente {
     private LocalDate fechaIngreso;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "domicilio_id")
+    @JoinColumn(name = "domicilio_id", nullable = false)
     private Domicilio domicilio;
+
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Turno> turnos = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

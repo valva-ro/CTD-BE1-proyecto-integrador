@@ -48,9 +48,13 @@ public class TurnoService implements CRUDService<Turno> {
         logger.debug("Iniciando método 'crear()'");
         Turno turnoInsertado = null;
         try {
-            boolean existeElPaciente = pacienteService.buscar(turno.getIdPaciente()) != null;
-            boolean existeElOdontologo = odontologoService.buscar(turno.getIdOdontologo()) != null;
+            Paciente p = pacienteService.buscar(turno.getPaciente().getId());
+            Odontologo o = odontologoService.buscar(turno.getOdontologo().getId());
+            boolean existeElPaciente = (p != null);
+            boolean existeElOdontologo = (o != null);
             if (existeElPaciente && existeElOdontologo) {
+                turno.setPaciente(p);
+                turno.setOdontologo(o);
                 turnoInsertado = turnoRepository.save(turno);
             }
         } catch (Exception e) {

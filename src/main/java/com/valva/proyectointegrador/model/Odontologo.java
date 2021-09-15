@@ -1,10 +1,13 @@
 package com.valva.proyectointegrador.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -28,6 +31,10 @@ public class Odontologo {
     @Setter
     @Column
     private String matricula;
+
+    @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Turno> turnos = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

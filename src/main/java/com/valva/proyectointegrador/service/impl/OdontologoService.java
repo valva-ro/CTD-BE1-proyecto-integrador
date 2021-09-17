@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.model.Odontologo;
-import com.valva.proyectointegrador.repository.IOdontologoRepository;
+import com.valva.proyectointegrador.persistence.model.Odontologo;
+import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

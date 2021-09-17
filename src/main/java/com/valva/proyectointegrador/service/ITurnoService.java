@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.model.Turno;
+import com.valva.proyectointegrador.persistence.model.Turno;
 
 import java.util.List;
 

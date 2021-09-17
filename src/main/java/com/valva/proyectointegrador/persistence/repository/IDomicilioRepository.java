@@ -1,6 +1,6 @@
-package com.valva.proyectointegrador.repository;
+package com.valva.proyectointegrador.persistence.repository;
 
-import com.valva.proyectointegrador.model.Domicilio;
+import com.valva.proyectointegrador.persistence.model.Domicilio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

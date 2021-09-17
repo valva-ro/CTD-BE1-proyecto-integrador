@@ -1,9 +1,9 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.model.Odontologo;
-import com.valva.proyectointegrador.model.Paciente;
-import com.valva.proyectointegrador.model.Turno;
-import com.valva.proyectointegrador.repository.ITurnoRepository;
+import com.valva.proyectointegrador.persistence.model.Odontologo;
+import com.valva.proyectointegrador.persistence.model.Paciente;
+import com.valva.proyectointegrador.persistence.model.Turno;
+import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
 import com.valva.proyectointegrador.service.ITurnoService;
 import org.apache.log4j.Logger;

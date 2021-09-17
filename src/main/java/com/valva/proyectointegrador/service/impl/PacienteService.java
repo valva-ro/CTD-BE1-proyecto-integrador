@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.model.Paciente;
-import com.valva.proyectointegrador.repository.IPacienteRepository;
+import com.valva.proyectointegrador.persistence.model.Paciente;
+import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
 import com.valva.proyectointegrador.service.IPacienteService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

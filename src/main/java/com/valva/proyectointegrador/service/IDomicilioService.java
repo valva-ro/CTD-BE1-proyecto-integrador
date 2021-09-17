@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.model.Domicilio;
+import com.valva.proyectointegrador.persistence.model.Domicilio;
 
 import java.util.List;
 

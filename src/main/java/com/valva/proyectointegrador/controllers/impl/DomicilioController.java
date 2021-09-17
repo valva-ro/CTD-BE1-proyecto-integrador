@@ -1,9 +1,8 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.model.Domicilio;
+import com.valva.proyectointegrador.persistence.model.Domicilio;
 import com.valva.proyectointegrador.service.IDomicilioService;
-import com.valva.proyectointegrador.service.impl.DomicilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.model.Paciente;
+import com.valva.proyectointegrador.persistence.model.Paciente;
 import com.valva.proyectointegrador.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

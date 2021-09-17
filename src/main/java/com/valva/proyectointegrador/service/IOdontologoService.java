@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.model.Odontologo;
+import com.valva.proyectointegrador.persistence.model.Odontologo;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.model.Odontologo;
+import com.valva.proyectointegrador.persistence.model.Odontologo;
 import com.valva.proyectointegrador.service.IOdontologoService;
-import com.valva.proyectointegrador.service.impl.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.persistence.model.Domicilio;
+import com.valva.proyectointegrador.dto.DomicilioDto;
 import com.valva.proyectointegrador.service.IDomicilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/domicilios")
-public class DomicilioController implements CRUDController<Domicilio> {
+public class DomicilioController implements CRUDController<DomicilioDto> {
 
     @Autowired
     @Qualifier("domicilioService")
@@ -20,9 +20,9 @@ public class DomicilioController implements CRUDController<Domicilio> {
 
     @Override
     @PostMapping()
-    public ResponseEntity<Domicilio> registrar(@RequestBody Domicilio domicilio) {
-        ResponseEntity<Domicilio> response;
-        Domicilio domicilioInsertado = domicilioService.crear(domicilio);
+    public ResponseEntity<DomicilioDto> registrar(@RequestBody DomicilioDto domicilio) {
+        ResponseEntity<DomicilioDto> response;
+        DomicilioDto domicilioInsertado = domicilioService.crear(domicilio);
         if (domicilioInsertado != null) {
             response = ResponseEntity.ok(domicilioInsertado);
         } else {
@@ -33,9 +33,9 @@ public class DomicilioController implements CRUDController<Domicilio> {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Domicilio> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<Domicilio> response;
-        Domicilio domicilio = domicilioService.buscarPorId(id);
+    public ResponseEntity<DomicilioDto> buscarPorId(@PathVariable Integer id) {
+        ResponseEntity<DomicilioDto> response;
+        DomicilioDto domicilio = domicilioService.buscarPorId(id);
         if (domicilio != null) {
             response = ResponseEntity.ok(domicilio);
         } else {
@@ -45,21 +45,21 @@ public class DomicilioController implements CRUDController<Domicilio> {
     }
 
     @GetMapping(params = "calle")
-    public ResponseEntity<List<Domicilio>> buscar(@RequestParam String calle) {
-        List<Domicilio> domicilios = domicilioService.buscar(calle);
+    public ResponseEntity<List<DomicilioDto>> buscar(@RequestParam String calle) {
+        List<DomicilioDto> domicilios = domicilioService.buscar(calle);
         return ResponseEntity.ok(domicilios);
     }
 
     @GetMapping(params = {"calle", "numero"})
-    public ResponseEntity<List<Domicilio>> buscar(@RequestParam String calle, @RequestParam Integer numero) {
-        List<Domicilio> domicilios = domicilioService.buscar(calle, numero);
+    public ResponseEntity<List<DomicilioDto>> buscar(@RequestParam String calle, @RequestParam Integer numero) {
+        List<DomicilioDto> domicilios = domicilioService.buscar(calle, numero);
         return ResponseEntity.ok(domicilios);
     }
 
     @GetMapping(params = {"calle", "numero", "localidad", "provincia"})
-    public ResponseEntity<Domicilio> buscar(@RequestParam String calle, @RequestParam Integer numero, @RequestParam String localidad, @RequestParam String provincia) {
-        ResponseEntity<Domicilio> response;
-        Domicilio domicilio = domicilioService.buscar(calle, numero, localidad, provincia);
+    public ResponseEntity<DomicilioDto> buscar(@RequestParam String calle, @RequestParam Integer numero, @RequestParam String localidad, @RequestParam String provincia) {
+        ResponseEntity<DomicilioDto> response;
+        DomicilioDto domicilio = domicilioService.buscar(calle, numero, localidad, provincia);
         if (domicilio != null) {
             response = ResponseEntity.ok(domicilio);
         } else {
@@ -70,9 +70,9 @@ public class DomicilioController implements CRUDController<Domicilio> {
 
     @Override
     @PutMapping()
-    public ResponseEntity<Domicilio> actualizar(@RequestBody Domicilio domicilio) {
-        ResponseEntity<Domicilio> response;
-        Domicilio actualizado;
+    public ResponseEntity<DomicilioDto> actualizar(@RequestBody DomicilioDto domicilio) {
+        ResponseEntity<DomicilioDto> response;
+        DomicilioDto actualizado;
         if (domicilio.getId() != null && domicilioService.buscarPorId(domicilio.getId()) != null) {
             actualizado = domicilioService.actualizar(domicilio);
             if (actualizado != null) {
@@ -101,7 +101,7 @@ public class DomicilioController implements CRUDController<Domicilio> {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<Domicilio>> buscarTodos() {
+    public ResponseEntity<List<DomicilioDto>> buscarTodos() {
         return ResponseEntity.ok(domicilioService.consultarTodos());
     }
 }

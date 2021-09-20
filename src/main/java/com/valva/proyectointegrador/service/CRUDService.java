@@ -1,10 +1,10 @@
 package com.valva.proyectointegrador.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public interface CRUDService<T> {
     T buscarPorId(Integer id);
     T crear(T t);

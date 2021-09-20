@@ -1,11 +1,11 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.persistence.model.Paciente;
+import com.valva.proyectointegrador.dto.PacienteDto;
 
 import java.util.List;
 
-public interface IPacienteService extends CRUDService<Paciente> {
-    Paciente buscar(Integer dni);
-    List<Paciente> buscar(String nombre);
-    List<Paciente> buscar(String nombre, String apellido);
+public interface IPacienteService extends CRUDService<PacienteDto> {
+    PacienteDto buscar(Integer dni);
+    List<PacienteDto> buscar(String nombre);
+    List<PacienteDto> buscar(String nombre, String apellido);
 }

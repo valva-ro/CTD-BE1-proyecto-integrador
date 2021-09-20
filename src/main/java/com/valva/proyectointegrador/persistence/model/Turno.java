@@ -22,12 +22,12 @@ public class Turno {
     private LocalDate fecha;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "odontologo_id", nullable = false)
     private Odontologo odontologo;
 }

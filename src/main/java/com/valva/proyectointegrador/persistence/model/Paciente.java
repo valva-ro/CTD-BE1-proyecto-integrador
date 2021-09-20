@@ -1,8 +1,11 @@
 package com.valva.proyectointegrador.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.valva.proyectointegrador.dto.DomicilioDto;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +13,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@ToString
 @Getter
 @Entity
 @Table(name = "pacientes")
@@ -37,13 +41,21 @@ public class Paciente {
     @Column
     private LocalDate fechaIngreso;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "domicilio_id", nullable = false)
+    @ToString.Exclude
     private Domicilio domicilio;
 
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
     @JsonIgnore
+    @ToString.Exclude
     private Set<Turno> turnos = new HashSet<>();
+
+    public void setTurnos(Set<Turno> turnos) {
+        this.turnos = turnos;
+    }
 
     @Override
     public boolean equals(Object o) {

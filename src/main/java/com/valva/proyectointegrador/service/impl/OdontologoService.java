@@ -1,5 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
+import com.valva.proyectointegrador.dto.OdontologoDto;
 import com.valva.proyectointegrador.persistence.model.Odontologo;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
@@ -9,90 +11,105 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OdontologoService implements IOdontologoService {
 
     @Autowired
     private IOdontologoRepository odontologoRepository;
-
+    @Autowired
+    private SpringConfig springConfig;
     private final Logger logger = Logger.getLogger(OdontologoService.class);
 
     @Override
-    public Odontologo buscar(Integer matricula) {
+    public OdontologoDto buscar(Integer matricula) {
         logger.debug("Iniciando método 'buscar()' por matricula");
-        Odontologo odontologo = null;
+        OdontologoDto odontologoDto = null;
+        Odontologo odontologo = odontologoRepository.buscar(matricula).orElse(null);
         try {
-            odontologo = odontologoRepository.buscar(matricula).get();
+            if (odontologo == null)
+                throw new Exception("No se encontró el odontólogo con matricula " + matricula);
+            odontologoDto = springConfig.getModelMapper().map(odontologo, OdontologoDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por matricula");
-        return odontologo;
+        return odontologoDto;
     }
 
     @Override
-    public List<Odontologo> buscar(String nombre) {
+    public List<OdontologoDto> buscar(String nombre) {
         logger.debug("Iniciando método 'buscar()' por nombre");
-        List<Odontologo> odontologos = null;
+        List<OdontologoDto> odontologosDto = new ArrayList<>();
         try {
-            odontologos = odontologoRepository.buscar(nombre).orElse(new ArrayList<>());
+            List<Odontologo> odontologos = odontologoRepository.buscar(nombre).orElse(new ArrayList<>());
+            odontologosDto = springConfig.getModelMapper().map(odontologos, odontologosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por nombre");
-        return odontologos;
+        return odontologosDto;
     }
 
     @Override
-    public List<Odontologo> buscar(String nombre, String apellido) {
+    public List<OdontologoDto> buscar(String nombre, String apellido) {
         logger.debug("Iniciando método 'buscar()' por nombre y apellido");
-        List<Odontologo> odontologos = null;
+        List<OdontologoDto> odontologosDto = new ArrayList<>();
         try {
-            odontologos = odontologoRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
+            List<Odontologo> odontologos = odontologoRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
+            odontologosDto = springConfig.getModelMapper().map(odontologos, odontologosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por nombre y apellido");
-        return odontologos;
+        return odontologosDto;
     }
 
     @Override
-    public Odontologo buscarPorId(Integer id) {
+    public OdontologoDto buscarPorId(Integer id) {
         logger.debug("Iniciando método 'buscarPorId()'");
-        Odontologo odontologo = null;
+        OdontologoDto odontologoDto = null;
+        Odontologo odontologo = odontologoRepository.findById(id).orElse(null);
         try {
-            if (odontologoRepository.findById(id).isPresent())
-                odontologo = odontologoRepository.findById(id).get();
-            else
+            if (odontologo == null)
                 throw new Exception("No se encontró el odontólogo con id " + id);
+            odontologoDto = springConfig.getModelMapper().map(odontologo, OdontologoDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscarPorId()'");
-        return odontologo;
+        return odontologoDto;
     }
 
     @Override
-    public Odontologo crear(Odontologo odontologo) {
+    public OdontologoDto crear(OdontologoDto odontologoDto) {
         logger.debug("Iniciando método 'crear()'");
-        Odontologo odontologoInsertado = null;
         try {
-            odontologoInsertado = odontologoRepository.save(odontologo);
+            if (odontologoDto == null)
+                throw new Exception("No se pudo guardar el odontologo " + odontologoDto);
+            Odontologo odontologo = springConfig.getModelMapper().map(odontologoDto, Odontologo.class);
+            odontologoDto = springConfig.getModelMapper().map(odontologoRepository.save(odontologo), OdontologoDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'crear()'");
-        return odontologoInsertado;
+        return odontologoDto;
     }
 
     @Override
-    public Odontologo actualizar(Odontologo odontologo) {
+    public OdontologoDto actualizar(OdontologoDto odontologoDto) {
         logger.debug("Iniciando método 'actualizar()'");
-        Odontologo odontologoActualizado = null;
+        OdontologoDto odontologoActualizado = null;
         try {
-            if (odontologoRepository.existsById(odontologo.getId()))
-                odontologoActualizado = odontologoRepository.save(odontologo);
+            if (odontologoDto == null || odontologoDto.getId() == null)
+                throw new Exception("No se pudo actualizar el odontologo " + odontologoDto);
+            Optional<Odontologo> odontologoEnBD = odontologoRepository.findById(odontologoDto.getId());
+            if (odontologoEnBD.isPresent()) {
+                Odontologo actualizado = this.actualizar(odontologoEnBD.get(), odontologoDto);
+                Odontologo guardado = odontologoRepository.save(actualizado);
+                odontologoActualizado = springConfig.getModelMapper().map(guardado, OdontologoDto.class);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -112,15 +129,29 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public List<Odontologo> consultarTodos() {
+    public List<OdontologoDto> consultarTodos() {
         logger.debug("Iniciando método 'consultarTodos()'");
-        List<Odontologo> odontologos = new ArrayList<>();
+        List<OdontologoDto> odontologosDto = new ArrayList<>();
         try {
-            odontologos = odontologoRepository.findAll();
+            List<Odontologo> odontologos = odontologoRepository.findAll();
+            odontologosDto = springConfig.getModelMapper().map(odontologos, odontologosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");
-        return odontologos;
+        return odontologosDto;
+    }
+
+    private Odontologo actualizar(Odontologo odontologo, OdontologoDto odontologoDto) {
+        if (odontologoDto.getNombre() != null) {
+            odontologo.setNombre(odontologoDto.getNombre());
+        }
+        if (odontologoDto.getApellido() != null) {
+            odontologo.setApellido(odontologoDto.getApellido());
+        }
+        if (odontologoDto.getMatricula() != null) {
+            odontologo.setMatricula(odontologoDto.getMatricula());
+        }
+        return odontologo;
     }
 }

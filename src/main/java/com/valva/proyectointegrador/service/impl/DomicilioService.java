@@ -1,11 +1,11 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.dto.DomicilioDto;
 import com.valva.proyectointegrador.persistence.model.Domicilio;
 import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
 import org.apache.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,8 @@ public class DomicilioService implements IDomicilioService {
 
     @Autowired
     private IDomicilioRepository domicilioRepository;
-
-    private final ModelMapper modelMapper = new ModelMapper();
-
+    @Autowired
+    private SpringConfig springConfig;
     private final Logger logger = Logger.getLogger(DomicilioService.class);
 
     public List<DomicilioDto> buscar(String calle) {
@@ -28,8 +27,7 @@ public class DomicilioService implements IDomicilioService {
         List<DomicilioDto> domiciliosDto = new ArrayList<>();
         try {
             List<Domicilio> domicilios = domicilioRepository.buscar(calle).orElse(new ArrayList<>());
-            modelMapper.map(domicilios, domiciliosDto);
-            domiciliosDto = modelMapper.map(domicilios, domiciliosDto.getClass());
+            domiciliosDto = springConfig.getModelMapper().map(domicilios, domiciliosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -42,7 +40,7 @@ public class DomicilioService implements IDomicilioService {
         List<DomicilioDto> domiciliosDto = new ArrayList<>();
         try {
             List<Domicilio> domicilios = domicilioRepository.buscar(calle, numero).orElse(new ArrayList<>());
-            domiciliosDto = modelMapper.map(domicilios, domiciliosDto.getClass());
+            domiciliosDto = springConfig.getModelMapper().map(domicilios, domiciliosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -57,7 +55,7 @@ public class DomicilioService implements IDomicilioService {
         try {
             if (domicilio == null)
                 throw new Exception("No se encontró el domicilio");
-            domicilioDto = modelMapper.map(domicilio, DomicilioDto.class);
+            domicilioDto = springConfig.getModelMapper().map(domicilio, DomicilioDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -73,7 +71,7 @@ public class DomicilioService implements IDomicilioService {
         try {
             if (domicilio == null)
                 throw new Exception("No se encontró el domicilio con id " + id);
-            domicilioDto = modelMapper.map(domicilio, DomicilioDto.class);
+            domicilioDto = springConfig.getModelMapper().map(domicilio, DomicilioDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -87,8 +85,8 @@ public class DomicilioService implements IDomicilioService {
         try {
             if (domicilioDto == null)
                 throw new Exception("No se pudo guardar el domicilio " + domicilioDto);
-            Domicilio domicilio = modelMapper.map(domicilioDto, Domicilio.class);
-            domicilioDto = modelMapper.map(domicilioRepository.save(domicilio), DomicilioDto.class);
+            Domicilio domicilio = springConfig.getModelMapper().map(domicilioDto, Domicilio.class);
+            domicilioDto = springConfig.getModelMapper().map(domicilioRepository.save(domicilio), DomicilioDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -102,11 +100,12 @@ public class DomicilioService implements IDomicilioService {
         DomicilioDto domicilioActualizado = null;
         try {
             if (domicilioDto == null || domicilioDto.getId() == null)
-                throw new Exception("No se pudo guardar el domicilio " + domicilioDto);
+                throw new Exception("No se pudo actualizar el domicilio " + domicilioDto);
             Optional<Domicilio> domicilioEnBD = domicilioRepository.findById(domicilioDto.getId());
             if (domicilioEnBD.isPresent()) {
-                Domicilio guardado = domicilioRepository.save(domicilioEnBD.get());
-                domicilioActualizado = modelMapper.map(guardado, DomicilioDto.class);
+                Domicilio actualizado = this.actualizar(domicilioEnBD.get(), domicilioDto);
+                Domicilio guardado = domicilioRepository.save(actualizado);
+                domicilioActualizado = springConfig.getModelMapper().map(guardado, DomicilioDto.class);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -131,11 +130,27 @@ public class DomicilioService implements IDomicilioService {
         logger.debug("Iniciando método 'consultarTodos()'");
         List<DomicilioDto> domiciliosDto = new ArrayList<>();
         try {
-            domiciliosDto = modelMapper.map(domicilioRepository.findAll(), domiciliosDto.getClass());
+            domiciliosDto = springConfig.getModelMapper().map(domicilioRepository.findAll(), domiciliosDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");
         return domiciliosDto;
+    }
+
+    private Domicilio actualizar(Domicilio domicilio, DomicilioDto domicilioDto) {
+        if (domicilioDto.getCalle() != null) {
+            domicilio.setCalle(domicilioDto.getCalle());
+        }
+        if (domicilioDto.getNumero() != null) {
+            domicilio.setNumero(domicilioDto.getNumero());
+        }
+        if (domicilioDto.getLocalidad() != null) {
+            domicilio.setLocalidad(domicilioDto.getLocalidad());
+        }
+        if (domicilioDto.getProvincia() != null) {
+            domicilio.setProvincia(domicilioDto.getProvincia());
+        }
+        return domicilio;
     }
 }

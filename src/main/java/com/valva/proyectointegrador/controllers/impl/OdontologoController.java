@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.persistence.model.Odontologo;
+import com.valva.proyectointegrador.dto.OdontologoDto;
 import com.valva.proyectointegrador.service.IOdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/odontologos")
-public class OdontologoController implements CRUDController<Odontologo> {
+public class OdontologoController implements CRUDController<OdontologoDto> {
 
     @Autowired
     @Qualifier("odontologoService")
@@ -20,9 +20,9 @@ public class OdontologoController implements CRUDController<Odontologo> {
 
     @Override
     @PostMapping()
-    public ResponseEntity<Odontologo> registrar(@RequestBody Odontologo odontologo) {
-        ResponseEntity<Odontologo> response;
-        Odontologo odontologoInsertado = odontologoService.crear(odontologo);
+    public ResponseEntity<OdontologoDto> registrar(@RequestBody OdontologoDto odontologo) {
+        ResponseEntity<OdontologoDto> response;
+        OdontologoDto odontologoInsertado = odontologoService.crear(odontologo);
         if (odontologoInsertado != null) {
             response = ResponseEntity.ok(odontologoInsertado);
         } else {
@@ -33,9 +33,9 @@ public class OdontologoController implements CRUDController<Odontologo> {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Odontologo> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<Odontologo> response;
-        Odontologo odontologo = odontologoService.buscarPorId(id);
+    public ResponseEntity<OdontologoDto> buscarPorId(@PathVariable Integer id) {
+        ResponseEntity<OdontologoDto> response;
+        OdontologoDto odontologo = odontologoService.buscarPorId(id);
         if (odontologo != null) {
             response = ResponseEntity.ok(odontologo);
         } else {
@@ -45,9 +45,9 @@ public class OdontologoController implements CRUDController<Odontologo> {
     }
 
     @GetMapping(params = "matricula")
-    public ResponseEntity<Odontologo> buscar(@RequestParam Integer matricula) {
-        ResponseEntity<Odontologo> response;
-        Odontologo odontologo = odontologoService.buscar(matricula);
+    public ResponseEntity<OdontologoDto> buscar(@RequestParam Integer matricula) {
+        ResponseEntity<OdontologoDto> response;
+        OdontologoDto odontologo = odontologoService.buscar(matricula);
         if (odontologo != null) {
             response = ResponseEntity.ok(odontologo);
         } else {
@@ -57,22 +57,22 @@ public class OdontologoController implements CRUDController<Odontologo> {
     }
 
     @GetMapping(params = "nombre")
-    public ResponseEntity<List<Odontologo>> buscar(@RequestParam String nombre) {
-        List<Odontologo> odontologos = odontologoService.buscar(nombre);
+    public ResponseEntity<List<OdontologoDto>> buscar(@RequestParam String nombre) {
+        List<OdontologoDto> odontologos = odontologoService.buscar(nombre);
         return ResponseEntity.ok(odontologos);
     }
 
     @GetMapping(params = {"nombre", "apellido"})
-    public ResponseEntity<List<Odontologo>> buscar(@RequestParam String nombre, @RequestParam String apellido) {
-        List<Odontologo> odontologos = odontologoService.buscar(nombre, apellido);
+    public ResponseEntity<List<OdontologoDto>> buscar(@RequestParam String nombre, @RequestParam String apellido) {
+        List<OdontologoDto> odontologos = odontologoService.buscar(nombre, apellido);
         return ResponseEntity.ok(odontologos);
     }
 
     @Override
     @PutMapping()
-    public ResponseEntity<Odontologo> actualizar(@RequestBody Odontologo odontologo) {
-        ResponseEntity<Odontologo> response;
-        Odontologo actualizado;
+    public ResponseEntity<OdontologoDto> actualizar(@RequestBody OdontologoDto odontologo) {
+        ResponseEntity<OdontologoDto> response;
+        OdontologoDto actualizado;
         if (odontologo.getId() != null && odontologoService.buscarPorId(odontologo.getId()) != null) {
             actualizado = odontologoService.actualizar(odontologo);
             if (actualizado != null) {
@@ -101,7 +101,7 @@ public class OdontologoController implements CRUDController<Odontologo> {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<Odontologo>> buscarTodos(){
+    public ResponseEntity<List<OdontologoDto>> buscarTodos(){
         return ResponseEntity.ok(odontologoService.consultarTodos());
     }
 }

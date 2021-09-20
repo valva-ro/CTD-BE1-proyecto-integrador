@@ -1,11 +1,13 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.persistence.model.Turno;
+import com.valva.proyectointegrador.dto.TurnoDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface ITurnoService extends CRUDService<Turno> {
-    List<Turno> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo);
-    List<Turno> buscar(String nombreOdontologo, String apellidoOdontologo);
-    List<Turno> buscar(Integer matricula, Integer dni);
+@Service
+public interface ITurnoService extends CRUDService<TurnoDto> {
+    List<TurnoDto> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo);
+    List<TurnoDto> buscar(String nombreOdontologo, String apellidoOdontologo);
+    List<TurnoDto> buscar(Integer matricula, Integer dni);
 }

@@ -1,11 +1,11 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.persistence.model.Odontologo;
+import com.valva.proyectointegrador.dto.OdontologoDto;
 
 import java.util.List;
 
-public interface IOdontologoService extends CRUDService<Odontologo> {
-    Odontologo buscar(Integer matricula);
-    List<Odontologo> buscar(String nombre);
-    List<Odontologo> buscar(String nombre, String apellido);
+public interface IOdontologoService extends CRUDService<OdontologoDto> {
+    OdontologoDto buscar(Integer matricula);
+    List<OdontologoDto> buscar(String nombre);
+    List<OdontologoDto> buscar(String nombre, String apellido);
 }

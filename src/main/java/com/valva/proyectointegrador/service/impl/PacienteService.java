@@ -1,7 +1,12 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
+import com.valva.proyectointegrador.dto.DomicilioDto;
+import com.valva.proyectointegrador.dto.PacienteDto;
+import com.valva.proyectointegrador.persistence.model.Domicilio;
 import com.valva.proyectointegrador.persistence.model.Paciente;
 import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
+import com.valva.proyectointegrador.service.IDomicilioService;
 import com.valva.proyectointegrador.service.IPacienteService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,93 +15,104 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class PacienteService implements IPacienteService {
 
     @Autowired
     private IPacienteRepository pacienteRepository;
-
+    @Autowired
+    private IDomicilioService domicilioService;
+    @Autowired
+    private SpringConfig springConfig;
     private final Logger logger = Logger.getLogger(PacienteService.class);
 
     @Override
-    public Paciente buscar(Integer dni) {
+    public PacienteDto buscar(Integer dni) {
         logger.debug("Iniciando método 'buscar()' por DNI");
-        Paciente paciente = null;
+        PacienteDto pacienteDto = null;
+        Paciente paciente = pacienteRepository.buscar(dni).orElse(null);
         try {
-            paciente = pacienteRepository.buscar(dni).get();
+            if (paciente == null)
+                throw new Exception("No se encontró el paciente con DNI " + dni);
+            pacienteDto = springConfig.getModelMapper().map(paciente, PacienteDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por DNI");
-        return paciente;
+        return pacienteDto;
     }
 
     @Override
-    public List<Paciente> buscar(String nombre) {
+    public List<PacienteDto> buscar(String nombre) {
         logger.debug("Iniciando método 'buscar()' por nombre");
-        List<Paciente> pacientes = null;
+        List<PacienteDto> pacientesDto =  new ArrayList<>();
         try {
-            pacientes = pacienteRepository.buscar(nombre).orElse(new ArrayList<>());
+            List<Paciente> pacientes = pacienteRepository.buscar(nombre).orElse(new ArrayList<>());
+            pacientesDto = springConfig.getModelMapper().map(pacientes, pacientesDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por nombre");
-        return pacientes;
+        return pacientesDto;
     }
 
     @Override
-    public List<Paciente> buscar(String nombre, String apellido) {
+    public List<PacienteDto> buscar(String nombre, String apellido) {
         logger.debug("Iniciando método 'buscar()' por nombre y apellido");
-        List<Paciente> pacientes = null;
+        List<PacienteDto> pacientesDto =  new ArrayList<>();
         try {
-            pacientes = pacienteRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
+            List<Paciente> pacientes = pacienteRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
+            pacientesDto = springConfig.getModelMapper().map(pacientes, pacientesDto.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscar()' por nombre y apellido");
-        return pacientes;
+        return pacientesDto;
     }
 
     @Override
-    public Paciente buscarPorId(Integer id) {
+    public PacienteDto buscarPorId(Integer id) {
         logger.debug("Iniciando método 'buscarPorId()'");
-        Paciente paciente = null;
+        PacienteDto pacienteDto = null;
+        Paciente paciente = pacienteRepository.findById(id).orElse(null);
         try {
-            if (pacienteRepository.findById(id).isPresent())
-                paciente = pacienteRepository.findById(id).get();
-            else
-                throw new Exception("No se encontró el paciente con id " + id);
+            if (paciente == null)
+                throw new Exception("No se encontró el paciente con ID " + id);
+            pacienteDto = springConfig.getModelMapper().map(paciente, PacienteDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'buscarPorId()'");
-        return paciente;
+        return pacienteDto;
     }
 
     @Override
-    public Paciente crear(Paciente paciente) {
+    public PacienteDto crear(PacienteDto pacienteDto) {
         logger.debug("Iniciando método 'crear()'");
-        Paciente pacienteInsertado = null;
         try {
-            paciente.setFechaIngreso(LocalDate.now());
-            pacienteInsertado = pacienteRepository.save(paciente);
+            Paciente paciente = springConfig.getModelMapper().map(pacienteDto, Paciente.class);
+            pacienteDto = springConfig.getModelMapper().map(pacienteRepository.save(paciente), PacienteDto.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'crear()'");
-        return pacienteInsertado;
+        return pacienteDto;
     }
 
     @Override
-    public Paciente actualizar(Paciente paciente) {
+    public PacienteDto actualizar(PacienteDto pacienteDto) {
         logger.debug("Iniciando método 'actualizar()'");
-        Paciente pacienteActualizado = null;
+        PacienteDto pacienteActualizado = null;
         try {
-            Paciente pacienteEnBD = pacienteRepository.findById(paciente.getId()).orElse(null);
-            if (pacienteEnBD != null) {
-                paciente.setFechaIngreso(pacienteEnBD.getFechaIngreso());
-                pacienteActualizado = pacienteRepository.save(paciente);
+            if (pacienteDto == null || pacienteDto.getId() == null)
+                throw new Exception("No se pudo actualizar el paciente " + pacienteDto);
+            Optional<Paciente> pacienteEnBD = pacienteRepository.findById(pacienteDto.getId());
+            if (pacienteEnBD.isPresent()) {
+                Paciente actualizado = this.actualizar(pacienteEnBD.get(), pacienteDto);
+                pacienteActualizado = springConfig.getModelMapper().map(pacienteRepository.save(actualizado), PacienteDto.class);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -117,15 +133,32 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public List<Paciente> consultarTodos() {
+    public List<PacienteDto> consultarTodos() {
         logger.debug("Iniciando método 'consultarTodos()'");
-        List<Paciente> pacientes = new ArrayList<>();
+        List<PacienteDto> pacientes = new ArrayList<>();
         try {
-            pacientes = pacienteRepository.findAll();
+            pacientes = springConfig.getModelMapper().map(pacienteRepository.findAll(), pacientes.getClass());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         logger.debug("Terminó la ejecución del método 'consultarTodos()'");
         return pacientes;
+    }
+
+    private Paciente actualizar(Paciente paciente, PacienteDto pacienteDto) {
+        if (pacienteDto.getNombre() != null) {
+            paciente.setNombre(pacienteDto.getNombre());
+        }
+        if (pacienteDto.getApellido() != null) {
+            paciente.setApellido(pacienteDto.getApellido());
+        }
+        if (pacienteDto.getDni() != null) {
+            paciente.setDni(pacienteDto.getDni());
+        }
+        if (pacienteDto.getDomicilio() != null) {
+            DomicilioDto actualizado = domicilioService.actualizar(pacienteDto.getDomicilio());
+            paciente.setDomicilio(springConfig.getModelMapper().map(actualizado, Domicilio.class));
+        }
+        return paciente;
     }
 }

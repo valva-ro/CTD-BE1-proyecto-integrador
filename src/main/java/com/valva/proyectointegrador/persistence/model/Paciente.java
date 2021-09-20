@@ -2,7 +2,6 @@ package com.valva.proyectointegrador.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.valva.proyectointegrador.dto.DomicilioDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

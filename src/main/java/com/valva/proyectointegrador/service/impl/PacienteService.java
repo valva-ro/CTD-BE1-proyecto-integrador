@@ -1,8 +1,8 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
-import com.valva.proyectointegrador.dto.DomicilioDto;
-import com.valva.proyectointegrador.dto.PacienteDto;
+import com.valva.proyectointegrador.model.DomicilioDto;
+import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.persistence.model.Domicilio;
 import com.valva.proyectointegrador.persistence.model.Paciente;
 import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
@@ -12,10 +12,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

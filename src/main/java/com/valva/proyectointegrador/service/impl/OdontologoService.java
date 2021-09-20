@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
-import com.valva.proyectointegrador.dto.OdontologoDto;
+import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.persistence.model.Odontologo;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;

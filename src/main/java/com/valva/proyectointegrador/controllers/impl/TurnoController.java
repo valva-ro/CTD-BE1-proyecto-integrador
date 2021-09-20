@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.dto.TurnoDto;
+import com.valva.proyectointegrador.model.TurnoDto;
 import com.valva.proyectointegrador.service.ITurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

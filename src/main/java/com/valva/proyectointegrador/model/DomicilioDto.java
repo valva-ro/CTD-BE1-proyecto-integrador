@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.dto;
+package com.valva.proyectointegrador.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

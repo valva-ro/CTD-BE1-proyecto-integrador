@@ -1,7 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
-import com.valva.proyectointegrador.dto.DomicilioDto;
+import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.persistence.model.Domicilio;
 import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;

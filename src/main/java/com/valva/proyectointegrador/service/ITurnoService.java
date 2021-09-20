@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service;
 
-import com.valva.proyectointegrador.dto.TurnoDto;
+import com.valva.proyectointegrador.model.TurnoDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

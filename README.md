@@ -18,13 +18,13 @@ $ java -jar ClinicaOdontologica.jar
 
 ## UML
 
-![Diagrama de clase general](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase.png)
+![Diagrama de clase general](diagrams/diagrama-de-clase.png)
 
-![Diagrama de clase controllers](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-controllers.png)
+![Diagrama de clase controllers](diagrams/diagrama-de-clase-controller.png)
 
-![Diagrama de clase service](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-service.png)
+![Diagrama de clase service](diagrams/diagrama-de-clase-service.png)
 
-![Diagrama de clase persistence](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-persistence.png)
+![Diagrama de clase persistence](diagrams/diagrama-de-clase-persistence.png)
 
 ## Endpoints
 ### Odontólogos

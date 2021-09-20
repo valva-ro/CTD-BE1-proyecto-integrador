@@ -1,10 +1,33 @@
 # CTD-BE1 - Proyecto Integrador: Clínica Odontológica
 
-El proyecto es una API REST en proceso.
+El proyecto es una API REST de una clínica odontológica en proceso.
 
-![Diagrama de clase](diagrama-de-clase.png)
+Dejo [acá](https://www.postman.com/valva-ro/workspace/backend-clinica-odontologica/collection/16623509-a7b0be55-4085-45e9-af03-c03c9461be09?ctx=documentation)
+un link al workspace de Postman que estoy usando para probar los endpoints.
 
-## Odontólogos
+## Pre-requisitos
+- [Maven](https://maven.apache.org/download.cgi)
+- [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
+
+## Instalación
+Una vez clonado el proyecto ejecutar el comando:
+```bash
+$ mvn clean package
+$ java -jar ClinicaOdontologica.jar
+```
+
+## UML
+
+![Diagrama de clase general](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase.png)
+
+![Diagrama de clase controllers](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-controllers.png)
+
+![Diagrama de clase service](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-service.png)
+
+![Diagrama de clase persistence](2021/CTD/Bimestre 3/Backend I/Ejercicios/proyectointegrador/diagrams/diagrama-de-clase-persistence.png)
+
+## Endpoints
+### Odontólogos
   - Buscar por id: `GET` a `PATH/odontologos/{id}`
       - `200 OK` → devuelve el odontólogo
       - `404 NOT FOUND` → no se encontró un odontólogo con ese ID
@@ -42,7 +65,7 @@ El proyecto es una API REST en proceso.
   - Obtener todos: `GET` a `PATH/odontologos`
 
 
-## Pacientes
+### Pacientes
 
 - Buscar por id: `GET` a `PATH/pacientes/{id}`
   - `200 OK` → devuelve el paciente
@@ -95,7 +118,7 @@ El proyecto es una API REST en proceso.
 - Obtener todos: `GET` a `PATH/pacientes`
 
 
-## Turnos
+### Turnos
     
 - Buscar por id: `GET` a `PATH/turnos/{id}`
   - `200 OK` → devuelve el turno
@@ -134,7 +157,7 @@ El proyecto es una API REST en proceso.
 - Obtener todos: `GET` a `PATH/turnos`
 
 
-## Domicilios
+### Domicilios
 
 - Buscar por id: `GET` a `PATH/domicilios/{id}`
     - `200 OK` → devuelve el domicilio

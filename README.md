@@ -18,7 +18,7 @@ $ java -jar ClinicaOdontologica.jar
 
 ## UML
 
-![Diagrama de clase general](diagrams/diagrama-de-clase.png)
+![Diagrama de clase general](diagrams/diagrama-de-clase-paquetes.png)
 
 ![Diagrama de clase controllers](diagrams/diagrama-de-clase-controller.png)
 

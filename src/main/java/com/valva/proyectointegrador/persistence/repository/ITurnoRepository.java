@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.persistence.repository;
 
-import com.valva.proyectointegrador.persistence.model.Turno;
+import com.valva.proyectointegrador.persistence.entities.Turno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

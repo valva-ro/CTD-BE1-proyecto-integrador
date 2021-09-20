@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.persistence.model;
+package com.valva.proyectointegrador.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;

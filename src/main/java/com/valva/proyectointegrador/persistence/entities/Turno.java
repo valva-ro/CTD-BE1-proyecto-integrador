@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.persistence.model;
+package com.valva.proyectointegrador.persistence.entities;
 
 import lombok.Getter;
 import lombok.Setter;

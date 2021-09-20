@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.persistence.repository;
 
-import com.valva.proyectointegrador.persistence.model.Paciente;
+import com.valva.proyectointegrador.persistence.entities.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

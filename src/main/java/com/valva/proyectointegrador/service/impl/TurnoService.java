@@ -4,7 +4,7 @@ import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.model.TurnoDto;
-import com.valva.proyectointegrador.persistence.model.Turno;
+import com.valva.proyectointegrador.persistence.entities.Turno;
 import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
 import com.valva.proyectointegrador.service.ITurnoService;

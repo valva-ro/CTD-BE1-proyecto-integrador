@@ -1,6 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
+import com.valva.proyectointegrador.exceptions.service.PacienteServiceException;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,27 +22,32 @@ public class PacienteController implements CRUDController<PacienteDto> {
 
     @Override
     @PostMapping()
-    public ResponseEntity<PacienteDto> registrar(@RequestBody PacienteDto paciente) {
-        ResponseEntity<PacienteDto> response;
+    public ResponseEntity<?> registrar(@RequestBody PacienteDto paciente) {
+        ResponseEntity<?> response;
         paciente.setFechaIngreso(LocalDate.now());
-        PacienteDto pacienteInsertado = pacienteService.crear(paciente);
-        if (pacienteInsertado != null) {
+        try {
+            PacienteDto pacienteInsertado = pacienteService.crear(paciente);
             response = ResponseEntity.ok(pacienteInsertado);
-        } else {
-            response = ResponseEntity.badRequest().body(paciente);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDto> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<PacienteDto> response;
-        PacienteDto paciente = pacienteService.buscarPorId(id);
-        if (paciente != null) {
-            response = ResponseEntity.ok(paciente);
-        } else {
-            response = ResponseEntity.notFound().build();
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        ResponseEntity<?> response;
+        PacienteDto paciente = null;
+        try {
+            paciente = pacienteService.buscarPorId(id);
+            if (paciente != null) {
+                response = ResponseEntity.ok(paciente);
+            } else {
+                response = ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -49,10 +55,10 @@ public class PacienteController implements CRUDController<PacienteDto> {
     @GetMapping(params = "dni")
     public ResponseEntity<PacienteDto> buscar(@RequestParam Integer dni) {
         ResponseEntity<PacienteDto> response;
-        PacienteDto paciente = pacienteService.buscar(dni);
-        if (paciente != null) {
+        try {
+            PacienteDto paciente = pacienteService.buscar(dni);
             response = ResponseEntity.ok(paciente);
-        } else {
+        } catch (PacienteServiceException e) {
             response = ResponseEntity.notFound().build();
         }
         return response;
@@ -75,15 +81,11 @@ public class PacienteController implements CRUDController<PacienteDto> {
     public ResponseEntity<?> actualizar(@RequestBody PacienteDto paciente) {
         ResponseEntity<?> response;
         PacienteDto actualizado;
-        if (paciente.getId() != null && pacienteService.buscarPorId(paciente.getId()) != null) {
+        try {
             actualizado = pacienteService.actualizar(paciente);
-            if (actualizado != null) {
-                response = ResponseEntity.ok(actualizado);
-            } else {
-                response = ResponseEntity.badRequest().body("No se pudo actualizar el paciente");
-            }
-        } else {
-            response = ResponseEntity.notFound().build();
+            response = ResponseEntity.ok(actualizado);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -91,14 +93,8 @@ public class PacienteController implements CRUDController<PacienteDto> {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
-        ResponseEntity<String> response;
-        if (pacienteService.buscarPorId(id) != null) {
-            pacienteService.eliminar(id);
-            response = ResponseEntity.ok("Se elimino el paciente con id " + id);
-        } else {
-            response = ResponseEntity.notFound().build();
-        }
-        return response;
+        pacienteService.eliminar(id);
+        return ResponseEntity.ok("Se elimino el paciente con id " + id);
     }
 
     @Override

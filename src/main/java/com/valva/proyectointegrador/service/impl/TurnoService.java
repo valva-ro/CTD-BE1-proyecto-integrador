@@ -1,6 +1,7 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
+import com.valva.proyectointegrador.exceptions.service.TurnoServiceException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.model.TurnoDto;
@@ -8,7 +9,7 @@ import com.valva.proyectointegrador.persistence.entities.Turno;
 import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
 import com.valva.proyectointegrador.service.ITurnoService;
-import org.apache.log4j.Logger;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,131 +28,79 @@ public class TurnoService implements ITurnoService {
     private ITurnoRepository turnoRepository;
     @Autowired
     private SpringConfig springConfig;
-    private final Logger logger = Logger.getLogger(TurnoService.class);
 
     @Override
     public List<TurnoDto> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo) {
-        logger.debug("Iniciando método 'buscar()' por nombres y apellidos");
-        List<TurnoDto> turnosDto = new ArrayList<>();
-        try {
-            List<Turno> turnos = turnoRepository.buscar(nombrePaciente, apellidoPaciente, nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
-            turnosDto = springConfig.getModelMapper().map(turnos, turnosDto.getClass());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'buscar()' por nombres y apellidos");
-        return turnosDto;
+        List<Turno> turnos = turnoRepository.buscar(nombrePaciente, apellidoPaciente, nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
+        return springConfig.getModelMapper().map(turnos, List.class);
     }
 
     @Override
     public List<TurnoDto> buscar(String nombreOdontologo, String apellidoOdontologo) {
-        logger.debug("Iniciando método 'buscar()' por nombre y apellido del odontologo");
-        List<TurnoDto> turnosDto = new ArrayList<>();
-        try {
-            List<Turno> turnos = turnoRepository.buscar(nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
-            turnosDto = springConfig.getModelMapper().map(turnos, turnosDto.getClass());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'buscar()' por nombre y apellido del odontologo");
-        return turnosDto;
+        List<Turno> turnos = turnoRepository.buscar(nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
+        return springConfig.getModelMapper().map(turnos, List.class);
     }
 
     @Override
     public List<TurnoDto> buscar(Integer matricula, Integer dni) {
-        logger.debug("Iniciando método 'buscar()' por matricula de odontologo y dni de paciente");
-        List<TurnoDto> turnosDto = new ArrayList<>();
-        try {
-            List<Turno> turnos = turnoRepository.buscar(matricula, dni).orElse(new ArrayList<>());
-            turnosDto = springConfig.getModelMapper().map(turnos, turnosDto.getClass());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'buscar()' por matricula de odontologo y dni de paciente");
-        return turnosDto;
+        List<Turno> turnos = turnoRepository.buscar(matricula, dni).orElse(new ArrayList<>());
+        return springConfig.getModelMapper().map(turnos, List.class);
     }
 
     @Override
-    public TurnoDto buscarPorId(Integer id) {
-        logger.debug("Iniciando método 'buscarPorId()'");
-        TurnoDto turnoDto = null;
+    public TurnoDto buscarPorId(Integer id) throws TurnoServiceException {
         Turno turno = turnoRepository.findById(id).orElse(null);
-        try {
-            if (turno == null)
-                throw new Exception("No se encontró el turno con id " + id);
-            turnoDto = springConfig.getModelMapper().map(turno, TurnoDto.class);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'buscarPorId()'");
-        return turnoDto;
+        if (turno == null)
+            throw new TurnoServiceException("No se encontró el turno con id " + id);
+        return springConfig.getModelMapper().map(turno, TurnoDto.class);
     }
 
     @Override
-    public TurnoDto crear(TurnoDto turnoDto) {
-        logger.debug("Iniciando método 'crear()'");
-        try {
-            Integer pacienteId = turnoDto.getPaciente().getId();
-            Integer odontologoId = turnoDto.getOdontologo().getId();
-            if (this.existenPacienteYOdontologo(pacienteId, odontologoId)) {
-                Turno turno = springConfig.getModelMapper().map(turnoDto, Turno.class);
-                turnoDto = springConfig.getModelMapper().map(turnoRepository.save(turno), TurnoDto.class);
-                turnoDto.setPaciente(pacienteService.buscarPorId(pacienteId));
-                turnoDto.setOdontologo(odontologoService.buscarPorId(odontologoId));
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
+    public TurnoDto crear(TurnoDto turnoDto) throws Exception {
+        Integer pacienteId = turnoDto.getPaciente().getId();
+        Integer odontologoId = turnoDto.getOdontologo().getId();
+        if (this.existenPacienteYOdontologo(pacienteId, odontologoId)) {
+            Turno turno = springConfig.getModelMapper().map(turnoDto, Turno.class);
+            turnoDto = springConfig.getModelMapper().map(turnoRepository.save(turno), TurnoDto.class);
+            turnoDto.setPaciente(pacienteService.buscarPorId(pacienteId));
+            turnoDto.setOdontologo(odontologoService.buscarPorId(odontologoId));
+        } else {
+            throw new TurnoServiceException("El paciente u odontologo no existen");
         }
-        logger.debug("Terminó la ejecución del método 'crear()'");
         return turnoDto;
     }
 
+    @SneakyThrows
     @Override
     public TurnoDto actualizar(TurnoDto turnoDto) {
-        logger.debug("Iniciando método 'actualizar()'");
         TurnoDto turnoActualizado = null;
-        try {
-            if (turnoDto == null || turnoDto.getId() == null)
-                throw new Exception("No se pudo actualizar el turno " + turnoDto);
-            Optional<Turno> turnoEnBD = turnoRepository.findById(turnoDto.getId());
-            if (turnoEnBD.isPresent()) {
-                Turno actualizado = this.actualizar(turnoEnBD.get(), turnoDto);
-                Turno guardado = turnoRepository.save(actualizado);
-                turnoActualizado = springConfig.getModelMapper().map(guardado, TurnoDto.class);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
+        if (turnoDto == null)
+            throw new TurnoServiceException("No se pudo actualizar el turno null");
+        if (turnoDto.getId() == null)
+            throw new TurnoServiceException("El id del turno a actualizar no puede ser null");
+        Optional<Turno> turnoEnBD = turnoRepository.findById(turnoDto.getId());
+        if (turnoEnBD.isPresent()) {
+            Turno actualizado = this.actualizar(turnoEnBD.get(), turnoDto);
+            Turno guardado = turnoRepository.save(actualizado);
+            turnoActualizado = springConfig.getModelMapper().map(guardado, TurnoDto.class);
+        } else {
+            throw new TurnoServiceException("El odontologo no existe");
         }
-        logger.debug("Terminó la ejecución del método 'actualizar()'");
         return turnoActualizado;
     }
 
     @Override
     public void eliminar(Integer id) {
-        logger.debug("Iniciando método 'eliminar()'");
-        try {
-            turnoRepository.deleteById(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'eliminar()'");
+        turnoRepository.deleteById(id);
     }
 
     @Override
     public List<TurnoDto> consultarTodos() {
-        logger.debug("Iniciando método 'consultarTodos()'");
-        List<TurnoDto> turnosDto = new ArrayList<>();
-        try {
-            List<Turno> turnos = turnoRepository.findAll();
-            turnosDto = springConfig.getModelMapper().map(turnos, turnosDto.getClass());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        logger.debug("Terminó la ejecución del método 'consultarTodos()'");
-        return turnosDto;
+        List<Turno> turnos = turnoRepository.findAll();
+        return springConfig.getModelMapper().map(turnos, List.class);
     }
 
-    private Turno actualizar(Turno turno, TurnoDto turnoDto) {
+    private Turno actualizar(Turno turno, TurnoDto turnoDto) throws Exception {
         if (turnoDto.getFecha() != null) {
             turno.setFecha(turnoDto.getFecha());
         }
@@ -164,7 +113,7 @@ public class TurnoService implements ITurnoService {
         return turno;
     }
 
-    private boolean existenPacienteYOdontologo(Integer pacienteId, Integer odontologoId) {
+    private boolean existenPacienteYOdontologo(Integer pacienteId, Integer odontologoId) throws Exception {
         PacienteDto p = pacienteService.buscarPorId(pacienteId);
         OdontologoDto o = odontologoService.buscarPorId(odontologoId);
         return (p != null && o != null);

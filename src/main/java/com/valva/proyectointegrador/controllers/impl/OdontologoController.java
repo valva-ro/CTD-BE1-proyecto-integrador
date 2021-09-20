@@ -1,6 +1,7 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
+import com.valva.proyectointegrador.exceptions.service.OdontologoServiceException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.service.IOdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +21,30 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
 
     @Override
     @PostMapping()
-    public ResponseEntity<OdontologoDto> registrar(@RequestBody OdontologoDto odontologo) {
-        ResponseEntity<OdontologoDto> response;
-        OdontologoDto odontologoInsertado = odontologoService.crear(odontologo);
-        if (odontologoInsertado != null) {
+    public ResponseEntity<?> registrar(@RequestBody OdontologoDto odontologo) {
+        ResponseEntity<?> response;
+        try {
+            OdontologoDto odontologoInsertado = odontologoService.crear(odontologo);
             response = ResponseEntity.ok(odontologoInsertado);
-        } else {
-            response = ResponseEntity.badRequest().body(odontologo);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<OdontologoDto> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<OdontologoDto> response;
-        OdontologoDto odontologo = odontologoService.buscarPorId(id);
-        if (odontologo != null) {
-            response = ResponseEntity.ok(odontologo);
-        } else {
-            response = ResponseEntity.notFound().build();
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        ResponseEntity<?> response;
+        OdontologoDto odontologo = null;
+        try {
+            odontologo = odontologoService.buscarPorId(id);
+            if (odontologo != null)
+                response = ResponseEntity.ok(odontologo);
+            else
+                response = ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -47,10 +52,10 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
     @GetMapping(params = "matricula")
     public ResponseEntity<OdontologoDto> buscar(@RequestParam Integer matricula) {
         ResponseEntity<OdontologoDto> response;
-        OdontologoDto odontologo = odontologoService.buscar(matricula);
-        if (odontologo != null) {
+        try {
+            OdontologoDto odontologo = odontologoService.buscar(matricula);
             response = ResponseEntity.ok(odontologo);
-        } else {
+        } catch (OdontologoServiceException e) {
             response = ResponseEntity.notFound().build();
         }
         return response;
@@ -70,18 +75,14 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
 
     @Override
     @PutMapping()
-    public ResponseEntity<OdontologoDto> actualizar(@RequestBody OdontologoDto odontologo) {
-        ResponseEntity<OdontologoDto> response;
+    public ResponseEntity<?> actualizar(@RequestBody OdontologoDto odontologo) {
+        ResponseEntity<?> response;
         OdontologoDto actualizado;
-        if (odontologo.getId() != null && odontologoService.buscarPorId(odontologo.getId()) != null) {
+        try {
             actualizado = odontologoService.actualizar(odontologo);
-            if (actualizado != null) {
-                response = ResponseEntity.ok(actualizado);
-            } else {
-                response = ResponseEntity.badRequest().body(odontologo);
-            }
-        } else {
-            response = ResponseEntity.notFound().build();
+            response = ResponseEntity.ok(actualizado);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -89,14 +90,8 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
-        ResponseEntity<String> response;
-        if (odontologoService.buscarPorId(id) != null) {
-            odontologoService.eliminar(id);
-            response = ResponseEntity.ok("Se elimino el odontologo con id " + id);
-        } else {
-            response = ResponseEntity.notFound().build();
-        }
-        return response;
+        odontologoService.eliminar(id);
+        return ResponseEntity.ok("Se elimino el odontologo con id " + id);
     }
 
     @Override

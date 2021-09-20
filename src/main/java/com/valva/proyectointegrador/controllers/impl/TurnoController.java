@@ -20,26 +20,30 @@ public class TurnoController implements CRUDController<TurnoDto> {
 
     @Override
     @PostMapping()
-    public ResponseEntity<TurnoDto> registrar(@RequestBody TurnoDto turno) {
-        ResponseEntity<TurnoDto> response;
-        TurnoDto turnoInsertado = turnoService.crear(turno);
-        if (turnoInsertado != null) {
+    public ResponseEntity<?> registrar(@RequestBody TurnoDto turno) {
+        ResponseEntity<?> response;
+        try {
+            TurnoDto turnoInsertado = turnoService.crear(turno);
             response = ResponseEntity.ok(turnoInsertado);
-        } else {
-            response = ResponseEntity.badRequest().body(turno);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<TurnoDto> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<TurnoDto> response;
-        TurnoDto turno = turnoService.buscarPorId(id);
-        if (turno != null) {
-            response = ResponseEntity.ok(turno);
-        } else {
-            response = ResponseEntity.notFound().build();
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
+        ResponseEntity<?> response;
+        try {
+            TurnoDto turno = turnoService.buscarPorId(id);
+            if (turno != null) {
+                response = ResponseEntity.ok(turno);
+            } else {
+                response = ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -64,12 +68,13 @@ public class TurnoController implements CRUDController<TurnoDto> {
 
     @Override
     @PutMapping()
-    public ResponseEntity<TurnoDto> actualizar(@RequestBody TurnoDto turno) {
-        ResponseEntity<TurnoDto> response;
-        if (turno.getId() != null && turnoService.buscarPorId(turno.getId()) != null) {
-            response = ResponseEntity.ok(turnoService.actualizar(turno));
-        } else {
-            response = ResponseEntity.notFound().build();
+    public ResponseEntity<?> actualizar(@RequestBody TurnoDto turno) {
+        ResponseEntity<?> response;
+        try {
+            TurnoDto actualizado = turnoService.actualizar(turno);
+            response = ResponseEntity.ok(actualizado);
+        } catch (Exception e) {
+            response = ResponseEntity.badRequest().body(e.getMessage());
         }
         return response;
     }
@@ -77,14 +82,8 @@ public class TurnoController implements CRUDController<TurnoDto> {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
-        ResponseEntity<String> response;
-        if (turnoService.buscarPorId(id) != null) {
-            turnoService.eliminar(id);
-            response = ResponseEntity.ok("Se elimino el turno con id " + id);
-        } else {
-            response = ResponseEntity.notFound().build();
-        }
-        return response;
+        turnoService.eliminar(id);
+        return ResponseEntity.ok("Se elimino el turno con id " + id);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.exceptions.service.OdontologoServiceException;
+import com.valva.proyectointegrador.exceptions.BadRequestException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.service.IOdontologoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,50 +15,31 @@ import java.util.List;
 @RequestMapping("/odontologos")
 public class OdontologoController implements CRUDController<OdontologoDto> {
 
-    @Autowired
     @Qualifier("odontologoService")
-    private IOdontologoService odontologoService;
+    private final IOdontologoService odontologoService;
+
+    public OdontologoController(IOdontologoService odontologoService) {
+        this.odontologoService = odontologoService;
+    }
 
     @Override
     @PostMapping()
-    public ResponseEntity<?> registrar(@RequestBody OdontologoDto odontologo) {
-        ResponseEntity<?> response;
-        try {
-            OdontologoDto odontologoInsertado = odontologoService.crear(odontologo);
-            response = ResponseEntity.ok(odontologoInsertado);
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+    public ResponseEntity<?> registrar(@RequestBody OdontologoDto odontologo) throws BadRequestException, ResourceNotFoundException {
+        OdontologoDto odontologoInsertado = odontologoService.crear(odontologo);
+        return ResponseEntity.ok(odontologoInsertado);
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<?> response;
-        OdontologoDto odontologo = null;
-        try {
-            odontologo = odontologoService.buscarPorId(id);
-            if (odontologo != null)
-                response = ResponseEntity.ok(odontologo);
-            else
-                response = ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) throws BadRequestException, ResourceNotFoundException {
+        OdontologoDto odontologo = odontologoService.buscarPorId(id);
+        return ResponseEntity.ok(odontologo);
     }
 
     @GetMapping(params = "matricula")
-    public ResponseEntity<OdontologoDto> buscar(@RequestParam Integer matricula) {
-        ResponseEntity<OdontologoDto> response;
-        try {
-            OdontologoDto odontologo = odontologoService.buscar(matricula);
-            response = ResponseEntity.ok(odontologo);
-        } catch (OdontologoServiceException e) {
-            response = ResponseEntity.notFound().build();
-        }
-        return response;
+    public ResponseEntity<OdontologoDto> buscar(@RequestParam Integer matricula) throws ResourceNotFoundException, BadRequestException {
+        OdontologoDto odontologo = odontologoService.buscar(matricula);
+        return ResponseEntity.ok(odontologo);
     }
 
     @GetMapping(params = "nombre")
@@ -75,23 +56,16 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
 
     @Override
     @PutMapping()
-    public ResponseEntity<?> actualizar(@RequestBody OdontologoDto odontologo) {
-        ResponseEntity<?> response;
-        OdontologoDto actualizado;
-        try {
-            actualizado = odontologoService.actualizar(odontologo);
-            response = ResponseEntity.ok(actualizado);
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+    public ResponseEntity<?> actualizar(@RequestBody OdontologoDto odontologo) throws BadRequestException, ResourceNotFoundException {
+        OdontologoDto actualizado = odontologoService.actualizar(odontologo);
+        return ResponseEntity.ok(actualizado);
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException {
         odontologoService.eliminar(id);
-        return ResponseEntity.ok("Se elimino el odontologo con id " + id);
+        return ResponseEntity.ok("Se eliminó el odontólogo con id " + id);
     }
 
     @Override

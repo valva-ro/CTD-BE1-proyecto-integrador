@@ -1,14 +1,8 @@
 package com.valva.proyectointegrador.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class OdontologoDto {
 
     private Integer id;

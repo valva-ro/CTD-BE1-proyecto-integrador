@@ -1,10 +1,10 @@
 package com.valva.proyectointegrador.controllers.impl;
 
 import com.valva.proyectointegrador.controllers.CRUDController;
-import com.valva.proyectointegrador.exceptions.service.PacienteServiceException;
+import com.valva.proyectointegrador.exceptions.BadRequestException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.service.IPacienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +16,12 @@ import java.util.List;
 @RequestMapping("/pacientes")
 public class PacienteController implements CRUDController<PacienteDto> {
 
-    @Autowired
     @Qualifier("pacienteService")
     private IPacienteService pacienteService;
+
+    public PacienteController(IPacienteService pacienteService) {
+        this.pacienteService = pacienteService;
+    }
 
     @Override
     @PostMapping()
@@ -36,32 +39,15 @@ public class PacienteController implements CRUDController<PacienteDto> {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
-        ResponseEntity<?> response;
-        PacienteDto paciente = null;
-        try {
-            paciente = pacienteService.buscarPorId(id);
-            if (paciente != null) {
-                response = ResponseEntity.ok(paciente);
-            } else {
-                response = ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id) throws BadRequestException, ResourceNotFoundException {
+        PacienteDto paciente = pacienteService.buscarPorId(id);
+        return ResponseEntity.ok(paciente);
     }
 
     @GetMapping(params = "dni")
-    public ResponseEntity<PacienteDto> buscar(@RequestParam Integer dni) {
-        ResponseEntity<PacienteDto> response;
-        try {
-            PacienteDto paciente = pacienteService.buscar(dni);
-            response = ResponseEntity.ok(paciente);
-        } catch (PacienteServiceException e) {
-            response = ResponseEntity.notFound().build();
-        }
-        return response;
+    public ResponseEntity<PacienteDto> buscar(@RequestParam Integer dni) throws BadRequestException, ResourceNotFoundException {
+        PacienteDto paciente = pacienteService.buscar(dni);
+        return ResponseEntity.ok(paciente);
     }
 
     @GetMapping(params = "nombre")
@@ -78,23 +64,16 @@ public class PacienteController implements CRUDController<PacienteDto> {
 
     @Override
     @PutMapping()
-    public ResponseEntity<?> actualizar(@RequestBody PacienteDto paciente) {
-        ResponseEntity<?> response;
-        PacienteDto actualizado;
-        try {
-            actualizado = pacienteService.actualizar(paciente);
-            response = ResponseEntity.ok(actualizado);
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+    public ResponseEntity<?> actualizar(@RequestBody PacienteDto paciente) throws BadRequestException, ResourceNotFoundException {
+        PacienteDto actualizado = pacienteService.actualizar(paciente);
+        return ResponseEntity.ok(actualizado);
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException {
         pacienteService.eliminar(id);
-        return ResponseEntity.ok("Se elimino el paciente con id " + id);
+        return ResponseEntity.ok("Se eliminó el paciente con id " + id);
     }
 
     @Override

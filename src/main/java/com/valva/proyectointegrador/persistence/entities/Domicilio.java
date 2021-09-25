@@ -1,14 +1,11 @@
 package com.valva.proyectointegrador.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @ToString
 @Getter
@@ -38,15 +35,6 @@ public class Domicilio {
     @Column
     private String provincia;
 
-    @OneToMany(mappedBy = "domicilio", fetch = FetchType.LAZY)
-    @JsonBackReference
-    @ToString.Exclude
-    private Set<Paciente> pacientes = new HashSet<>();
-
-    public void addPaciente(Paciente paciente) {
-        pacientes.add(paciente);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,6 +45,6 @@ public class Domicilio {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, calle, numero, localidad);
+        return Objects.hash(id, calle, numero, localidad, provincia);
     }
 }

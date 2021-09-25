@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.exceptions.service.PacienteServiceException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
@@ -64,7 +64,7 @@ public class PacienteServiceTest {
         PacienteDto p = pacienteService.crear(paciente);
         assertNotNull(pacienteService.buscarPorId(p.getId()));
         pacienteService.eliminar(p.getId());
-        assertThrows(PacienteServiceException.class, () -> pacienteService.buscarPorId(p.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> pacienteService.buscarPorId(p.getId()));
     }
 
     @Test

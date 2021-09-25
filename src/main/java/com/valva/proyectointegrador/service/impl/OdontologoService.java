@@ -1,11 +1,13 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
-import com.valva.proyectointegrador.exceptions.service.OdontologoServiceException;
+import com.valva.proyectointegrador.exceptions.BadRequestException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.persistence.entities.Odontologo;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
+import com.valva.proyectointegrador.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,68 +24,74 @@ public class OdontologoService implements IOdontologoService {
     private SpringConfig springConfig;
 
     @Override
-    public OdontologoDto buscar(Integer matricula) throws OdontologoServiceException {
+    public OdontologoDto buscar(Integer matricula) throws ResourceNotFoundException, BadRequestException {
+        if (matricula == null)
+            throw new BadRequestException("La matrícula del odontólogo no puede ser null");
         Odontologo odontologo = odontologoRepository.buscar(matricula).orElse(null);
         if (odontologo == null)
-            throw new OdontologoServiceException("No se encontró el odontólogo con matricula " + matricula);
+            throw new ResourceNotFoundException("El odontólogo con matrícula " + matricula + " no existe");
         return springConfig.getModelMapper().map(odontologo, OdontologoDto.class);
     }
 
     @Override
     public List<OdontologoDto> buscar(String nombre) {
         List<Odontologo> odontologos = odontologoRepository.buscar(nombre).orElse(new ArrayList<>());
-        return springConfig.getModelMapper().map(odontologos, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     @Override
     public List<OdontologoDto> buscar(String nombre, String apellido) {
         List<Odontologo> odontologos = odontologoRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
-        return springConfig.getModelMapper().map(odontologos, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     @Override
-    public OdontologoDto buscarPorId(Integer id) throws OdontologoServiceException {
+    public OdontologoDto buscarPorId(Integer id) throws BadRequestException, ResourceNotFoundException {
+        if (id == null)
+            throw new BadRequestException("El id del odontólogo no puede ser null");
         Odontologo odontologo = odontologoRepository.findById(id).orElse(null);
         if (odontologo == null)
-            throw new OdontologoServiceException("No se encontró el odontólogo con id " + id);
+            throw new ResourceNotFoundException("El odontólogo no existe");
         return springConfig.getModelMapper().map(odontologo, OdontologoDto.class);
     }
 
     @Override
-    public OdontologoDto crear(OdontologoDto odontologoDto) throws OdontologoServiceException {
+    public OdontologoDto crear(OdontologoDto odontologoDto) throws BadRequestException {
         if (odontologoDto == null)
-            throw new OdontologoServiceException("No se pudo guardar el odontologo " + odontologoDto);
+            throw new BadRequestException("El odontólogo no puede ser null");
         Odontologo odontologo = springConfig.getModelMapper().map(odontologoDto, Odontologo.class);
         return springConfig.getModelMapper().map(odontologoRepository.save(odontologo), OdontologoDto.class);
     }
 
     @Override
-    public OdontologoDto actualizar(OdontologoDto odontologoDto) throws OdontologoServiceException {
-        OdontologoDto odontologoActualizado = null;
+    public OdontologoDto actualizar(OdontologoDto odontologoDto) throws BadRequestException, ResourceNotFoundException {
+        OdontologoDto odontologoActualizado;
         if (odontologoDto == null)
-            throw new OdontologoServiceException("No se pudo actualizar el odontologo null");
+            throw new BadRequestException("El odontólogo no puede ser null");
         if (odontologoDto.getId() == null)
-            throw new OdontologoServiceException("El id del odontologo a actualizar no puede ser null");
+            throw new BadRequestException("El id del odontólogo no puede ser null");
         Optional<Odontologo> odontologoEnBD = odontologoRepository.findById(odontologoDto.getId());
         if (odontologoEnBD.isPresent()) {
             Odontologo actualizado = this.actualizar(odontologoEnBD.get(), odontologoDto);
             Odontologo guardado = odontologoRepository.save(actualizado);
             odontologoActualizado = springConfig.getModelMapper().map(guardado, OdontologoDto.class);
         } else {
-            throw new OdontologoServiceException("El odontologo no existe");
+            throw new ResourceNotFoundException("El odontólogo no existe");
         }
         return odontologoActualizado;
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public void eliminar(Integer id) throws BadRequestException {
+        if (id == null)
+            throw new BadRequestException("El id del odontólogo no puede ser null");
         odontologoRepository.deleteById(id);
     }
 
     @Override
     public List<OdontologoDto> consultarTodos() {
         List<Odontologo> odontologos = odontologoRepository.findAll();
-        return springConfig.getModelMapper().map(odontologos, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     private Odontologo actualizar(Odontologo odontologo, OdontologoDto odontologoDto) {

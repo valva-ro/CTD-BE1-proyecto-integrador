@@ -10,6 +10,9 @@ un link al workspace de Postman que estoy usando para probar los endpoints.
 - [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
 
 ## Instalación
+Por defecto Tomcat se levanta en el puerto 8080, si se quisiera configurar un puerto personalizado agregar `server.port=<PUERTO>`
+en `/src/resources/application.properties`.
+
 Una vez clonado el proyecto ejecutar el comando:
 ```bash
 $ mvn clean package
@@ -17,7 +20,6 @@ $ java -jar ClinicaOdontologica.jar
 ```
 
 ## UML
-
 ![Diagrama de clase general](diagrams/diagrama-de-clase-paquetes.png)
 
 ![Diagrama de clase controllers](diagrams/diagrama-de-clase-controller.png)
@@ -28,10 +30,21 @@ $ java -jar ClinicaOdontologica.jar
 
 ## Endpoints
 ### Odontólogos
+
   - Buscar por id: `GET` a `PATH/odontologos/{id}`
       - `200 OK` → devuelve el odontólogo
       - `404 NOT FOUND` → no se encontró un odontólogo con ese ID
 
+- Buscar por dni: `GET` a `PATH/odontologos/?matricula=123`
+    - `200 OK` → devuelve el odontólogo
+    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+    - `404 NOT FOUND` → no se encontró un odontólogo con esa matrícula
+
+- Buscar por nombre: `GET` a `PATH/odontologos/?nombre=Pepe`
+    - `200 OK` → devuelve todos los odontólogos con ese nombre
+    -
+- Buscar por nombre y apellido: `GET` a `PATH/odontologos/?nombre=Pepe&apellido=Pepardo`
+    - `200 OK` → devuelve todos los odontólogos con ese nombre y apellido
 
   - Registrar nuevo: `POST` a `PATH/odontologos`
       - `200 OK` → se registró correctamente
@@ -71,6 +84,17 @@ $ java -jar ClinicaOdontologica.jar
   - `200 OK` → devuelve el paciente
   - `404 NOT FOUND` → no se encontró un paciente con ese ID
 
+
+- Buscar por dni: `GET` a `PATH/pacientes/?dni=123456789`
+    - `200 OK` → devuelve el paciente
+    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+    - `404 NOT FOUND` → no se encontró un paciente con ese DNI
+  
+- Buscar por nombre: `GET` a `PATH/pacientes/?nombre=Pepe`
+    - `200 OK` → devuelve todos los pacientes con ese nombre
+    - 
+- Buscar por nombre y apellido: `GET` a `PATH/pacientes/?nombre=Pepe&apellido=Pepardo`
+    - `200 OK` → devuelve todos los pacientes con ese nombre y apellido
 
 - Registrar nuevo: `POST` a `PATH/pacientes`
   - `200 OK` → se registró correctamente
@@ -123,7 +147,15 @@ $ java -jar ClinicaOdontologica.jar
 - Buscar por id: `GET` a `PATH/turnos/{id}`
   - `200 OK` → devuelve el turno
   - `404 NOT FOUND` → no se encontró un turno con ese ID
+  
+- Buscar por nombres y apellidos de pacientes: `GET` a `PATH/turnos/?nombrePaciente=Pepe&apellidoPaciente=Pepardo&nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
+  - `200 OK` → devuelve todos los turnos cuyos pacientes y odontólogos tengan esos nombres y apellidos
+  
+- Buscar por nombre y apellido de odontólogo: `GET` a `PATH/turnos/?nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
+  - `200 OK` → devuelve todos los turnos cuyos odontólogos tengan con ese nombre y apellido
 
+- Buscar por DNI de paciente y matrícula de odontólogo: `GET` a `PATH/turnos/?matricula=123&dni=123456789`
+  - `200 OK` → devuelve todos los turnos cuyos cuyos odontólogos tengan esa matrícula y pacientes tengan ese DNI
 
 - Registrar nuevo: `POST` a `PATH/turnos`
   - `200 OK` → se registró correctamente
@@ -132,7 +164,7 @@ $ java -jar ClinicaOdontologica.jar
     {
           "paciente": {"id": "1"},
           "odontologo": {"id": "1"},
-          "fecha": "2021-10-25"
+          "fecha": "2021-10-25T18:00:00"
     }
     ```
 
@@ -145,7 +177,7 @@ $ java -jar ClinicaOdontologica.jar
             "id": "1",
             "paciente": {"id": "1"},
             "odontologo": {"id": "1"},
-            "fecha": "2021-10-21"
+            "fecha": "2021-10-21T16:00:00"
       }
       ```
     
@@ -155,44 +187,3 @@ $ java -jar ClinicaOdontologica.jar
 
 
 - Obtener todos: `GET` a `PATH/turnos`
-
-
-### Domicilios
-
-- Buscar por id: `GET` a `PATH/domicilios/{id}`
-    - `200 OK` → devuelve el domicilio
-    - `404 NOT FOUND` → no se encontró un domicilio con ese ID
-
-
-- Registrar nuevo: `POST` a `PATH/domicilios`
-    - `200 OK` → se registró correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-        ```json
-      {
-            "calle": "Calle Falsa",
-            "numero": "123",
-            "localidad": "Springfield",
-            "provincia": "Springfield"
-      }
-        ```
-
-- Actualizar existente: `PUT` a `PATH/domicilios`
-    - `200 OK` → se actualizó correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-    - `404 NOT FOUND` → no se encontró el domicilio con id recibido
-      ```json
-      {
-            "id": "1",
-            "calle": "Calle Falsa",
-            "numero": "321",
-            "localidad": "Springfield",
-            "provincia": "Springfield"
-      }
-      ```
-
-- Eliminar por id: `DELETE` a `PATH/domicilios/{id}`
-    - `204 NO CONTENT` → se borró correctamente
-    - `404 NOT FOUND` → no se encontró el domicilio con id recibido
-
-
-- Obtener todos: `GET` a `PATH/domicilios`

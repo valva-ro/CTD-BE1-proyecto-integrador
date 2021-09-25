@@ -1,20 +1,14 @@
 package com.valva.proyectointegrador.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class TurnoDto {
 
     private Integer id;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
     private PacienteDto paciente;
     private OdontologoDto odontologo;
 

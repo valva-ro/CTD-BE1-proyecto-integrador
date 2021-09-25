@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.exceptions.service.DomicilioServiceException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
@@ -57,7 +57,7 @@ public class DomicilioServiceTest {
         DomicilioDto d = domicilioService.crear(domicilio);
         assertNotNull(domicilioService.buscarPorId(d.getId()));
         domicilioService.eliminar(d.getId());
-        assertThrows(DomicilioServiceException.class, () -> domicilioService.buscarPorId(d.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> domicilioService.buscarPorId(d.getId()));
     }
 
     @Test

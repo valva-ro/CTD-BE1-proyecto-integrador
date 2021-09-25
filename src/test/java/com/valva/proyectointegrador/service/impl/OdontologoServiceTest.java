@@ -1,7 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.exceptions.service.OdontologoServiceException;
-import com.valva.proyectointegrador.model.DomicilioDto;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
@@ -57,7 +56,7 @@ public class OdontologoServiceTest {
         OdontologoDto o = odontologoService.crear(odontologo);
         assertNotNull(odontologoService.buscarPorId(o.getId()));
         odontologoService.eliminar(o.getId());
-        assertThrows(OdontologoServiceException.class, () -> odontologoService.buscarPorId(o.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> odontologoService.buscarPorId(o.getId()));
     }
 
     @Test

@@ -1,16 +1,10 @@
 package com.valva.proyectointegrador.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class PacienteDto {
 
     private Integer id;

@@ -1,11 +1,13 @@
 package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.config.SpringConfig;
-import com.valva.proyectointegrador.exceptions.service.DomicilioServiceException;
+import com.valva.proyectointegrador.exceptions.BadRequestException;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.persistence.entities.Domicilio;
 import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
+import com.valva.proyectointegrador.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,35 +25,35 @@ public class DomicilioService implements IDomicilioService {
 
     public List<DomicilioDto> buscar(String calle) {
         List<Domicilio> domicilios = domicilioRepository.buscar(calle).orElse(new ArrayList<>());
-        return springConfig.getModelMapper().map(domicilios, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
     public List<DomicilioDto> buscar(String calle, Integer numero) {
         List<Domicilio> domicilios = domicilioRepository.buscar(calle, numero).orElse(new ArrayList<>());
-        return springConfig.getModelMapper().map(domicilios, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
-    public DomicilioDto buscar(String calle, Integer numero, String localidad, String provincia) throws Exception {
+    public DomicilioDto buscar(String calle, Integer numero, String localidad, String provincia) throws ResourceNotFoundException {
         Domicilio domicilio = domicilioRepository.buscar(calle, numero, localidad, provincia).orElse(null);
         if (domicilio == null)
-            throw new DomicilioServiceException("No se encontró el domicilio");
+            throw new ResourceNotFoundException("No se encontró el domicilio");
 
         return springConfig.getModelMapper().map(domicilio, DomicilioDto.class);
     }
 
     @Override
-    public DomicilioDto buscarPorId(Integer id) throws Exception {
+    public DomicilioDto buscarPorId(Integer id) throws ResourceNotFoundException {
         Domicilio domicilio = domicilioRepository.findById(id).orElse(null);
         if (domicilio == null)
-            throw new DomicilioServiceException("No se encontró el domicilio con id " + id);
+            throw new ResourceNotFoundException("No se encontró el domicilio con id " + id);
 
         return springConfig.getModelMapper().map(domicilio, DomicilioDto.class);
     }
 
     @Override
-    public DomicilioDto crear(DomicilioDto domicilioDto) throws Exception {
+    public DomicilioDto crear(DomicilioDto domicilioDto) throws BadRequestException {
         if (domicilioDto == null)
-            throw new DomicilioServiceException("No se pudo guardar el domicilio " + domicilioDto);
+            throw new BadRequestException("El domicilio no puede ser null");
 
         Domicilio domicilio = springConfig.getModelMapper().map(domicilioDto, Domicilio.class);
         domicilioDto = springConfig.getModelMapper().map(domicilioRepository.save(domicilio), DomicilioDto.class);
@@ -59,12 +61,12 @@ public class DomicilioService implements IDomicilioService {
     }
 
     @Override
-    public DomicilioDto actualizar(DomicilioDto domicilioDto) throws Exception {
+    public DomicilioDto actualizar(DomicilioDto domicilioDto) throws BadRequestException {
         DomicilioDto domicilioActualizado = null;
         if (domicilioDto == null)
-            throw new DomicilioServiceException("No se pudo actualizar el domicilio null");
+            throw new BadRequestException("No se pudo actualizar el domicilio null");
         if (domicilioDto.getId() == null)
-            throw new DomicilioServiceException("El id del domicilio a actualizar no puede ser null");
+            throw new BadRequestException("El id del domicilio a actualizar no puede ser null");
 
         Optional<Domicilio> domicilioEnBD = domicilioRepository.findById(domicilioDto.getId());
         if (domicilioEnBD.isPresent()) {
@@ -83,7 +85,7 @@ public class DomicilioService implements IDomicilioService {
     @Override
     public List<DomicilioDto> consultarTodos() {
         List<Domicilio> domicilios = domicilioRepository.findAll();
-        return springConfig.getModelMapper().map(domicilios, List.class);
+        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
     private Domicilio actualizar(Domicilio domicilio, DomicilioDto domicilioDto) {

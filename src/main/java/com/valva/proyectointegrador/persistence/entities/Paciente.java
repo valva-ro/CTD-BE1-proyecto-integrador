@@ -1,7 +1,6 @@
 package com.valva.proyectointegrador.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,10 +40,8 @@ public class Paciente {
     private LocalDate fechaIngreso;
 
     @Setter
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "domicilio_id", nullable = false)
-    @ToString.Exclude
     private Domicilio domicilio;
 
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)

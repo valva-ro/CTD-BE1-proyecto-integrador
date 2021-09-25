@@ -2,7 +2,7 @@
 
 El proyecto es una API REST de una clínica odontológica en proceso.
 
-Dejo [acá](https://www.postman.com/valva-ro/workspace/backend-clinica-odontologica/collection/16623509-a7b0be55-4085-45e9-af03-c03c9461be09?ctx=documentation)
+Dejo [acá](https://warped-crescent-106069.postman.co/workspace/BackEnd-1~86fad456-7df1-4638-9fa4-89653e0b159b/overview)
 un link al workspace de Postman que estoy usando para probar los endpoints.
 
 ## Pre-requisitos

@@ -91,9 +91,9 @@ public class TurnoService implements ITurnoService {
 
         if (turnoEnBD.isPresent()) {
             if (this.sePuedeSacarTurno(turnoDto)) {
-            Turno actualizado = this.actualizar(turnoEnBD.get(), turnoDto);
-            Turno guardado = turnoRepository.save(actualizado);
-            turnoActualizado = ModelMapper.map(springConfig.getModelMapper(), guardado, TurnoDto.class);
+                Turno actualizado = this.actualizar(turnoEnBD.get(), turnoDto);
+                Turno guardado = turnoRepository.save(actualizado);
+                turnoActualizado = ModelMapper.map(springConfig.getModelMapper(), guardado, TurnoDto.class);
             } else {
                 throw new BadRequestException("El odontólogo ya tiene un turno programado para ese día en ese horario");
             }

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IPacienteService extends CRUDService<PacienteDto> {
     PacienteDto buscar(Integer dni) throws ResourceNotFoundException, BadRequestException;
+
     List<PacienteDto> buscar(String nombre);
+
     List<PacienteDto> buscar(String nombre, String apellido);
 }

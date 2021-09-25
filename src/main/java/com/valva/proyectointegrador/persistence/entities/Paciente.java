@@ -18,7 +18,7 @@ import java.util.Set;
 public class Paciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="paciente_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paciente_seq")
     @SequenceGenerator(name = "paciente_seq", sequenceName = "paciente_seq", allocationSize = 1)
     @Column
     private Integer id;
@@ -59,11 +59,11 @@ public class Paciente {
         if (o == null || getClass() != o.getClass()) return false;
         Paciente paciente = (Paciente) o;
         return id.equals(paciente.id) &&
-               Objects.equals(dni, paciente.dni) &&
-               Objects.equals(domicilio, paciente.domicilio) &&
-               nombre.equals(paciente.nombre) &&
-               apellido.equals(paciente.apellido) &&
-               fechaIngreso.equals(paciente.fechaIngreso);
+                Objects.equals(dni, paciente.dni) &&
+                Objects.equals(domicilio, paciente.domicilio) &&
+                nombre.equals(paciente.nombre) &&
+                apellido.equals(paciente.apellido) &&
+                fechaIngreso.equals(paciente.fechaIngreso);
     }
 
     @Override

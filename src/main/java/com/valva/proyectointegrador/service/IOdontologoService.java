@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IOdontologoService extends CRUDService<OdontologoDto> {
     OdontologoDto buscar(Integer matricula) throws ResourceNotFoundException, BadRequestException;
+
     List<OdontologoDto> buscar(String nombre);
+
     List<OdontologoDto> buscar(String nombre, String apellido);
 }

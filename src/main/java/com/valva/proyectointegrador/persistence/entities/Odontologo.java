@@ -15,7 +15,7 @@ import java.util.Set;
 public class Odontologo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="odontologo_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "odontologo_seq")
     @SequenceGenerator(name = "odontologo_seq", sequenceName = "odontologo_seq", allocationSize = 1)
     @Column(name = "odontologo_id")
     private Integer id;

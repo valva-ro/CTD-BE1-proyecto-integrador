@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Domicilio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="domicilio_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "domicilio_seq")
     @SequenceGenerator(name = "domicilio_seq", sequenceName = "domicilio_seq", allocationSize = 1)
     @Column
     private Integer id;

@@ -17,7 +17,7 @@ import java.util.List;
 public class PacienteController implements CRUDController<PacienteDto> {
 
     @Qualifier("pacienteService")
-    private IPacienteService pacienteService;
+    private final IPacienteService pacienteService;
 
     public PacienteController(IPacienteService pacienteService) {
         this.pacienteService = pacienteService;

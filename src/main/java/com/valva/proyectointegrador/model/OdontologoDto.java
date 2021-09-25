@@ -1,6 +1,6 @@
 package com.valva.proyectointegrador.model;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class OdontologoDto {

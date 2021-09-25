@@ -70,7 +70,7 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<OdontologoDto>> buscarTodos(){
+    public ResponseEntity<List<OdontologoDto>> buscarTodos() {
         return ResponseEntity.ok(odontologoService.consultarTodos());
     }
 }

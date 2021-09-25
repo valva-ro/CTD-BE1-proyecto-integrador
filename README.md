@@ -9,8 +9,8 @@ Dejo [acá](https://warped-crescent-106069.postman.co/workspace/BackEnd-1~86fad4
 un link al workspace de Postman que estoy usando para probar los endpoints.
 
 ## Pre-requisitos
-  - [Maven](https://maven.apache.org/download.cgi)
-  - [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
+-  [Maven](https://maven.apache.org/download.cgi)
+-  [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
 
 ## Instalación
 Por defecto Tomcat se levanta en el puerto 8080, si se quisiera configurar un puerto personalizado agregar `server.port=<PUERTO>`
@@ -34,24 +34,24 @@ java -jar ClinicaOdontologica.jar
 ## Endpoints
 ### Odontólogos
 
-  - Buscar por id: `GET` a `PATH/odontologos/{id}`
-      - `200 OK` → devuelve el odontólogo
-      - `404 NOT FOUND` → no se encontró un odontólogo con ese ID
+-  Buscar por id: `GET` a `PATH/odontologos/{id}`
+    -  `200 OK` → devuelve el odontólogo
+    -  `404 NOT FOUND` → no se encontró un odontólogo con ese ID
 
-  - Buscar por dni: `GET` a `PATH/odontologos/?matricula=123`
-    - `200 OK` → devuelve el odontólogo
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-    - `404 NOT FOUND` → no se encontró un odontólogo con esa matrícula
+-  Buscar por dni: `GET` a `PATH/odontologos/?matricula=123`
+  -  `200 OK` → devuelve el odontólogo
+  -  `400 BAD REQUEST` → hubo un error en los datos recibidos
+  -  `404 NOT FOUND` → no se encontró un odontólogo con esa matrícula
 
-  - Buscar por nombre: `GET` a `PATH/odontologos/?nombre=Pepe`
-    - `200 OK` → devuelve todos los odontólogos con ese nombre
+-  Buscar por nombre: `GET` a `PATH/odontologos/?nombre=Pepe`
+  -  `200 OK` → devuelve todos los odontólogos con ese nombre
     -
-  - Buscar por nombre y apellido: `GET` a `PATH/odontologos/?nombre=Pepe&apellido=Pepardo`
-    - `200 OK` → devuelve todos los odontólogos con ese nombre y apellido
+-  Buscar por nombre y apellido: `GET` a `PATH/odontologos/?nombre=Pepe&apellido=Pepardo`
+  -  `200 OK` → devuelve todos los odontólogos con ese nombre y apellido
 
-  - Registrar nuevo: `POST` a `PATH/odontologos`
-      - `200 OK` → se registró correctamente
-      - `400 BAD REQUEST` → hubo un error en los datos recibidos
+-  Registrar nuevo: `POST` a `PATH/odontologos`
+    -  `200 OK` → se registró correctamente
+    -  `400 BAD REQUEST` → hubo un error en los datos recibidos
           ```json
             {
                 "nombre": "Pipo",
@@ -60,10 +60,10 @@ java -jar ClinicaOdontologica.jar
             }
           ```
         
-  - Actualizar existente: `PUT` a `PATH/odontologos`
-      - `200 OK` → se actualizó correctamente
-      - `400 BAD REQUEST` → hubo un error en los datos recibidos
-      - `404 NOT FOUND` → no se encontró el odontólogo con id recibido
+-  Actualizar existente: `PUT` a `PATH/odontologos`
+    -  `200 OK` → se actualizó correctamente
+    -  `400 BAD REQUEST` → hubo un error en los datos recibidos
+    -  `404 NOT FOUND` → no se encontró el odontólogo con id recibido
           ```json
           {
               "id": "1",
@@ -73,34 +73,34 @@ java -jar ClinicaOdontologica.jar
           }
           ```
         
-  - Eliminar por id: `DELETE` a `PATH/odontologos/{id}`
-      - `204 NO CONTENT` → se borró correctamente
-      - `404 NOT FOUND` → no se encontró el odontólogo con id recibido
+-  Eliminar por id: `DELETE` a `PATH/odontologos/{id}`
+    -  `204 NO CONTENT` → se borró correctamente
+    -  `404 NOT FOUND` → no se encontró el odontólogo con id recibido
 
 
-  - Obtener todos: `GET` a `PATH/odontologos`
+-  Obtener todos: `GET` a `PATH/odontologos`
   
 ### Pacientes
 
-  - Buscar por id: `GET` a `PATH/pacientes/{id}`
-    - `200 OK` → devuelve el paciente
-    - `404 NOT FOUND` → no se encontró un paciente con ese ID
+-  Buscar por id: `GET` a `PATH/pacientes/{id}`
+  -  `200 OK` → devuelve el paciente
+  -  `404 NOT FOUND` → no se encontró un paciente con ese ID
 
 
-  - Buscar por dni: `GET` a `PATH/pacientes/?dni=123456789`
-    - `200 OK` → devuelve el paciente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-    - `404 NOT FOUND` → no se encontró un paciente con ese DNI
+- Buscar por dni: `GET` a `PATH/pacientes/?dni=123456789`
+- `200 OK` → devuelve el paciente
+- `400 BAD REQUEST` → hubo un error en los datos recibidos
+- `404 NOT FOUND` → no se encontró un paciente con ese DNI
   
-  - Buscar por nombre: `GET` a `PATH/pacientes/?nombre=Pepe`
-    - `200 OK` → devuelve todos los pacientes con ese nombre
-    - 
-  - Buscar por nombre y apellido: `GET` a `PATH/pacientes/?nombre=Pepe&apellido=Pepardo`
-    - `200 OK` → devuelve todos los pacientes con ese nombre y apellido
+- Buscar por nombre: `GET` a `PATH/pacientes/?nombre=Pepe`
+- `200 OK` → devuelve todos los pacientes con ese nombre
+-  
+-  Buscar por nombre y apellido: `GET` a `PATH/pacientes/?nombre=Pepe&apellido=Pepardo`
+  -  `200 OK` → devuelve todos los pacientes con ese nombre y apellido
 
-  - Registrar nuevo: `POST` a `PATH/pacientes`
-    - `200 OK` → se registró correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+-  Registrar nuevo: `POST` a `PATH/pacientes`
+  -  `200 OK` → se registró correctamente
+  -  `400 BAD REQUEST` → hubo un error en los datos recibidos
       ```json
       {
           "nombre": "Pepe",
@@ -115,10 +115,10 @@ java -jar ClinicaOdontologica.jar
       }
       ```
     
-  - Actualizar existente: `PUT` a `PATH/pacientes`
-    - `200 OK` → se actualizó correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-    - `404 NOT FOUND` → no se encontró el paciente con id recibido
+-  Actualizar existente: `PUT` a `PATH/pacientes`
+  -  `200 OK` → se actualizó correctamente
+  -  `400 BAD REQUEST` → hubo un error en los datos recibidos
+  -  `404 NOT FOUND` → no se encontró el paciente con id recibido
       ```json
       {
           "id": "1",
@@ -136,31 +136,31 @@ java -jar ClinicaOdontologica.jar
       }
       ```
     
-  - Eliminar por id: `DELETE` a `PATH/pacientes/{id}`
-    - `204 NO CONTENT` → se borró correctamente
-    - `404 NOT FOUND` → no se encontró el paciente con id recibido
+-  Eliminar por id: `DELETE` a `PATH/pacientes/{id}`
+  -  `204 NO CONTENT` → se borró correctamente
+  -  `404 NOT FOUND` → no se encontró el paciente con id recibido
 
 
-  - Obtener todos: `GET` a `PATH/pacientes`
+-  Obtener todos: `GET` a `PATH/pacientes`
   
 ### Turnos
     
-  - Buscar por id: `GET` a `PATH/turnos/{id}`
-    - `200 OK` → devuelve el turno
-    - `404 NOT FOUND` → no se encontró un turno con ese ID
+-  Buscar por id: `GET` a `PATH/turnos/{id}`
+  -  `200 OK` → devuelve el turno
+  -  `404 NOT FOUND` → no se encontró un turno con ese ID
   
-  - Buscar por nombres y apellidos de pacientes: `GET` a `PATH/turnos/?nombrePaciente=Pepe&apellidoPaciente=Pepardo&nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
-    - `200 OK` → devuelve todos los turnos cuyos pacientes y odontólogos tengan esos nombres y apellidos
+-  Buscar por nombres y apellidos de pacientes: `GET` a `PATH/turnos/?nombrePaciente=Pepe&apellidoPaciente=Pepardo&nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
+  -  `200 OK` → devuelve todos los turnos cuyos pacientes y odontólogos tengan esos nombres y apellidos
   
-  - Buscar por nombre y apellido de odontólogo: `GET` a `PATH/turnos/?nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
-    - `200 OK` → devuelve todos los turnos cuyos odontólogos tengan con ese nombre y apellido
+-  Buscar por nombre y apellido de odontólogo: `GET` a `PATH/turnos/?nombreOdontologo=Pepo&apellidoOdontologo=Pepardo`
+  -  `200 OK` → devuelve todos los turnos cuyos odontólogos tengan con ese nombre y apellido
 
-  - Buscar por DNI de paciente y matrícula de odontólogo: `GET` a `PATH/turnos/?matricula=123&dni=123456789`
-    - `200 OK` → devuelve todos los turnos cuyos cuyos odontólogos tengan esa matrícula y pacientes tengan ese DNI
+-  Buscar por DNI de paciente y matrícula de odontólogo: `GET` a `PATH/turnos/?matricula=123&dni=123456789`
+  -  `200 OK` → devuelve todos los turnos cuyos cuyos odontólogos tengan esa matrícula y pacientes tengan ese DNI
 
-  - Registrar nuevo: `POST` a `PATH/turnos`
-    - `200 OK` → se registró correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
+-  Registrar nuevo: `POST` a `PATH/turnos`
+  -  `200 OK` → se registró correctamente
+  -  `400 BAD REQUEST` → hubo un error en los datos recibidos
       ```json
       {
           "paciente": {"id": "1"},
@@ -169,10 +169,10 @@ java -jar ClinicaOdontologica.jar
       }
       ```
 
-  - Actualizar existente: `PUT` a `PATH/turnos`
-    - `200 OK` → se actualizó correctamente
-    - `400 BAD REQUEST` → hubo un error en los datos recibidos
-    - `404 NOT FOUND` → no se encontró el turno con id recibido
+-  Actualizar existente: `PUT` a `PATH/turnos`
+  -  `200 OK` → se actualizó correctamente
+  -  `400 BAD REQUEST` → hubo un error en los datos recibidos
+  -  `404 NOT FOUND` → no se encontró el turno con id recibido
        ```json
        {
              "id": "1",
@@ -182,12 +182,12 @@ java -jar ClinicaOdontologica.jar
        }
        ```
     
-  - Eliminar por id: `DELETE` a `PATH/turnos/{id}`
-    - `204 NO CONTENT` → se borró correctamente
-    - `404 NOT FOUND` → no se encontró el turno con id recibido
+-  Eliminar por id: `DELETE` a `PATH/turnos/{id}`
+  -  `204 NO CONTENT` → se borró correctamente
+  -  `404 NOT FOUND` → no se encontró el turno con id recibido
 
 
-  - Obtener todos: `GET` a `PATH/turnos`
+-  Obtener todos: `GET` a `PATH/turnos`
 
 
 [build-shield]: https://api.travis-ci.org/valva-ro/CTD-BE1-proyecto-integrador.svg?branch=main

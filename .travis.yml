@@ -1,0 +1,10 @@
+
+language: java
+jdk:
+  - oraclejdk11
+
+notifications:
+  email:
+    recipients:
+      - vavarela.rodriguez@gmail.com
+    on_failure: always

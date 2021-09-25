@@ -192,5 +192,5 @@ java -jar ClinicaOdontologica.jar
 
 [build-shield]: https://api.travis-ci.org/valva-ro/CTD-BE1-proyecto-integrador.svg?branch=main
 [build-url]: https://travis-ci.org/github/valva-ro/CTD-BE1-proyecto-integrador
-[codacy-shield]: https://app.codacy.com/project/badge/Grade/f0b33f5e35db4547877aa69fa122f435
-[codacy-url]: https://www.codacy.com/gh/valva-ro/CTD-BE1-proyecto-integrador/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=valva-ro/Algo3-TP2-AlgoBlocks&amp;utm_campaign=Badge_Grade
+[codacy-shield]: https://app.codacy.com/project/badge/Grade/bb34433eee9c4d99b800c7280768fc9b
+[codacy-url]: https://www.codacy.com/gh/valva-ro/CTD-BE1-proyecto-integrador/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=valva-ro/CTD-BE1-proyecto-integrador&amp;utm_campaign=Badge_Grade

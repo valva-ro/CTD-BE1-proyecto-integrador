@@ -62,6 +62,8 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public TurnoDto crear(TurnoDto turnoDto) throws BadRequestException, ResourceNotFoundException {
+        if (turnoDto.getPaciente() == null || turnoDto.getOdontologo() == null)
+            throw new BadRequestException("El paciente u odontólogo es null");
         Integer pacienteId = turnoDto.getPaciente().getId();
         Integer odontologoId = turnoDto.getOdontologo().getId();
         if (this.existenPacienteYOdontologo(pacienteId, odontologoId)) {
@@ -87,6 +89,8 @@ public class TurnoService implements ITurnoService {
             throw new BadRequestException("No se pudo actualizar el turno null");
         if (turnoDto.getId() == null)
             throw new BadRequestException("El id del turno a actualizar no puede ser null");
+        if (turnoDto.getPaciente() == null || turnoDto.getOdontologo() == null)
+            throw new BadRequestException("El paciente u odontólogo es null");
         Optional<Turno> turnoEnBD = turnoRepository.findById(turnoDto.getId());
 
         if (turnoEnBD.isPresent()) {

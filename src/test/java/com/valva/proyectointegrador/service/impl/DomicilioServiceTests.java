@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest
-public class DomicilioServiceTest {
+public class DomicilioServiceTests {
 
     @Mock
     @Autowired

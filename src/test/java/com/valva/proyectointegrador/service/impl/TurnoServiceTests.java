@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest
-public class TurnoServiceTest {
+public class TurnoServiceTests {
 
     @Mock
     @Autowired

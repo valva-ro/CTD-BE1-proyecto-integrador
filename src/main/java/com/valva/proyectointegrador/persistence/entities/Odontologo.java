@@ -32,6 +32,10 @@ public class Odontologo {
     @Column
     private Integer matricula;
 
+    @Setter
+    @Column
+    private Integer dni;
+
     @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Turno> turnos = new HashSet<>();
@@ -41,11 +45,11 @@ public class Odontologo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Odontologo that = (Odontologo) o;
-        return id.equals(that.id) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && matricula.equals(that.matricula);
+        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(apellido, that.apellido) && Objects.equals(matricula, that.matricula) && Objects.equals(dni, that.dni) && Objects.equals(turnos, that.turnos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, apellido, matricula);
+        return Objects.hash(id, nombre, apellido, matricula, dni, turnos);
     }
 }

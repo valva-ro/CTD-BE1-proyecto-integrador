@@ -26,8 +26,6 @@ public class UsuarioService implements UserDetailsService {
     public Usuario crear(Usuario usuario) throws BadRequestException {
         if (usuario == null)
             throw new BadRequestException("El usuario no puede ser null");
-        if (usuario.getId() == null)
-            throw new BadRequestException("El id del usuario no puede ser null");
         if (usuario.getDni() == null)
             throw new BadRequestException("El DNI del usuario no puede ser null");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

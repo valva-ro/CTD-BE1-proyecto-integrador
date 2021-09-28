@@ -1,5 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.BadRequestException;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
@@ -38,7 +39,7 @@ public class TurnoServiceTests {
     private IPacienteRepository pacienteRepository;
     @Autowired
     @InjectMocks
-    private IPacienteService pacienteService = new PacienteService();
+    private IPacienteService pacienteService = new PacienteService(pacienteRepository);
     private PacienteDto paciente;
 
     @Mock
@@ -46,12 +47,12 @@ public class TurnoServiceTests {
     private IOdontologoRepository odontologoRepository;
     @Autowired
     @InjectMocks
-    private IOdontologoService odontologoService = new OdontologoService();
+    private IOdontologoService odontologoService = new OdontologoService(odontologoRepository);
     private OdontologoDto odontologo;
 
     @Autowired
     @InjectMocks
-    private ITurnoService turnoService = new TurnoService();
+    private ITurnoService turnoService = new TurnoService(turnoRepository);
 
     @BeforeEach
     public void setUp() {

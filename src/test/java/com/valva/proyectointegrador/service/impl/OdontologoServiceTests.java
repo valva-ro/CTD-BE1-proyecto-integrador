@@ -1,5 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
@@ -25,7 +26,7 @@ public class OdontologoServiceTests {
 
     @Autowired
     @InjectMocks
-    private IOdontologoService odontologoService = new OdontologoService();
+    private IOdontologoService odontologoService = new OdontologoService(odontologoRepository);
     private OdontologoDto odontologo;
 
     @BeforeEach

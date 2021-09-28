@@ -7,16 +7,12 @@ import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.model.TurnoDto;
 import com.valva.proyectointegrador.persistence.entities.Turno;
-import com.valva.proyectointegrador.persistence.entities.auth.Usuario;
 import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
 import com.valva.proyectointegrador.service.ITurnoService;
-import com.valva.proyectointegrador.service.impl.auth.UsuarioService;
 import com.valva.proyectointegrador.utils.ModelMapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,12 +27,14 @@ public class TurnoService implements ITurnoService {
     private CRUDService<OdontologoDto> odontologoService;
     @Autowired
     private CRUDService<PacienteDto> pacienteService;
-    @Autowired
-    private ITurnoRepository turnoRepository;
-    @Autowired
-    private UsuarioService usuarioService;
+    private final ITurnoRepository turnoRepository;
     @Autowired
     private SpringConfig springConfig;
+
+    @Autowired
+    public TurnoService(ITurnoRepository turnoRepository) {
+        this.turnoRepository = turnoRepository;
+    }
 
     @Override
     public List<TurnoDto> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo) {
@@ -115,9 +113,6 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public void eliminar(Integer id) throws BadRequestException {
-//        TODO: obtener el dni del usuario logueado y compararlo con dniPaciente para verificar que pueda borrar el turno
-//        Integer pacienteId = turnoRepository.findById(id).get().getPaciente().getId();
-//        Integer dniPaciente = pacienteService.buscarPorId(pacienteId).getDni();
         turnoRepository.deleteById(id);
     }
 

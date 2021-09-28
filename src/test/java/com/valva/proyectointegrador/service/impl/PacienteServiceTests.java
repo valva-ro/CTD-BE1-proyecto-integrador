@@ -1,5 +1,6 @@
 package com.valva.proyectointegrador.service.impl;
 
+import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.model.PacienteDto;
@@ -26,7 +27,7 @@ public class PacienteServiceTests {
 
     @Autowired
     @InjectMocks
-    private IPacienteService pacienteService = new PacienteService();
+    private IPacienteService pacienteService = new PacienteService(pacienteRepository);
     private PacienteDto paciente;
 
     @BeforeEach

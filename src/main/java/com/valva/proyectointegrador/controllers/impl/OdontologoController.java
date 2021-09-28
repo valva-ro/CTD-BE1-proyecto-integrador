@@ -8,6 +8,7 @@ import com.valva.proyectointegrador.service.IOdontologoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class OdontologoController implements CRUDController<OdontologoDto> {
     @Qualifier("odontologoService")
     private final IOdontologoService odontologoService;
 
+    @Autowired
     public OdontologoController(IOdontologoService odontologoService) {
         this.odontologoService = odontologoService;
     }

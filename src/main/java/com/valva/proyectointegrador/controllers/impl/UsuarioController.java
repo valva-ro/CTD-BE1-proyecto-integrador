@@ -8,7 +8,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -40,13 +43,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/")
-    @ResponseBody
     public String home() {
         return "Bienvenide a la Clínica Odontológica Muelita \uD83E\uDDB7";
     }
 
     @GetMapping("/403")
-    @ResponseBody
     public String error() {
         return "<h1>Error 403: Acceso denegado o prohibido</h1>";
     }

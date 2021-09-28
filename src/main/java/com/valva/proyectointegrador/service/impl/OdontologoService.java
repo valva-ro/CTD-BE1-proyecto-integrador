@@ -18,10 +18,14 @@ import java.util.Optional;
 @Service
 public class OdontologoService implements IOdontologoService {
 
-    @Autowired
-    private IOdontologoRepository odontologoRepository;
+    private final IOdontologoRepository odontologoRepository;
     @Autowired
     private SpringConfig springConfig;
+
+    @Autowired
+    public OdontologoService(IOdontologoRepository odontologoRepository) {
+        this.odontologoRepository = odontologoRepository;
+    }
 
     @Override
     public OdontologoDto buscar(Integer matricula) throws ResourceNotFoundException, BadRequestException {

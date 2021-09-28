@@ -21,12 +21,16 @@ import java.util.Optional;
 @Service
 public class PacienteService implements IPacienteService {
 
-    @Autowired
-    private IPacienteRepository pacienteRepository;
+    private final IPacienteRepository pacienteRepository;
     @Autowired
     private IDomicilioService domicilioService;
     @Autowired
     private SpringConfig springConfig;
+
+    @Autowired
+    public PacienteService(IPacienteRepository pacienteRepository) {
+        this.pacienteRepository = pacienteRepository;
+    }
 
     @Override
     public PacienteDto buscar(Integer dni) throws BadRequestException, ResourceNotFoundException {

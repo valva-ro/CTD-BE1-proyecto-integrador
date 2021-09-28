@@ -22,7 +22,6 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) throws BadRequestException {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        usuarioService.crear(new Usuario(123456789, "admin", "admin@gmail.com", passwordEncoder.encode("user"), UsuarioRoles.ADMIN));
+        usuarioService.crear(new Usuario(123456789, "admin", "admin@gmail.com", "admin", UsuarioRoles.ADMIN));
     }
 }

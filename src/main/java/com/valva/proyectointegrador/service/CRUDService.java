@@ -14,7 +14,7 @@ public interface CRUDService<T> {
 
     T actualizar(T t) throws BadRequestException, ResourceNotFoundException;
 
-    void eliminar(Integer id) throws BadRequestException;
+    void eliminar(Integer id) throws BadRequestException, ResourceNotFoundException;
 
     List<T> consultarTodos();
 }

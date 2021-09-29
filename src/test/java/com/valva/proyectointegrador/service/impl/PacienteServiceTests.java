@@ -1,17 +1,12 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.model.PacienteDto;
-import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
-import com.valva.proyectointegrador.service.IPacienteService;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,28 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class PacienteServiceTests {
 
-    @Mock
     @Autowired
-    private IPacienteRepository pacienteRepository;
-
-    @Autowired
-    @InjectMocks
-    private IPacienteService pacienteService = new PacienteService(pacienteRepository);
+    private PacienteService pacienteService;
     private PacienteDto paciente;
 
     @BeforeEach
     public void setUp() {
-        DomicilioDto domicilio = new DomicilioDto();
-        domicilio.setCalle("Calle Falsa");
-        domicilio.setNumero(123);
-        domicilio.setLocalidad("Springfield");
-        domicilio.setProvincia("Springfield");
-
-        paciente = new PacienteDto();
-        paciente.setNombre("Pepe");
-        paciente.setApellido("Pepardo");
-        paciente.setDni(123456789);
-        paciente.setDomicilio(domicilio);
+        DomicilioDto domicilio = new DomicilioDto("Calle Falsa", 123, "Springfield", "Springfield");
+        paciente = new PacienteDto("Pepe", "Pepardo", 123456789, domicilio);
     }
 
     @Test

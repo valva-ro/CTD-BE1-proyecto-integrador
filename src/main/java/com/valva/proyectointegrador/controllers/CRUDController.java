@@ -13,7 +13,7 @@ public interface CRUDController<T> {
 
     ResponseEntity<?> actualizar(@RequestBody T t) throws BadRequestException, ResourceNotFoundException;
 
-    ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException;
+    ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException, ResourceNotFoundException;
 
     ResponseEntity<?> buscarTodos();
 }

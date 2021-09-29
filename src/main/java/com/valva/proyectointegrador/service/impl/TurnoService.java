@@ -10,7 +10,7 @@ import com.valva.proyectointegrador.persistence.entities.Turno;
 import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.CRUDService;
 import com.valva.proyectointegrador.service.ITurnoService;
-import com.valva.proyectointegrador.utils.ModelMapper;
+import com.valva.proyectointegrador.utils.Mapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,29 +39,29 @@ public class TurnoService implements ITurnoService {
     @Override
     public List<TurnoDto> buscar(String nombrePaciente, String apellidoPaciente, String nombreOdontologo, String apellidoOdontologo) {
         List<Turno> turnos = turnoRepository.buscar(nombrePaciente, apellidoPaciente, nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
     }
 
     @Override
     public List<TurnoDto> buscar(String nombreOdontologo, String apellidoOdontologo) {
         List<Turno> turnos = turnoRepository.buscar(nombreOdontologo, apellidoOdontologo).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
     }
 
     @Override
     public List<TurnoDto> buscar(Integer matricula, Integer dni) {
         List<Turno> turnos = turnoRepository.buscar(matricula, dni).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
     }
 
     @Override
     public TurnoDto buscarPorId(Integer id) throws BadRequestException, ResourceNotFoundException {
-        if (id == null)
-            throw new BadRequestException("El id del turno no puede ser null");
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del turno no puede ser null ni negativo");
         Turno turno = turnoRepository.findById(id).orElse(null);
         if (turno == null)
             throw new ResourceNotFoundException("No se encontró el turno con id " + id);
-        return ModelMapper.map(springConfig.getModelMapper(), turno, TurnoDto.class);
+        return Mapper.map(springConfig.getModelMapper(), turno, TurnoDto.class);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class TurnoService implements ITurnoService {
         Integer odontologoId = turnoDto.getOdontologo().getId();
         if (this.existenPacienteYOdontologo(pacienteId, odontologoId)) {
             if (this.sePuedeSacarTurno(turnoDto)) {
-                Turno turno = ModelMapper.map(springConfig.getModelMapper(), turnoDto, Turno.class);
-                turnoDto = ModelMapper.map(springConfig.getModelMapper(), turnoRepository.save(turno), TurnoDto.class);
+                Turno turno = Mapper.map(springConfig.getModelMapper(), turnoDto, Turno.class);
+                turnoDto = Mapper.map(springConfig.getModelMapper(), turnoRepository.save(turno), TurnoDto.class);
                 turnoDto.setPaciente(pacienteService.buscarPorId(pacienteId));
                 turnoDto.setOdontologo(odontologoService.buscarPorId(odontologoId));
             } else {
@@ -101,7 +101,7 @@ public class TurnoService implements ITurnoService {
             if (this.sePuedeSacarTurno(turnoDto)) {
                 Turno actualizado = this.actualizar(turnoEnBD.get(), turnoDto);
                 Turno guardado = turnoRepository.save(actualizado);
-                turnoActualizado = ModelMapper.map(springConfig.getModelMapper(), guardado, TurnoDto.class);
+                turnoActualizado = Mapper.map(springConfig.getModelMapper(), guardado, TurnoDto.class);
             } else {
                 throw new BadRequestException("El odontólogo ya tiene un turno programado para ese día en ese horario");
             }
@@ -112,14 +112,18 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void eliminar(Integer id) throws BadRequestException {
+    public void eliminar(Integer id) throws BadRequestException, ResourceNotFoundException {
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del turno no puede ser null ni negativo");
+        if (!turnoRepository.existsById(id))
+            throw new ResourceNotFoundException("No existe ningún turno con id: " + id);
         turnoRepository.deleteById(id);
     }
 
     @Override
     public List<TurnoDto> consultarTodos() {
         List<Turno> turnos = turnoRepository.findAll();
-        return ModelMapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
     }
 
     @Override
@@ -127,7 +131,7 @@ public class TurnoService implements ITurnoService {
         LocalDateTime desde = LocalDateTime.now();
         LocalDateTime hasta = desde.plusDays(7);
         List<Turno> turnos = turnoRepository.turnosDesdeHasta(desde, hasta).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
     }
 
     private Turno actualizar(Turno turno, TurnoDto turnoDto) throws Exception {
@@ -153,7 +157,7 @@ public class TurnoService implements ITurnoService {
         OdontologoDto odontologoDto = odontologoService.buscarPorId(turnoDto.getOdontologo().getId());
         return turnoRepository.findAll()
                 .stream()
-                .map(turno -> ModelMapper.map(springConfig.getModelMapper(), turno, TurnoDto.class))
+                .map(turno -> Mapper.map(springConfig.getModelMapper(), turno, TurnoDto.class))
                 .noneMatch(t -> t.getOdontologo().equals(odontologoDto) && t.getFecha().equals(turnoDto.getFecha()));
     }
 }

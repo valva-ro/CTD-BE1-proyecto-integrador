@@ -1,14 +1,15 @@
 package com.valva.proyectointegrador.controllers.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.model.TurnoDto;
+import com.valva.proyectointegrador.utils.Mapper;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 public class TurnoControllerTests {
@@ -31,38 +33,39 @@ public class TurnoControllerTests {
     private MockMvc mockMvc;
 
     private void registrarOdontologo() throws Exception {
-        OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
-        ObjectMapper objectMapper = new ObjectMapper();
+        OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 111222);
         this.mockMvc.perform(MockMvcRequestBuilders.post("/odontologos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(o)))
+                        .content(Mapper.mapObjectToJson(o)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 
     private void registrarPaciente() throws Exception {
         PacienteDto p = new PacienteDto("Pepe", "Pepin", 123456789, new DomicilioDto("Calle", 123, "Caballito", "CABA"));
-        ObjectMapper objectMapper = new ObjectMapper();
         this.mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(p)))
+                        .content(Mapper.mapObjectToJson(p)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 
-    @Test
-    public void registrarTurno() throws Exception {
+    private void cargarDatos() throws Exception {
         registrarPaciente();
         registrarOdontologo();
+    }
+
+    @Test
+    public void test01registrarTurno() throws Exception {
+        cargarDatos();
         PacienteDto p = new PacienteDto();
         p.setId(1);
         OdontologoDto o = new OdontologoDto();
         o.setId(1);
         TurnoDto t = new TurnoDto(LocalDateTime.now(), p, o);
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         MvcResult response = this.mockMvc.perform(MockMvcRequestBuilders.post("/turnos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(t)))
+                        .content(Mapper.mapObjectToJson(t)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
@@ -70,13 +73,12 @@ public class TurnoControllerTests {
     }
 
     @Test
-    public void noSePuedeRegistrarTurnoSinPacienteUOdontologo() throws Exception {
+    public void test02noSePuedeRegistrarTurnoSinPacienteUOdontologo() throws Exception {
         TurnoDto t = new TurnoDto();
         t.setFecha(LocalDateTime.now());
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         MvcResult response = this.mockMvc.perform(MockMvcRequestBuilders.post("/turnos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(t)))
+                        .content(Mapper.mapObjectToJson(t)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
 
@@ -84,12 +86,11 @@ public class TurnoControllerTests {
     }
 
     @Test
-    public void noSePuedeRegistrarTurnoSinLosIdsDePacienteYOdontologo() throws Exception {
+    public void test03noSePuedeRegistrarTurnoSinLosIdsDePacienteYOdontologo() throws Exception {
         TurnoDto t = new TurnoDto(LocalDateTime.now(), new PacienteDto(), new OdontologoDto());
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         MvcResult response = this.mockMvc.perform(MockMvcRequestBuilders.post("/turnos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(t)))
+                        .content(Mapper.mapObjectToJson(t)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
 

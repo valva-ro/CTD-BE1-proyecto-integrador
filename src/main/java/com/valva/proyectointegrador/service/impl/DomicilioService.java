@@ -7,7 +7,7 @@ import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.persistence.entities.Domicilio;
 import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
-import com.valva.proyectointegrador.utils.ModelMapper;
+import com.valva.proyectointegrador.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +25,12 @@ public class DomicilioService implements IDomicilioService {
 
     public List<DomicilioDto> buscar(String calle) {
         List<Domicilio> domicilios = domicilioRepository.buscar(calle).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
     public List<DomicilioDto> buscar(String calle, Integer numero) {
         List<Domicilio> domicilios = domicilioRepository.buscar(calle, numero).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
     public DomicilioDto buscar(String calle, Integer numero, String localidad, String provincia) throws ResourceNotFoundException {
@@ -42,7 +42,9 @@ public class DomicilioService implements IDomicilioService {
     }
 
     @Override
-    public DomicilioDto buscarPorId(Integer id) throws ResourceNotFoundException {
+    public DomicilioDto buscarPorId(Integer id) throws ResourceNotFoundException, BadRequestException {
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del domicilio no puede ser null ni negativo");
         Domicilio domicilio = domicilioRepository.findById(id).orElse(null);
         if (domicilio == null)
             throw new ResourceNotFoundException("No se encontró el domicilio con id " + id);
@@ -78,14 +80,18 @@ public class DomicilioService implements IDomicilioService {
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public void eliminar(Integer id) throws BadRequestException, ResourceNotFoundException {
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del domicilio no puede ser null ni negativo");
+        if (!domicilioRepository.existsById(id))
+            throw new ResourceNotFoundException("No existe ningún domicilio con id: " + id);
         domicilioRepository.deleteById(id);
     }
 
     @Override
     public List<DomicilioDto> consultarTodos() {
         List<Domicilio> domicilios = domicilioRepository.findAll();
-        return ModelMapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), domicilios, DomicilioDto.class);
     }
 
     private Domicilio actualizar(Domicilio domicilio, DomicilioDto domicilioDto) {

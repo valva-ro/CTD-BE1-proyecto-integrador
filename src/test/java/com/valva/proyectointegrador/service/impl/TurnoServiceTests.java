@@ -1,15 +1,11 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.BadRequestException;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
 import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.model.PacienteDto;
 import com.valva.proyectointegrador.model.TurnoDto;
-import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
-import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
-import com.valva.proyectointegrador.persistence.repository.ITurnoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
 import com.valva.proyectointegrador.service.IPacienteService;
 import com.valva.proyectointegrador.service.ITurnoService;
@@ -17,8 +13,6 @@ import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -30,29 +24,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class TurnoServiceTests {
 
-    @Mock
     @Autowired
-    private ITurnoRepository turnoRepository;
-
-    @Mock
-    @Autowired
-    private IPacienteRepository pacienteRepository;
-    @Autowired
-    @InjectMocks
-    private IPacienteService pacienteService = new PacienteService(pacienteRepository);
+    private IPacienteService pacienteService;
     private PacienteDto paciente;
 
-    @Mock
     @Autowired
-    private IOdontologoRepository odontologoRepository;
-    @Autowired
-    @InjectMocks
-    private IOdontologoService odontologoService = new OdontologoService(odontologoRepository);
+    private IOdontologoService odontologoService;
     private OdontologoDto odontologo;
 
     @Autowired
-    @InjectMocks
-    private ITurnoService turnoService = new TurnoService(turnoRepository);
+    private ITurnoService turnoService;
 
     @BeforeEach
     public void setUp() {

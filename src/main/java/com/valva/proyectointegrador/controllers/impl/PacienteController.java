@@ -108,7 +108,7 @@ public class PacienteController implements CRUDController<PacienteDto> {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 400, message = "Bad Request") })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException {
+    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException, ResourceNotFoundException {
         pacienteService.eliminar(id);
         return ResponseEntity.ok("Se eliminó el paciente con id " + id);
     }

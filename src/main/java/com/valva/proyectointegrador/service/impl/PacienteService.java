@@ -10,7 +10,7 @@ import com.valva.proyectointegrador.persistence.entities.Paciente;
 import com.valva.proyectointegrador.persistence.repository.IPacienteRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
 import com.valva.proyectointegrador.service.IPacienteService;
-import com.valva.proyectointegrador.utils.ModelMapper;
+import com.valva.proyectointegrador.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +22,14 @@ import java.util.Optional;
 public class PacienteService implements IPacienteService {
 
     private final IPacienteRepository pacienteRepository;
-    @Autowired
-    private IDomicilioService domicilioService;
-    @Autowired
+    private final IDomicilioService domicilioService;
     private SpringConfig springConfig;
 
     @Autowired
-    public PacienteService(IPacienteRepository pacienteRepository) {
+    public PacienteService(IPacienteRepository pacienteRepository, IDomicilioService domicilioService, SpringConfig springConfig) {
         this.pacienteRepository = pacienteRepository;
+        this.domicilioService = domicilioService;
+        this.springConfig = springConfig;
     }
 
     @Override
@@ -45,19 +45,19 @@ public class PacienteService implements IPacienteService {
     @Override
     public List<PacienteDto> buscar(String nombre) {
         List<Paciente> pacientes = pacienteRepository.buscar(nombre).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
     }
 
     @Override
     public List<PacienteDto> buscar(String nombre, String apellido) {
         List<Paciente> pacientes = pacienteRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
     }
 
     @Override
     public PacienteDto buscarPorId(Integer id) throws BadRequestException, ResourceNotFoundException {
-        if (id == null)
-            throw new BadRequestException("El id del paciente no puede ser null");
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del paciente no puede ser null ni negativo");
         Paciente paciente = pacienteRepository.findById(id).orElse(null);
         if (paciente == null)
             throw new ResourceNotFoundException("No se encontró el paciente con id " + id);
@@ -89,14 +89,18 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public void eliminar(Integer id) throws BadRequestException, ResourceNotFoundException {
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del paciente no puede ser null ni negativo");
+        if (!pacienteRepository.existsById(id))
+            throw new ResourceNotFoundException("No existe ningún paciente con id: " + id);
         pacienteRepository.deleteById(id);
     }
 
     @Override
     public List<PacienteDto> consultarTodos() {
         List<Paciente> pacientes = pacienteRepository.findAll();
-        return ModelMapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), pacientes, PacienteDto.class);
     }
 
     private Paciente actualizar(Paciente paciente, PacienteDto pacienteDto) throws BadRequestException, ResourceNotFoundException {

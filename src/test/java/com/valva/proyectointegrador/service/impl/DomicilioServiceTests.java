@@ -2,14 +2,11 @@ package com.valva.proyectointegrador.service.impl;
 
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.DomicilioDto;
-import com.valva.proyectointegrador.persistence.repository.IDomicilioRepository;
 import com.valva.proyectointegrador.service.IDomicilioService;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,13 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class DomicilioServiceTests {
 
-    @Mock
     @Autowired
-    private IDomicilioRepository domicilioRepository;
-
-    @Autowired
-    @InjectMocks
-    private IDomicilioService domicilioService = new DomicilioService();
+    private IDomicilioService domicilioService;
     private DomicilioDto domicilio;
 
     @BeforeEach

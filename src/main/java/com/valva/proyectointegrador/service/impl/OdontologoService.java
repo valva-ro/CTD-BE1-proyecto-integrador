@@ -7,7 +7,7 @@ import com.valva.proyectointegrador.model.OdontologoDto;
 import com.valva.proyectointegrador.persistence.entities.Odontologo;
 import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
-import com.valva.proyectointegrador.utils.ModelMapper;
+import com.valva.proyectointegrador.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,19 +40,19 @@ public class OdontologoService implements IOdontologoService {
     @Override
     public List<OdontologoDto> buscar(String nombre) {
         List<Odontologo> odontologos = odontologoRepository.buscar(nombre).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     @Override
     public List<OdontologoDto> buscar(String nombre, String apellido) {
         List<Odontologo> odontologos = odontologoRepository.buscar(nombre, apellido).orElse(new ArrayList<>());
-        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     @Override
     public OdontologoDto buscarPorId(Integer id) throws BadRequestException, ResourceNotFoundException {
-        if (id == null)
-            throw new BadRequestException("El id del odontólogo no puede ser null");
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del odontólogo no puede ser null ni negativo");
         Odontologo odontologo = odontologoRepository.findById(id).orElse(null);
         if (odontologo == null)
             throw new ResourceNotFoundException("El odontólogo no existe");
@@ -86,16 +86,18 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public void eliminar(Integer id) throws BadRequestException {
-        if (id == null)
-            throw new BadRequestException("El id del odontólogo no puede ser null");
+    public void eliminar(Integer id) throws BadRequestException, ResourceNotFoundException {
+        if (id == null || id < 1)
+            throw new BadRequestException("El id del odontólogo no puede ser null ni negativo");
+        if (!odontologoRepository.existsById(id))
+            throw new ResourceNotFoundException("No existe ningún odontólogo con id: " + id);
         odontologoRepository.deleteById(id);
     }
 
     @Override
     public List<OdontologoDto> consultarTodos() {
         List<Odontologo> odontologos = odontologoRepository.findAll();
-        return ModelMapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
+        return Mapper.mapList(springConfig.getModelMapper(), odontologos, OdontologoDto.class);
     }
 
     private Odontologo actualizar(Odontologo odontologo, OdontologoDto odontologoDto) {

@@ -105,7 +105,7 @@ public class TurnoController implements ITurnoController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 400, message = "Bad Request") })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException {
+    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws BadRequestException, ResourceNotFoundException {
         turnoService.eliminar(id);
         return ResponseEntity.ok("Se elimino el turno con id " + id);
     }

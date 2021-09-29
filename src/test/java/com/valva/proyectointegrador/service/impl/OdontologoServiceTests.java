@@ -1,16 +1,12 @@
 package com.valva.proyectointegrador.service.impl;
 
-import com.valva.proyectointegrador.config.SpringConfig;
 import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
-import com.valva.proyectointegrador.persistence.repository.IOdontologoRepository;
 import com.valva.proyectointegrador.service.IOdontologoService;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,13 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class OdontologoServiceTests {
 
-    @Mock
     @Autowired
-    private IOdontologoRepository odontologoRepository;
-
-    @Autowired
-    @InjectMocks
-    private IOdontologoService odontologoService = new OdontologoService(odontologoRepository);
+    private IOdontologoService odontologoService;
     private OdontologoDto odontologo;
 
     @BeforeEach

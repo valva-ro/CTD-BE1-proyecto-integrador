@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,6 +79,7 @@ public class TurnoController implements ITurnoController {
             @ApiResponse(code = 200, message = "Success | OK"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 400, message = "Bad Request") })
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(params = {"matricula", "dni"})
     public ResponseEntity<List<TurnoDto>> buscar(Integer matricula, Integer dni) {
         List<TurnoDto> turnos = turnoService.buscar(matricula, dni);

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,13 @@ public class PacienteControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Before
-    public void cargarDatos() throws Exception {
+    @Test
+    public void test01registrarPacientes() throws Exception {
         PacienteDto p1 = new PacienteDto("Pepe", "Pepardo", 111111111, new DomicilioDto("Calle", 123, "Caballito", "CABA"));
         PacienteDto p2 = new PacienteDto("Pepa", "Peparda", 111111110, new DomicilioDto("Lleca", 321, "Caballito", "CABA"));
         mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(p1)));
         mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(p2)));
-    }
 
-    @Test
-    public void test01registrarPaciente() throws Exception {
         PacienteDto p = new PacienteDto("Pepe", "Pepin", 123456789, new DomicilioDto("Calle", 123, "Caballito", "CABA"));
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
                         .contentType(MediaType.APPLICATION_JSON)

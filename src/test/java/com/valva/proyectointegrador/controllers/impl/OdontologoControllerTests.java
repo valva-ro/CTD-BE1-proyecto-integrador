@@ -31,16 +31,12 @@ public class OdontologoControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
-    public void cargarDatos() throws Exception {
+    @Test
+    public void test01registrarOdontologos() throws Exception {
         OdontologoDto o1 = new OdontologoDto(123456788, "Pepe", "Pepardo", 123455);
         OdontologoDto o2 = new OdontologoDto(123456787, "Pepa", "Pepardo", 123454);
         mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(o1)));
         mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(o2)));
-    }
-
-    @Test
-    public void test01registrarOdontologo() throws Exception {
         OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/odontologos")
                         .contentType(MediaType.APPLICATION_JSON)

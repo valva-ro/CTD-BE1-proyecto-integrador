@@ -34,20 +34,12 @@ public class TurnoControllerTests {
 
     private void registrarOdontologo() throws Exception {
         OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 111222);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/odontologos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(Mapper.mapObjectToJson(o)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/odontologos").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(o)));
     }
 
     private void registrarPaciente() throws Exception {
         PacienteDto p = new PacienteDto("Pepe", "Pepin", 123456789, new DomicilioDto("Calle", 123, "Caballito", "CABA"));
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(Mapper.mapObjectToJson(p)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(p)));
     }
 
     private void cargarDatos() throws Exception {

@@ -12,4 +12,11 @@ public class TurnoDto {
     private PacienteDto paciente;
     private OdontologoDto odontologo;
 
+    public TurnoDto() { }
+
+    public TurnoDto(LocalDateTime fecha, PacienteDto paciente, OdontologoDto odontologo) {
+        this.fecha = fecha;
+        this.paciente = paciente;
+        this.odontologo = odontologo;
+    }
 }

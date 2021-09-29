@@ -11,4 +11,12 @@ public class DomicilioDto {
     private String localidad;
     private String provincia;
 
+    public DomicilioDto() { }
+
+    public DomicilioDto(String calle, Integer numero, String localidad, String provincia) {
+        this.calle = calle;
+        this.numero = numero;
+        this.localidad = localidad;
+        this.provincia = provincia;
+    }
 }

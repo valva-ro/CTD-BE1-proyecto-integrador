@@ -11,4 +11,12 @@ public class OdontologoDto {
     private String apellido;
     private Integer matricula;
 
+    public OdontologoDto() { }
+
+    public OdontologoDto(Integer dni, String nombre, String apellido, Integer matricula) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.matricula = matricula;
+    }
 }

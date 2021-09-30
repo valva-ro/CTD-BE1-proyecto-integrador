@@ -1,55 +1,88 @@
 package com.valva.proyectointegrador.controllers.impl;
 
+import com.valva.proyectointegrador.exceptions.BadRequestException;
+import com.valva.proyectointegrador.exceptions.GlobalExceptionsHandler;
+import com.valva.proyectointegrador.exceptions.ResourceNotFoundException;
 import com.valva.proyectointegrador.model.OdontologoDto;
+import com.valva.proyectointegrador.service.IOdontologoService;
 import com.valva.proyectointegrador.utils.Mapper;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import java.util.List;
 
-@RunWith(SpringRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
+
+@RunWith(MockitoJUnitRunner.class)
+@WebMvcTest(OdontologoController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class OdontologoControllerTests {
 
-    @Autowired
     private MockMvc mockMvc;
 
+    @Mock
+    private IOdontologoService odontologoService;
+
+    @InjectMocks
+    private OdontologoController odontologoController;
+
+    private OdontologoDto odontologo;
+    private OdontologoDto odontologoInexistente;
+    private OdontologoDto odontologoExistente;
+
+    @Before
+    public void reset() throws BadRequestException, ResourceNotFoundException {
+        mockMvc = MockMvcBuilders.standaloneSetup(odontologoController).setControllerAdvice(GlobalExceptionsHandler.class).build();
+        odontologo = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
+        odontologoInexistente = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
+        odontologoExistente = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
+        odontologoExistente.setId(1);
+        odontologoExistente.setId(1);
+        odontologoInexistente.setId(999);
+        configureMockito();
+    }
+
+    public void configureMockito() throws BadRequestException, ResourceNotFoundException {
+        Mockito.when(odontologoService.crear(odontologo)).thenReturn(odontologoExistente);
+        Mockito.when(odontologoService.buscarPorId(999)).thenThrow(new ResourceNotFoundException("El odontólogo no existe"));
+        Mockito.when(odontologoService.buscarPorId(1)).thenReturn(odontologoExistente);
+        Mockito.when(odontologoService.buscar("Pepe")).thenReturn(List.of(odontologoExistente));
+        Mockito.when(odontologoService.buscar(123456)).thenReturn(odontologoExistente);
+        Mockito.when(odontologoService.actualizar(odontologoInexistente)).thenThrow(new ResourceNotFoundException("El odontólogo no existe"));
+        Mockito.when(odontologoService.actualizar(odontologoExistente)).thenReturn(odontologoExistente);
+        doThrow(new ResourceNotFoundException("No existe ningún odontólogo con id: 999")).when(odontologoService).eliminar(999);
+    }
+
     @Test
-    public void test01registrarOdontologos() throws Exception {
-        OdontologoDto o1 = new OdontologoDto(123456788, "Pepe", "Pepardo", 123455);
-        OdontologoDto o2 = new OdontologoDto(123456787, "Pepa", "Pepardo", 123454);
-        mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(o1)));
-        mockMvc.perform(MockMvcRequestBuilders.post("/pacientes").contentType(MediaType.APPLICATION_JSON).content(Mapper.mapObjectToJson(o2)));
-        OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
+    public void test01registrarOdontologo() throws Exception {
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/odontologos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(Mapper.mapObjectToJson(o)))
+                        .characterEncoding("utf-8")
+                        .content(Mapper.mapObjectToJson(odontologo)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assert.assertFalse(response.getResponse().getContentAsString().isEmpty());
+        assertEquals(Mapper.mapObjectToJson(odontologoExistente), response.getResponse().getContentAsString());
     }
 
     @Test
     public void test02buscarOdontologoPorIdInexistenteDevuelveNotFound() throws Exception {
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/odontologos/{id}", "10"))
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/odontologos/{id}", "999"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn();
@@ -62,7 +95,7 @@ public class OdontologoControllerTests {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        Assert.assertFalse(response.getResponse().getContentAsString().isEmpty());
+        assertFalse(response.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
@@ -111,17 +144,16 @@ public class OdontologoControllerTests {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        assertNotEquals("", response.getResponse().getContentAsString());
+        assertFalse(response.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
     public void test08ActualizarOdontologoInexistenteDevuelveNotFound() throws Exception {
-        OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
-        o.setId(99);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/odontologos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(Mapper.mapObjectToJson(o))
+                        .characterEncoding("utf-8")
+                        .content(Mapper.mapObjectToJson(odontologoInexistente))
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -129,17 +161,16 @@ public class OdontologoControllerTests {
 
     @Test
     public void test09ActualizarOdontologoExistenteDevuelveOk() throws Exception {
-        OdontologoDto o = new OdontologoDto(123456789, "Pepe", "Pepin", 123456);
-        o.setId(1);
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders
                         .put("/odontologos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(Mapper.mapObjectToJson(o))
+                        .characterEncoding("utf-8")
+                        .content(Mapper.mapObjectToJson(odontologoExistente))
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        assertEquals(Mapper.mapObjectToJson(o), response.getResponse().getContentAsString());
+        assertEquals(Mapper.mapObjectToJson(odontologoExistente), response.getResponse().getContentAsString());
     }
 
     @Test
@@ -153,7 +184,7 @@ public class OdontologoControllerTests {
 
     @Test
     public void test11eliminarOdontologoPorIdExistenteDevuelveOk() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/odontologos/{id}", "2"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/odontologos/{id}", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();

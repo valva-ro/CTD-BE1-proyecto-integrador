@@ -34,16 +34,10 @@ public class PacienteController implements CRUDController<PacienteDto> {
             @ApiResponse(code = 200, message = "Success | OK"),
             @ApiResponse(code = 400, message = "Bad Request") })
     @PostMapping()
-    public ResponseEntity<?> registrar(@RequestBody PacienteDto paciente) {
-        ResponseEntity<?> response;
+    public ResponseEntity<PacienteDto> registrar(@RequestBody PacienteDto paciente) throws BadRequestException, ResourceNotFoundException {
         paciente.setFechaIngreso(LocalDate.now());
-        try {
-            PacienteDto pacienteInsertado = pacienteService.crear(paciente);
-            response = ResponseEntity.ok(pacienteInsertado);
-        } catch (Exception e) {
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return response;
+        PacienteDto pacienteInsertado = pacienteService.crear(paciente);
+        return ResponseEntity.ok(pacienteInsertado);
     }
 
     @Override

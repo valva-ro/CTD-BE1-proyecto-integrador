@@ -18,10 +18,14 @@ import java.util.Optional;
 @Service
 public class DomicilioService implements IDomicilioService {
 
+    private final IDomicilioRepository domicilioRepository;
+    private final SpringConfig springConfig;
+
     @Autowired
-    private IDomicilioRepository domicilioRepository;
-    @Autowired
-    private SpringConfig springConfig;
+    public DomicilioService(IDomicilioRepository domicilioRepository, SpringConfig springConfig) {
+        this.domicilioRepository = domicilioRepository;
+        this.springConfig = springConfig;
+    }
 
     public List<DomicilioDto> buscar(String calle) {
         List<Domicilio> domicilios = domicilioRepository.buscar(calle).orElse(new ArrayList<>());

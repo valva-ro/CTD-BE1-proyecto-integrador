@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TurnoService implements ITurnoService {
@@ -127,11 +128,13 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoDto> consultarTurnosProximaSemana() {
-        LocalDateTime desde = LocalDateTime.now();
-        LocalDateTime hasta = desde.plusDays(7);
-        List<Turno> turnos = turnoRepository.turnosDesdeHasta(desde, hasta).orElse(new ArrayList<>());
-        return Mapper.mapList(springConfig.getModelMapper(), turnos, TurnoDto.class);
+    public List<TurnoDto> consultarProximosTurnos(LocalDateTime desde, Integer cantidadDias) {
+        LocalDateTime hasta = desde.plusDays(cantidadDias);
+        List<Turno> filtrados = turnoRepository.findAll()
+                .stream()
+                .filter(turno -> ((turno.getFecha().isAfter(desde) || turno.getFecha().equals(desde)) && turno.getFecha().isBefore(hasta)))
+                .collect(Collectors.toList());
+        return Mapper.mapList(springConfig.getModelMapper(), filtrados, TurnoDto.class);
     }
 
     private Turno actualizar(Turno turno, TurnoDto turnoDto) throws Exception {

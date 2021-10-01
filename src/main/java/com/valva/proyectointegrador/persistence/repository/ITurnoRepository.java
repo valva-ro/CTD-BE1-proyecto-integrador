@@ -4,7 +4,6 @@ import com.valva.proyectointegrador.persistence.entities.Turno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +17,5 @@ public interface ITurnoRepository extends JpaRepository<Turno, Integer> {
 
     @Query("SELECT t FROM Turno t WHERE t.odontologo.matricula=?1 AND t.paciente.dni=?2")
     Optional<List<Turno>> buscar(Integer matricula, Integer dni);
-
-    @Query("SELECT t FROM Turno t WHERE t.fecha>?1 AND t.fecha<?2")
-    Optional<List<Turno>> turnosDesdeHasta(LocalDateTime desde, LocalDateTime hasta);
 
 }

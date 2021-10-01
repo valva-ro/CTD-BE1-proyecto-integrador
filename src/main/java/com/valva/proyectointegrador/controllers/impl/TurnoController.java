@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -122,7 +123,15 @@ public class TurnoController implements ITurnoController {
     @ApiOperation(value = "Busca todos los turnos de la próxima semana")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request") })
     @GetMapping("/proximos")
-    public ResponseEntity<List<TurnoDto>> buscarTurnosProximaSemana() {
-        return ResponseEntity.ok(turnoService.consultarTurnosProximaSemana());
+    public ResponseEntity<List<TurnoDto>> buscarTurnosDesde(
+                                        @RequestParam Integer dia,
+                                        @RequestParam Integer mes,
+                                        @RequestParam Integer anio,
+                                        @RequestParam(defaultValue = "0") Integer hora,
+                                        @RequestParam(defaultValue = "0") Integer minuto,
+                                        @RequestParam(defaultValue = "7") Integer cantidadDias) {
+        LocalDateTime desde = LocalDateTime.of(anio, mes, dia, hora, minuto);
+        List<TurnoDto> turnos = turnoService.consultarProximosTurnos(desde, cantidadDias);
+        return ResponseEntity.ok(turnos);
     }
 }

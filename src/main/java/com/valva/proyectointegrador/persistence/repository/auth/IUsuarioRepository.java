@@ -1,4 +1,4 @@
-package com.valva.proyectointegrador.persistence.repository;
+package com.valva.proyectointegrador.persistence.repository.auth;
 
 import com.valva.proyectointegrador.persistence.entities.auth.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> findByUsername(String name);
 }

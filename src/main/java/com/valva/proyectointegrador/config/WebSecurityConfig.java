@@ -1,6 +1,5 @@
 package com.valva.proyectointegrador.config;
 
-import com.valva.proyectointegrador.persistence.entities.auth.UsuarioRoles;
 import com.valva.proyectointegrador.service.impl.auth.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,12 +37,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/turnos/**").hasAnyAuthority(UsuarioRoles.USER.name(), UsuarioRoles.ADMIN.name())
-                .antMatchers("/odontologos/**", "/pacientes/**").hasAuthority(UsuarioRoles.ADMIN.name())
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().logout().permitAll()
-                .and().exceptionHandling().accessDeniedPage("/403");
+                    .antMatchers("/turnos/**", "/").hasAuthority("USER")
+                    .antMatchers("/odontologos/**", "/pacientes/**").hasAuthority("ADMIN")
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin()
+                    .permitAll()
+                    .and()
+                .logout()
+                    .permitAll()
+                    .and()
+                .exceptionHandling().accessDeniedPage("/403");
     }
 
     @Override

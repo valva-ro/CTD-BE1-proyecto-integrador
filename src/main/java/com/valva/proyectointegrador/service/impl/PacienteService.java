@@ -23,7 +23,7 @@ public class PacienteService implements IPacienteService {
 
     private final IPacienteRepository pacienteRepository;
     private final IDomicilioService domicilioService;
-    private SpringConfig springConfig;
+    private final SpringConfig springConfig;
 
     @Autowired
     public PacienteService(IPacienteRepository pacienteRepository, IDomicilioService domicilioService, SpringConfig springConfig) {

@@ -19,7 +19,7 @@ import java.util.Optional;
 public class OdontologoService implements IOdontologoService {
 
     private final IOdontologoRepository odontologoRepository;
-    private SpringConfig springConfig;
+    private final SpringConfig springConfig;
 
     @Autowired
     public OdontologoService(IOdontologoRepository odontologoRepository, SpringConfig springConfig) {

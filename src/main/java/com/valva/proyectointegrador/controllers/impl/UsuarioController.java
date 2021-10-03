@@ -42,11 +42,6 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.consultarTodos());
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "Bienvenide a la Clínica Odontológica Muelita \uD83E\uDDB7";
-    }
-
     @GetMapping("/403")
     public String error() {
         return "<h1>Error 403: Acceso denegado o prohibido</h1>";

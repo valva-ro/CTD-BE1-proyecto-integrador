@@ -37,8 +37,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/turnos/**", "/").hasAuthority("USER")
+                    .antMatchers("/turnos/**").hasAuthority("USER")
                     .antMatchers("/odontologos/**", "/pacientes/**").hasAuthority("ADMIN")
+                    .antMatchers("/index.html",
+                            "/registro-turno.html",
+                            "/lista-turnos.html")
+                        .hasAuthority("USER")
+                    .antMatchers("/registro-odontologo.html",
+                            "/registro-paciente.html",
+                            "/registro-usuario.html",
+                            "/lista-odontologos.html",
+                            "/lista-pacientes.html",
+                            "/lista-usuarios.html")
+                        .hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

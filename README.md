@@ -5,8 +5,11 @@
 
 El proyecto es una API REST de una clínica odontológica en proceso.
 
-Una vez que la aplicación esté corriendo, si desde el navegador acceden a [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-pueden ver la documentación. De cualquier manera también está en la sección [Endpoints](#endpoints).
+Una vez que la aplicación esté corriendo, podés acceder a la url [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+y ver la documentación. De cualquier manera también está en la sección [Endpoints](#endpoints).
+
+Como la vista todavía es un trabajo en proceso, dejo el archivo `clinica-odontologica.postman_collection` donde están las pruebas realizadas desde Postman. 
+El primer request que hay que hacer para que el resto funcionen es alguno de los logins.
 
 ## Pre-requisitos
 -  [Maven](https://maven.apache.org/download.cgi)
@@ -155,7 +158,7 @@ java -jar ClinicaOdontologica.jar
     -  `200 OK` → devuelve todos los turnos cuyos odontólogos tengan con ese nombre y apellido
 
 -  Buscar por DNI de paciente y matrícula de odontólogo: `GET` a `PATH/turnos/?matricula=123&dni=123456789`
-    -  `200 OK` → devuelve todos los turnos cuyos cuyos odontólogos tengan esa matrícula y pacientes tengan ese DNI
+    -  `200 OK` → devuelve todos los turnos cuyos odontólogos tengan esa matrícula y pacientes tengan ese DNI
 
 -  Registrar nuevo: `POST` a `PATH/turnos`
     -  `200 OK` → se registró correctamente
